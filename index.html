@@ -1,0 +1,50 @@
+<html>
+<head>
+<title>ChenLianYen RPG</title>
+<link rel="shortcut icon" href="./Images/Icons/favicon.ico"/>
+<!-- Import EaselJS Framework -->
+
+<script>
+	createjs = window;
+	//Why???????????????????????????
+</script>
+
+<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+<script src="http://code.createjs.com/easeljs-0.5.0.min.js"></script>
+
+<script src="./js/input.js"></script>
+<script src="./js/sourceManager.js"></script>
+<script src="./js/map.js"></script>
+<script src="./js/rpg.js"></script>
+
+<script>
+var canvas;
+var stage = null;
+var rpg;
+var canvasCtx;
+
+function startGame() {
+	//find canvas and load images, wait for last image to load
+	canvas = document.getElementById("rpgCanvas");
+	canvasCtx = canvas.getContext("2d");
+
+	// create a new stage and point it at our canvas:
+	stage = new Stage(canvas);
+    rpg = new Rpg(stage, canvas.width, canvas.height);
+	rpg.loadMap("example");
+}
+
+$(document).ready(function() {
+	startGame();
+});
+</script>
+</head>
+	
+<body>
+	<div class="canvasHolder">
+		<canvas id="rpgCanvas" width="640" height="640" style="background-color:black">
+			Your browser doesn't support canvas. Please download IE9+ on <a href="http://ie.microsoft.com/testdrive">IE Test Drive</a> 
+		</canvas>
+	</div>
+</body>
+</html>
