@@ -1,9 +1,8 @@
 /* Init:
  *
  * */
-function SourceManager(rpg, stage, width, height) {
-	this.rpg=rpg;
-	this.stage=stage;
+function SourceManager(width, height) {
+	this.stage=null;
 	this.width=width;
 	this.height=height;
 
@@ -14,15 +13,21 @@ function SourceManager(rpg, stage, width, height) {
 
     this.downloadProgress;
 
-	this.sounds={}
-	this.images={}
-	this.maps={}
+	this.sounds={};
+	this.images={};
+	this.maps={};
+	this.characters={};
 
 	this.checkSoundExtension();
 
 };
 
 SourceManager.prototype={
+
+setStage : function(stage){
+	this.stage=stage;
+},
+
 checkSoundExtension : function(){
 	// Need to check the canPlayType first or an exception will be thrown for those browsers that don't support it      
 	var myAudio = document.createElement('audio');
@@ -63,11 +68,9 @@ addMap : function(name){
 		this.maps[name]=null;
 },
 
-setOnready : function (callbackMethod) {
-	this.onready = callbackMethod;
-},
 
-startDownload : function () {
+startDownload : function (callbackMethod) {
+	this.onready = callbackMethod;
 	this.downloadProgress = new Text("-- %", "bold 14px Arial", "#FFF");
 	this.downloadProgress.x = (this.width / 2) - 50;
 	this.downloadProgress.y = this.height / 2;
@@ -78,12 +81,6 @@ startDownload : function () {
 		for(var name in this.sounds){
 			this.loadAudio();
 		}
-	}
-	for(var name in this.images){
-		this.loadImage(name);
-	}
-	for(var name in this.maps){
-		this.loadMap(name);
 	}
 
 	//To show downloading progress
@@ -105,34 +102,58 @@ loadAudio : function(name) {
 	this.sounds[name]=audio;
 },
 
-loadImage : function(name){
-	if(this.images[name])
-		return;
+loadImage : function(obj, name){
+	if(this.images[name]){
+		obj.setImage(this.images[obj.name]);
+		return this.images[name];
+	}
 	++this.numElementsToLoad;
-	url="Images/"+ name + '.jpg';
+	url="Images/"+ name + '.png';
 	img = new Image();
 	img.src = url;
-	img.onload = this.handleElementLoad.bind(this);
+	img.onload = function(obj){
+		obj.setImage(this.images[obj.name]);
+		this.handleElementLoad();
+	}.bind(this, obj);
 	img.onerror = this.handleElementError;
 	this.images[name]=img;
+	return img;
+},
+
+loadCharacter : function(type, name){
+	if (this.characters[name]) {
+		return this.characters[name];
+	}
+	character = new Charcater(type, name);
+	++this.numElementsToLoad;
+	var url = 'Characters/' + name + '.json';
+	var self=this;
+	this.ajax(url, function(ret) {
+		var prop= JSON.parse(ret);
+		character.setProp(prop);
+		self.loadImage(character, prop.image);
+		self.handleElementLoad();
+	});
+	this.characters[name] = character;
+	return character;
 },
 
 loadMap : function(name){
 	if (this.maps[name]) {
-		onMapDataReady(maps[name]);
-		return;
+		return this.maps[name];
 	}
+	map = new Map(name);
 	++this.numElementsToLoad;
 	var url = 'Maps/' + name + '.json';
 	var self=this;
 	this.ajax(url, function(ret) {
-		var map_data = JSON.parse(ret);
-		map = new Map(name);
-		map.setData(map_data);
-		map.setBackground(self.images[name]);
-		self.maps[name] = map;
-		self.handleElementLoad(null);
+		var prop= JSON.parse(ret);
+		map.setProp(prop);
+		self.loadImage(map, map.name);
+		self.handleElementLoad();
 	});
+	this.maps[name] = map;
+	return map;
 },
 
 ajax : function(name, callback) {
@@ -171,7 +192,7 @@ tick : function() {
 /* Source onload callbacks:
  *
  * */
-handleElementLoad : function(e) {
+handleElementLoad : function() {
 	++this.numElementsLoaded;
 
 	if (this.numElementsLoaded === this.numElementsToLoad) {

@@ -1,18 +1,21 @@
-function MyStage(canvas){
+function MyStage(canvas, sourceManager){
 	Stage.call(this,canvas);
+	this.sourceManager = sourceManager;
 	this.currentMap = null;
 }
 
 
 MyStageProtoType={
 
-setCurrentMap : function(map){
+setCurrentMap : function(mapName){
+	this .currentMap = this.sourceManager.loadMap(mapName)
 	this.removeAllChildren();
-	this.addChild(map.background);
-	this.currentMap=map
+	this.addChild(this.currentMap.image);
 }
 
+
 }
+
 
 MyStage.prototype = new Stage(); 
 for (var obj in MyStageProtoType) { 

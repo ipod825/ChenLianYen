@@ -6,7 +6,7 @@
 
 <script>
 	createjs = window;
-	//Why???????????????????????????
+	//TODO Why?
 </script>
 
 <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
@@ -14,24 +14,20 @@
 
 <script src="./js/input.js"></script>
 <script src="./js/sourceManager.js"></script>
+<script src="./js/character.js"></script>
 <script src="./js/mystage.js"></script>
 <script src="./js/map.js"></script>
 <script src="./js/rpg.js"></script>
 
 <script>
 var canvas;
-var stage = null;
 var rpg;
-var canvasCtx;
 
 function startGame() {
 	//find canvas and load images, wait for last image to load
 	canvas = document.getElementById("rpgCanvas");
-	canvasCtx = canvas.getContext("2d");
 
-	// create a new stage and point it at our canvas:
-	stage = new MyStage(canvas);
-    rpg = new Rpg(stage, canvas.width, canvas.height);
+    rpg = new Rpg(canvas);
 	rpg.loadMap("example");
 }
 

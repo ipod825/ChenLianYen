@@ -1,7 +1,9 @@
-function Rpg(stage, gameWidth, gameHeight) {
-	this.stage = stage;
-	this.sourceManager = new SourceManager(this, stage, gameWidth, gameHeight);
+function Rpg(canvas) {
+	this.sourceManager = new SourceManager(canvas.width,canvas.height);
+	this.stage = new MyStage(canvas, this.sourceManager);
+	this.sourceManager.setStage(this.stage); //To show the downloaing progress on the stage;
 	this.input=new Input(this);
+	this.player = this.sourceManager.loadCharacter(PLAYER,"player");
 
 
 	var self = this;
@@ -13,10 +15,10 @@ function Rpg(stage, gameWidth, gameHeight) {
 Rpg.prototype={
 
 start: function (mapName) {
-	this.stage.setCurrentMap(this.sourceManager.maps[mapName]);
+	this.stage.setCurrentMap(mapName);
+	this.stage.addChild(this.player.image);
 
-	// we want to do some work before we update the canvas,
-	// otherwise we could use Ticker.addListener(stage);
+	// we want to do some work before we update the canvas, otherwise we could use Ticker.addListener(stage);
 	Ticker.addListener(this);
 	// Targeting 60 FPS
 	Ticker.useRAF = false;
@@ -33,9 +35,7 @@ tick: function () {
 },
 
 loadMap: function (mapName) {
-	this.sourceManager.addImage(mapName);
-	this.sourceManager.addMap(mapName);
-	this.sourceManager.setOnready(this.start.bind(this,mapName));
-	this.sourceManager.startDownload();
+	this.sourceManager.loadMap(mapName);
+	this.sourceManager.startDownload(this.start.bind(this,mapName));
 }
 }

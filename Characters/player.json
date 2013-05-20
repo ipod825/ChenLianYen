@@ -1,0 +1,22 @@
+{
+	"x": 47,
+	"y": 35,
+	"id": "1",
+	"name": "EV001",
+
+	"image": "player",
+	"pattern": 0,
+	"trigger": "action_button",
+	"direction": "left",
+	"frequence": 16,
+	"type": "fixed",
+	"through": false,
+	"stop_animation": false,
+	"no_animation": false,
+	"direction_fix": false,
+	"alwaysOnTop": false,
+	"speed": 4,
+	"commands": [
+		"SHOW_TEXT: {'text': '%NEED_SWORD%'}"
+		]
+}

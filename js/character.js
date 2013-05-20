@@ -1,10 +1,13 @@
-function Map(name){
-	this.name=name;
-	this.prop;
+PLAYER = 1;
+function Charcater(type,name){
+	this.type = type;
+	this.name = name;
 	this.image;
+	this.prop;
 }
 
-Map.prototype = {
+
+Charcater.prototype ={ 
 
 setProp : function(prop){
 	this.prop=prop;
@@ -14,6 +17,6 @@ setImage: function(img){
 	this.image=new Bitmap(img);
 },
 
-
-
 }
+
+
