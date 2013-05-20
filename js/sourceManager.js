@@ -22,7 +22,8 @@ function SourceManager(rpg, stage, width, height) {
 
 };
 
-SourceManager.prototype.checkSoundExtension = function(){
+SourceManager.prototype={
+checkSoundExtension : function(){
 	// Need to check the canPlayType first or an exception will be thrown for those browsers that don't support it      
 	var myAudio = document.createElement('audio');
 	var canPlayMp3;
@@ -40,33 +41,33 @@ SourceManager.prototype.checkSoundExtension = function(){
 		this.audioExtension = ".ogg";
 	}
 
-};
+},
 
 /* Source adding:
  *
  * Sources of imgs, sounds,maps should be added before startDownload is called
  * The onready function should be set as the call back function after all the sources have been loaded
  * */
-SourceManager.prototype.addImage = function(name){
+addImage : function(name){
 	if(!this.images[name])
 		this.images[name]=null;
-};
+},
 
-SourceManager.prototype.addSound = function(name){
+addSound : function(name){
 	if(!this.sounds[name])
 		this.sounds[name]=null;
-};
+},
 
-SourceManager.prototype.addMap= function(name){
+addMap : function(name){
 	if(!this.maps[name])
 		this.maps[name]=null;
-};
+},
 
-SourceManager.prototype.setOnready = function (callbackMethod) {
+setOnready : function (callbackMethod) {
 	this.onready = callbackMethod;
-};
+},
 
-SourceManager.prototype.startDownload = function () {
+startDownload : function () {
 	this.downloadProgress = new Text("-- %", "bold 14px Arial", "#FFF");
 	this.downloadProgress.x = (this.width / 2) - 50;
 	this.downloadProgress.y = this.height / 2;
@@ -88,13 +89,13 @@ SourceManager.prototype.startDownload = function () {
 	//To show downloading progress
 	Ticker.addListener(this);
 	Ticker.setInterval(50);
-};
+},
 
 /* Source downloading:
  *
  * Load  and cache the sources, assign the sources callback function to handleElementLoad
  * */
-SourceManager.prototype.loadAudio = function(name) {
+loadAudio : function(name) {
 	if(this.sounds[name])
 		return;
 	url = "Sounds/"+ key + audioExtension;
@@ -102,9 +103,9 @@ SourceManager.prototype.loadAudio = function(name) {
 	audio.src = url;
 	audio.load();
 	this.sounds[name]=audio;
-};
+},
 
-SourceManager.prototype.loadImage = function(name){
+loadImage : function(name){
 	if(this.images[name])
 		return;
 	++this.numElementsToLoad;
@@ -114,9 +115,9 @@ SourceManager.prototype.loadImage = function(name){
 	img.onload = this.handleElementLoad.bind(this);
 	img.onerror = this.handleElementError;
 	this.images[name]=img;
-};
+},
 
-SourceManager.prototype.loadMap= function(name){
+loadMap : function(name){
 	if (this.maps[name]) {
 		onMapDataReady(maps[name]);
 		return;
@@ -130,9 +131,9 @@ SourceManager.prototype.loadMap= function(name){
 		self.handleElementLoad(null);
 		self.rpg.onMapDataReady(map_data);
 	});
-};
+},
 
-SourceManager.prototype.ajax = function(name, callback) {
+ajax : function(name, callback) {
 	var xhr; 
 	try {  xhr = new ActiveXObject('Msxml2.XMLHTTP');   }
 	catch (e) 
@@ -156,19 +157,19 @@ SourceManager.prototype.ajax = function(name, callback) {
    xhr.open("GET", name,  true); 
    xhr.send(null); 
 
-};
+},
 
 // Showing the process % of download
-SourceManager.prototype.tick = function() {
+tick : function() {
 	this.downloadProgress.text = "Downloading " + Math.round((this.numElementsLoaded / this.numElementsToLoad) * 100) + " %";
 	stage.update();
-};
+},
 
 
 /* Source onload callbacks:
  *
  * */
-SourceManager.prototype.handleElementLoad= function(e) {
+handleElementLoad : function(e) {
 	++this.numElementsLoaded;
 
 	if (this.numElementsLoaded === this.numElementsToLoad) {
@@ -179,10 +180,15 @@ SourceManager.prototype.handleElementLoad= function(e) {
 		this.numElementsToLoad = 0;
 		this.onready();//set by setOnready
 	}
-};
+},
 
-SourceManager.prototype.handleElementError = function(e) {
+handleElementError : function(e) {
 	console.log("Error Loading Asset : " + e.target.src);
-};
+},
+}
+
+
+
+
 
 
