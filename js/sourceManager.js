@@ -127,9 +127,11 @@ loadMap : function(name){
 	var self=this;
 	this.ajax(url, function(ret) {
 		var map_data = JSON.parse(ret);
-		self.maps[name] = map_data;
+		map = new Map(name);
+		map.setData(map_data);
+		map.setBackground(self.images[name]);
+		self.maps[name] = map;
 		self.handleElementLoad(null);
-		self.rpg.onMapDataReady(map_data);
 	});
 },
 

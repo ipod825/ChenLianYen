@@ -14,6 +14,7 @@
 
 <script src="./js/input.js"></script>
 <script src="./js/sourceManager.js"></script>
+<script src="./js/mystage.js"></script>
 <script src="./js/map.js"></script>
 <script src="./js/rpg.js"></script>
 
@@ -29,7 +30,7 @@ function startGame() {
 	canvasCtx = canvas.getContext("2d");
 
 	// create a new stage and point it at our canvas:
-	stage = new Stage(canvas);
+	stage = new MyStage(canvas);
     rpg = new Rpg(stage, canvas.width, canvas.height);
 	rpg.loadMap("example");
 }
