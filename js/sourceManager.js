@@ -1,3 +1,6 @@
+/* Init:
+ *
+ * */
 function SourceManager(rpg, stage, width, height) {
 	this.rpg=rpg;
 	this.stage=stage;
@@ -16,29 +19,6 @@ function SourceManager(rpg, stage, width, height) {
 	this.maps={}
 
 	this.checkSoundExtension();
-
-	var self=this;
-
-
-	//this method is put here bcause I can not access the instance reference from inside the closure
-	this.handleElementLoad= function(e) {
-		++self.numElementsLoaded;
-
-		if (self.numElementsLoaded === self.numElementsToLoad) {
-			self.stage.removeChild(self.downloadProgress);
-			Ticker.removeAllListeners();
-			self.numElementsLoaded = 0;
-			self.numElementsToLoad = 0;
-			self.onready();//set by setOnready
-		}
-	};
-
-	// setting the callback method
-	// Triggered once everything is ready to be drawned on the canvas
-	this.setOnready = function (callbackMethod) {
-		self.onready = callbackMethod;
-	};
-
 
 };
 
@@ -62,7 +42,11 @@ SourceManager.prototype.checkSoundExtension = function(){
 
 };
 
-
+/* Source adding:
+ *
+ * Sources of imgs, sounds,maps should be added before startDownload is called
+ * The onready function should be set as the call back function after all the sources have been loaded
+ * */
 SourceManager.prototype.addImage = function(name){
 	if(!this.images[name])
 		this.images[name]=null;
@@ -76,6 +60,10 @@ SourceManager.prototype.addSound = function(name){
 SourceManager.prototype.addMap= function(name){
 	if(!this.maps[name])
 		this.maps[name]=null;
+};
+
+SourceManager.prototype.setOnready = function (callbackMethod) {
+	this.onready = callbackMethod;
 };
 
 SourceManager.prototype.startDownload = function () {
@@ -97,10 +85,15 @@ SourceManager.prototype.startDownload = function () {
 		this.loadMap(name);
 	}
 
+	//To show downloading progress
 	Ticker.addListener(this);
 	Ticker.setInterval(50);
 };
 
+/* Source downloading:
+ *
+ * Load  and cache the sources, assign the sources callback function to handleElementLoad
+ * */
 SourceManager.prototype.loadAudio = function(name) {
 	if(this.sounds[name])
 		return;
@@ -118,14 +111,14 @@ SourceManager.prototype.loadImage = function(name){
 	url="Images/"+ name + '.jpg';
 	img = new Image();
 	img.src = url;
-	img.onload = this.handleElementLoad;
+	img.onload = this.handleElementLoad.bind(this);
 	img.onerror = this.handleElementError;
 	this.images[name]=img;
 };
 
 SourceManager.prototype.loadMap= function(name){
 	if (this.maps[name]) {
-		onMapready(maps[name]);
+		onMapDataReady(maps[name]);
 		return;
 	}
 	++this.numElementsToLoad;
@@ -135,20 +128,8 @@ SourceManager.prototype.loadMap= function(name){
 		var map_data = JSON.parse(ret);
 		self.maps[name] = map_data;
 		self.handleElementLoad(null);
-		self.rpg.onMapReady(map_data);
+		self.rpg.onMapDataReady(map_data);
 	});
-};
-
-
-SourceManager.prototype.handleElementError = function(e) {
-	console.log("Error Loading Asset : " + e.target.src);
-};
-
-
-// Update methid which simply shows the current % of download
-SourceManager.prototype.tick = function() {
-	this.downloadProgress.text = "Downloading " + Math.round((this.numElementsLoaded / this.numElementsToLoad) * 100) + " %";
-	stage.update();
 };
 
 SourceManager.prototype.ajax = function(name, callback) {
@@ -176,3 +157,32 @@ SourceManager.prototype.ajax = function(name, callback) {
    xhr.send(null); 
 
 };
+
+// Showing the process % of download
+SourceManager.prototype.tick = function() {
+	this.downloadProgress.text = "Downloading " + Math.round((this.numElementsLoaded / this.numElementsToLoad) * 100) + " %";
+	stage.update();
+};
+
+
+/* Source onload callbacks:
+ *
+ * */
+SourceManager.prototype.handleElementLoad= function(e) {
+	++this.numElementsLoaded;
+
+	if (this.numElementsLoaded === this.numElementsToLoad) {
+		//remove progress bar
+		this.stage.removeChild(this.downloadProgress);
+		Ticker.removeAllListeners();
+		this.numElementsLoaded = 0;
+		this.numElementsToLoad = 0;
+		this.onready();//set by setOnready
+	}
+};
+
+SourceManager.prototype.handleElementError = function(e) {
+	console.log("Error Loading Asset : " + e.target.src);
+};
+
+
