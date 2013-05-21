@@ -2,8 +2,8 @@ function Rpg(canvas) {
 	this.sourceManager = new SourceManager(canvas.width,canvas.height);
 	this.stage = new MyStage(canvas, this.sourceManager);
 	this.sourceManager.setStage(this.stage); //To show the downloaing progress on the stage;
-	this.input=new Input(this);
 	this.player = this.sourceManager.loadCharacter(PLAYER,"player");
+	this.input=new Input(this);
 
 
 	var self = this;
@@ -16,7 +16,8 @@ Rpg.prototype={
 
 start: function (mapName) {
 	this.stage.setCurrentMap(mapName);
-	this.stage.addChild(this.player.image);
+	this.stage.addChild(this.player);
+	Ticker.addListener(this.player);
 
 	// we want to do some work before we update the canvas, otherwise we could use Ticker.addListener(stage);
 	Ticker.addListener(this);

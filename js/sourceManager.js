@@ -124,7 +124,7 @@ loadCharacter : function(type, name){
 	if (this.characters[name]) {
 		return this.characters[name];
 	}
-	character = new Charcater(type, name);
+	character = new Character(type, name);
 	++this.numElementsToLoad;
 	var url = 'Characters/' + name + '.json';
 	var self=this;
