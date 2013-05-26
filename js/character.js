@@ -13,20 +13,32 @@ DIR_DOWN	= KEYCODE_DOWN;
 function Character(type,name){
 	this.type = type;
 	this.name = name;
-	this.image;
-	this.prop;
-	this.dir=DIR_RIGHT;
-	this.frequency=4;
-	this.step=4;
+	this.image = null;
+	this.prop = null;
+	this.dir = DIR_RIGHT;
+	this.frequency = 4;
+	this.step = 4;
+
+	// TODO Items hold by character
+	this.bag = [];
+
+	// TODO Character holds the reference of stage to drop item
+	this.stage = null;
 }
 
 
-// The template for assigning members in the prototype
+// The prototype defined as an object
 CharacterProtoType = { 
+
+	dropItem : function(item){
+		// TODO 
+		var removeIndex = this.bag.indexOf(item);
+		this.splice(removeIndex, 1);
+		this.stage.AddObject(item);
+	},
 
 	setDirection : function(dir){
 		this.dir=dir;
-	
 	},
 
 	setProp : function(prop){
@@ -58,10 +70,12 @@ CharacterProtoType = {
 		this.currentFrame=8;
 	},
 
+	// The main tick function, which is executed every loop
 	tick : function(){
 		this.move();
 	},
 
+	// The move function which trigger animation based on direction
 	move : function(){
 		switch (this.dir) {
 			case DIR_UP:
@@ -92,9 +106,9 @@ CharacterProtoType = {
 
 }
 
-// Nwe a Character
+// Character inherits BitmapAnimation
 Character.prototype = new BitmapAnimation(); 
-// Assign the compoenent in the prototype template into the new object 
+// Assign the members in the prototype object into the character prototype
 for (var obj in CharacterProtoType) { 
 	Character.prototype[obj] = CharacterProtoType[obj]; 
 } 
