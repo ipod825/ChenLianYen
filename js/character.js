@@ -24,11 +24,18 @@ function Character(type,name){
 
 	// TODO Character holds the reference of stage to drop item
 	this.stage = null;
+
+	// For debuggging
+	this.logger.setLogLevel("verbose");
 }
 
 
 // The prototype defined as an object
 CharacterProtoType = { 
+
+	// For debugging
+	tag : "[Character]: ",
+	logger : new ConsoleLogger(),
 
 	dropItem : function(item){
 		// TODO 
@@ -79,21 +86,25 @@ CharacterProtoType = {
 	move : function(){
 		switch (this.dir) {
 			case DIR_UP:
+				this.logger.verbose(this.tag, "walkup key captured");
 				this.gotoAndPlay("walkup");
 				this.vX=0;
 				this.vY=-this.step;
 				break;
 			case DIR_DOWN:
+				this.logger.verbose(this.tag, "walkdown key captured");
 				this.vX=0;
 				this.vY=this.step;
 				this.gotoAndPlay("walkdown");
 				break;
 			case DIR_LEFT:
+				this.logger.verbose(this.tag, "walkleft key captured");
 				this.vX=-this.step;
 				this.vY=0;
 				this.gotoAndPlay("walkleft");
 				break;
 			case DIR_RIGHT:
+				this.logger.verbose(this.tag, "walkright key captured");
 				this.vX=this.step;
 				this.vY=0;
 				this.gotoAndPlay("walkright");
