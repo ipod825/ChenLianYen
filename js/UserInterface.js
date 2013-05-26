@@ -58,3 +58,8 @@ var UIController = {}
 	
 
 }(UIController))
+
+
+var UIContainer = function(){
+   
+}

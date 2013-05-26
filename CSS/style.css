@@ -1,0 +1,18 @@
+canvas {
+	background-color:black;
+    position: absolute;
+    z-index: -1;
+    top: 50;
+    left: 100;
+}
+
+div#rpgDiv {
+	width: 640;
+	height: 640;
+    top: 47;
+    left: 97;
+	position: absolute;
+	z-index:1;
+	/*background-color:black;*/
+	border-style:dashed;
+}
