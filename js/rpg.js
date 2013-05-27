@@ -40,7 +40,7 @@ tick: function () {
 },
 
 loadMap: function (mapName) {
+	this.sourceManager.setOnReady(this.start.bind(this,mapName));
 	this.sourceManager.loadMap(mapName);
-	this.sourceManager.startDownload(this.start.bind(this,mapName));
 }
 }

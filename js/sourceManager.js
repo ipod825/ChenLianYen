@@ -48,40 +48,17 @@ checkSoundExtension : function(){
 
 },
 
-/* Source adding:
+/* Set callback:
  *
- * Sources of imgs, sounds,maps should be added before startDownload is called
- * The onready function should be set as the call back function after all the sources have been loaded
- * */
-addImage : function(name){
-	if(!this.images[name])
-		this.images[name]=null;
-},
+ * Callback After sources have been downloaded
+ */
 
-addSound : function(name){
-	if(!this.sounds[name])
-		this.sounds[name]=null;
-},
-
-addMap : function(name){
-	if(!this.maps[name])
-		this.maps[name]=null;
-},
-
-
-startDownload : function (callbackMethod) {
+setOnReady: function (callbackMethod) {
 	this.onready = callbackMethod;
 	this.downloadProgress = new Text("-- %", "bold 14px Arial", "#FFF");
 	this.downloadProgress.x = (this.width / 2) - 50;
 	this.downloadProgress.y = this.height / 2;
 	this.stage.addChild(this.downloadProgress);
-
-	// If the browser supports either MP3 or OGG
-	if (this.audioExtension) {
-		for(var name in this.sounds){
-			this.loadAudio();
-		}
-	}
 
 	//To show downloading progress
 	Ticker.addListener(this);
@@ -91,8 +68,10 @@ startDownload : function (callbackMethod) {
 /* Source downloading:
  *
  * Load  and cache the sources, assign the sources callback function to handleElementLoad
- * */
+ */
 loadAudio : function(name) {
+	if (!this.audioExtension)
+		return;
 	if(this.sounds[name])
 		return;
 	url = "Sounds/"+ key + audioExtension;
@@ -185,11 +164,11 @@ ajax : function(name, callback) {
 // Showing the process % of download
 tick : function() {
 	this.downloadProgress.text = "Downloading " + Math.round((this.numElementsLoaded / this.numElementsToLoad) * 100) + " %";
-	stage.update();
+	this.stage.update();
 },
 
 
-/* Source onload callbacks:
+/* Single source onload callback:
  *
  * */
 handleElementLoad : function() {
@@ -209,9 +188,3 @@ handleElementError : function(e) {
 	console.log("Error Loading Asset : " + e.target.src);
 },
 }
-
-
-
-
-
-
