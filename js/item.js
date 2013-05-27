@@ -25,6 +25,10 @@
  */
 var Item = function(type, number, description)
 {
+	this.type = "";        // Default type is empty string
+	this.number = 1;       // Default item has only one instance
+	this.description = ""; // Default description is empty string
+
 	// Move parameters to correct order
 	if(typeof(number) === "string"))
 	{
@@ -33,39 +37,28 @@ var Item = function(type, number, description)
 	}
 
 	if(!type)
-	{
-		this.logger.error(this.tag, "[constructor]: parameter 'type' undefined");
-		this.type = "";
-	}
+	{ this.logger.error(this.tag, "[constructor]: parameter 'type' undefined"); }
 	else
-	{
-		this.type = type;
-	}
+	{ this.type = type; }
 
 	if(!number)
-	{
-		this.logger.debug(this.tag, "[constructor]: parameter 'number' undefined");
-		this.number = 1;
-	}
+	{ this.logger.debug(this.tag, "[constructor]: parameter 'number' undefined"); }
 	else
-	{
-		this.number = number;
-	}
+	{ this.number = number; }
 
 	if(!description)
-	{
-		this.logger.warning(this.tag, "[constructor]: parameter 'description' undefined");
-		this.description = "";
-	}
+	{ this.logger.warning(this.tag, "[constructor]: parameter 'description' undefined"); }
 	else
-	{
-		this.description = description;
-	}
-}
+	{ this.description = description; }
+};
 
 // Item Prototype
 Item.prototype = {
 	// For debugging
 	tag : "[Item]: ", 
-	logger : new ConsoleLogger()
+	logger : new ConsoleLogger(),
+
+	// Effect of using 
+	// If the item has effect when used, the item should override this function
+	performUsage : null
 };

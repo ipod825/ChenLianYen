@@ -45,7 +45,24 @@ CharacterProtoType = {
 	},
 
 	setDirection : function(dir){
-		this.dir=dir;
+		var message = "Direction: ";
+		switch(dir)
+		{
+			case DIR_UP:
+				message += "UP";
+				break;
+			case DIR_DOWN:
+				message += "DOWN";
+				break;
+			case DIR_LEFT:
+				message += "LEFT";
+				break;
+			case DIR_RIGHT:
+				message += "RIGHT";
+				break;
+		}
+		this.logger.verbose(this.tag, message);
+		this.dir = dir;
 	},
 
 	setProp : function(prop){
@@ -86,25 +103,25 @@ CharacterProtoType = {
 	move : function(){
 		switch (this.dir) {
 			case DIR_UP:
-				this.logger.verbose(this.tag, "walkup key captured");
+				//this.logger.verbose(this.tag, "walkup key captured");
 				this.gotoAndPlay("walkup");
 				this.vX=0;
 				this.vY=-this.step;
 				break;
 			case DIR_DOWN:
-				this.logger.verbose(this.tag, "walkdown key captured");
+				//this.logger.verbose(this.tag, "walkdown key captured");
 				this.vX=0;
 				this.vY=this.step;
 				this.gotoAndPlay("walkdown");
 				break;
 			case DIR_LEFT:
-				this.logger.verbose(this.tag, "walkleft key captured");
+				//this.logger.verbose(this.tag, "walkleft key captured");
 				this.vX=-this.step;
 				this.vY=0;
 				this.gotoAndPlay("walkleft");
 				break;
 			case DIR_RIGHT:
-				this.logger.verbose(this.tag, "walkright key captured");
+				//this.logger.verbose(this.tag, "walkright key captured");
 				this.vX=this.step;
 				this.vY=0;
 				this.gotoAndPlay("walkright");
@@ -115,7 +132,7 @@ CharacterProtoType = {
 	
 	},
 
-}
+};
 
 // Character inherits BitmapAnimation
 Character.prototype = new BitmapAnimation(); 
