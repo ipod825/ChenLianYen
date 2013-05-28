@@ -60,8 +60,11 @@ var CharacterProtoType = {
 	setImage: function(img){
 		this.image=img;
 		var spriteSheet = new SpriteSheet({
+			// The large image used to define frames
 			images: [this.image], //image to use
+			// Frame size definition
 			frames: { width: 32, height: 48, regX: 0, regY: 0},
+			// The definition of every animation it takes and the transition relation
 			animations: {
 				walkdown: 	{frames:[0,  0,  1,  1,  1,  2,  2,  3,  3,  3], 
 				             next: "walkdown", frequency:this.frequency},
@@ -71,18 +74,27 @@ var CharacterProtoType = {
 				             next: "walkright", frequency:this.frequency},
 				walkup: 	{frames:[12, 12, 13, 13, 13, 14, 14, 15, 15, 15], 
 				             next: "walkup", frequency:this.frequency},
-				idledown: 	 [0, 0],
-				idleleft: 	 [4, 4],
-				idleright: 	 [8, 8],
-				idleup: 	 [12,12]
+				idledown: 	 [0,  0,  false],
+				idleleft: 	 [4,  4,  false],
+				idleright: 	 [8,  8,  false],
+				idleup: 	 [12, 12, false]
 			}
 		});
+		// Set sprite sheet to bitmap animation
 		this.initialize(spriteSheet);
+
+		// Start at walkright frame
 		this.gotoAndPlay("walkright");
+
+		// Start position
 		this.x=0;
 		this.y=0;
+
+		// Start velocity
 		this.vX=this.step;
 		this.vY=0;
+
+		// Start frame
 		this.currentFrame=8;
 	},
 
