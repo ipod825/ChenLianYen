@@ -10,28 +10,29 @@ DIR_DOWN	= KEYCODE_DOWN;
 /*
  * The constructor of Character class
  */
-function Character(type,name){
-	this.type = type;
-	this.name = name;
-	this.image = null;
-	this.prop = null;
-	this.dir = DIR_RIGHT;
-	this.frequency = 4;
-	this.step = 4;
+var Character = function(type,name){
 
-	// TODO Items hold by character
-	this.bag = [];
+	this.type = type;       // Identifier
+	this.name = name;       // Name of Character:w
+	this.image = null;      // The image displayed on map
+	this.prop = null;      
+	this.dir = DIR_RIGHT;   // The direction of character
+	this.dirChange = false;
 
-	// TODO Character holds the reference of stage to drop item
-	this.stage = null;
+	this.frequency = 1;     // Animation frequency
+	this.step = 2;          // Velocity of moving for every frame
+
+	this.bag = [];          // TODO Items hold by character
+
+	this.stage = null;      // TODO reference of stage for dropping item
 
 	// For debuggging
 	this.logger.setLogLevel("verbose");
-}
+};
 
 
 // The prototype defined as an object
-CharacterProtoType = { 
+var CharacterProtoType = { 
 
 	// For debugging
 	tag : "[Character]: ",
@@ -45,24 +46,11 @@ CharacterProtoType = {
 	},
 
 	setDirection : function(dir){
-		//var message = "Direction: ";
-		//switch(dir)
-		//{
-		//	case DIR_UP:
-		//		message += "UP";
-		//		break;
-		//	case DIR_DOWN:
-		//		message += "DOWN";
-		//		break;
-		//	case DIR_LEFT:
-		//		message += "LEFT";
-		//		break;
-		//	case DIR_RIGHT:
-		//		message += "RIGHT";
-		//		break;
-		//}
-		//this.logger.verbose(this.tag, message);
-		this.dir = dir;
+		if(this.dir !== dir)
+		{
+			this.dirChange = true;
+			this.dir = dir;
+		}
 	},
 
 	setProp : function(prop){
@@ -75,10 +63,14 @@ CharacterProtoType = {
 			images: [this.image], //image to use
 			frames: { width: 32, height: 48, regX: 0, regY: 0},
 			animations: {
-				walkdown: 	{frames:[0, 3, "down", 4], frequency:this.frequency},
-				walkleft: 	{frames:[4, 7, "left", 4], frequency:this.frequency},
-				walkright: 	{frames:[8, 11, "right", 4], frequency:this.frequency},
-				walkup: 	{frames:[12, 15, "up", 4], frequency:this.frequency},
+				walkdown: 	{frames:[0,  0,  1,  1,  1,  2,  2,  3,  3,  3], 
+				             next: "walkdown", frequency:this.frequency},
+				walkleft: 	{frames:[4,  4,  5,  5,  5,  6,  6,  7,  7,  7], 
+				             next: "walkleft", frequency:this.frequency},
+				walkright: 	{frames:[8,  8,  9,  9,  9,  10, 10, 11, 11, 11], 
+				             next: "walkright", frequency:this.frequency},
+				walkup: 	{frames:[12, 12, 13, 13, 13, 14, 14, 15, 15, 15], 
+				             next: "walkup", frequency:this.frequency},
 				idledown: 	 [0, 0],
 				idleleft: 	 [4, 4],
 				idleright: 	 [8, 8],
@@ -86,7 +78,7 @@ CharacterProtoType = {
 			}
 		});
 		this.initialize(spriteSheet);
-		this.gotoAndPlay("right");
+		this.gotoAndPlay("walkright");
 		this.x=0;
 		this.y=0;
 		this.vX=this.step;
@@ -101,35 +93,34 @@ CharacterProtoType = {
 
 	// The move function which trigger animation based on direction
 	move : function(){
-		switch (this.dir) {
-			case DIR_UP:
-				//this.logger.verbose(this.tag, "walkup key captured");
-				this.gotoAndPlay("walkup");
-				this.vX=0;
-				this.vY=-this.step;
-				break;
-			case DIR_DOWN:
-				//this.logger.verbose(this.tag, "walkdown key captured");
-				this.vX=0;
-				this.vY=this.step;
-				this.gotoAndPlay("walkdown");
-				break;
-			case DIR_LEFT:
-				//this.logger.verbose(this.tag, "walkleft key captured");
-				this.vX=-this.step;
-				this.vY=0;
-				this.gotoAndPlay("walkleft");
-				break;
-			case DIR_RIGHT:
-				//this.logger.verbose(this.tag, "walkright key captured");
-				this.vX=this.step;
-				this.vY=0;
-				this.gotoAndPlay("walkright");
-				break;
+		if(this.dirChange)
+		{
+			this.dirChange = false;
+			switch (this.dir) {
+				case DIR_UP:
+					this.vX=0;
+					this.vY=-this.step;
+					this.gotoAndPlay("walkup");
+					break;
+				case DIR_DOWN:
+					this.vX=0;
+					this.vY=this.step;
+					this.gotoAndPlay("walkdown");
+					break;
+				case DIR_LEFT:
+					this.vX=-this.step;
+					this.vY=0;
+					this.gotoAndPlay("walkleft");
+					break;
+				case DIR_RIGHT:
+					this.vX=this.step;
+					this.vY=0;
+					this.gotoAndPlay("walkright");
+					break;
+			}
 		}
 		this.x += this.vX;
 		this.y += this.vY;
-	
 	},
 
 };

@@ -60,6 +60,7 @@ AttackableCharacterPrototype =
 
 	attack : function()
 	{
+		// TODO
 	}
 
 };
