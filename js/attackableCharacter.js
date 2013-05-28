@@ -17,7 +17,15 @@ var AttackableCharacter = function(battleManager)
 {
 	this.target = null;                 // Default target is not set
 	this.status = new Status();         // TODO match the status contructor
-	this.battleManager = battleManager; // The battle Manager reference
+	this.battleManager = null;          // The battle Manager reference
+
+	if(battleManager) 
+	{ this.battleManager = battleManager; }
+	else
+	{
+		this.logger.error(this.tag, "AttackableCharacter: " + 
+		                  " input battleManager invalid");
+	}
 
     // For debugging
 	this.logger.setLogLevel("verbose");
@@ -44,7 +52,20 @@ AttackableCharacterPrototype =
 			                  item[type] + " not found");
 			return;
 		}
-		// Valid item index
+
+		// Valid item index, perform usage
+		if(this.bag[itemIndex].performUsage)
+		{
+			this.bag[itemIndex].performUsage(this.status);
+		}
+		else
+		{
+			this.logger.debug(this.tag, "useItem: this item is unuable");
+			// prevent from decreasing the number of item
+			return;
+		}
+
+		// Decrease the number of item
 		--(this.bag[itemIndex].number);
 		if(this.bag[itemIndex].number === 0)
 		{
