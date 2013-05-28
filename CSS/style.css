@@ -9,10 +9,68 @@ canvas {
 div#rpgDiv {
 	width: 640;
 	height: 640;
-    top: 47;
-    left: 97;
+    top: 50;
+    left: 100;
 	position: absolute;
 	z-index:1;
 	/*background-color:black;*/
 	border-style:dashed;
+}
+
+div .dialogue {
+	width: 240;
+	height: 160;
+	position: relative;
+	margin-left: auto;
+	margin-right: auto;
+	vertical-align: middle;
+	top: 50%;
+	z-index: 2;
+	border-style: dashed;
+	background:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAAECAYAAACp8Z5+AAAAJUlEQVQIHWNkYGD4D8QM////ZwTRTCACGTACZcB8RkZGMANDBQBkXQgDCT7iIgAAAABJRU5ErkJggg==);
+}
+
+div.dialogue .dialogueText {
+	color: white;
+	width: 200;
+	height: 150;
+	margin-left: auto;
+	margin-right: auto;
+	vertical-align: middle;
+}
+
+div.dialogue button {
+	position: absolute;
+	right: 0;
+	bottom: 0;
+}
+
+div#MainScreen {
+	width: 300;
+	height: 400;
+	position: relative;
+	margin-left: auto;
+	margin-right: auto;
+	top:50%;
+	margin-top: -200;
+	z-index: 1;
+	border: 2px dashed red;
+	background-color: black;
+	display: table;
+}
+
+div#MainScreen button{
+	margin: 20 auto 20 auto;
+	width: 100;
+}
+
+div#MainScreen img{
+	margin: 30 auto 10 auto;
+}
+
+div#MainScreen div{
+	position: relative;
+	margin-left: auto;
+	margin-right: auto;
+	text-align: center;
 }

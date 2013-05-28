@@ -7,17 +7,7 @@ function Rpg(canvas) {
 	this.input=new Input(this);
 
 	
-	
-    /*formDOMElement = new DOMElement("QQIMG");
-	formDOMElement.regX = dom.offsetWidth*0.5;
-	formDOMElement.regY = dom.offsetHeight*0.5;
-	//move the form above the screen
-	formDOMElement.x = canvas.width * 0.5;
-	formDOMElement.y =  500;
-	
-	this.stage.addChild(formDOMElement);
-	Ticker.addListener(this.stage);
-	*/
+
 	var self = this;
 	document.onkeydown = function (e) { self.input.handleKeyDown(e); };
 	document.onkeypress= function (e) { self.input.handleKeyPress(e); };
