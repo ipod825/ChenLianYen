@@ -1,5 +1,7 @@
 function Rpg(canvas) {
-	this.sourceManager = new SourceManager($(canvas).width(),$(canvas).height());
+	width=$(canvas).width();
+	height=$(canvas).height();
+	this.sourceManager = new SourceManager(width,height);
 	this.stage = new MyStage(canvas, this.sourceManager);
 	this.sourceManager.setStage(this.stage); //To show the downloaing progress on the stage;
 	this.player = this.sourceManager.loadCharacter(PLAYER,"player");
@@ -42,5 +44,5 @@ tick: function () {
 loadMap: function (mapName) {
 	this.sourceManager.setOnReady(this.start.bind(this,mapName));
 	this.sourceManager.loadMap(mapName);
-}
+},
 }
