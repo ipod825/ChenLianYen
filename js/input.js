@@ -8,28 +8,25 @@ function Input(rpg){
 	this.player = rpg.player;
 }
 
+//Note: this function is called by the browser
 Input.prototype.handleKeyDown = function (e) {
-	this.handleKeyPress(e);
-};
-
-Input.prototype.handleKeyPress= function (e) {
 	switch (e.keyCode) {
 		case KEYCODE_UP:
 		case KEYCODE_DOWN:
 		case KEYCODE_LEFT:
 		case KEYCODE_RIGHT:
 			this.player.setDirection(e.keyCode);
+			break;
+		default:
+			//alert(e.keyCode);
+			break;
 	}
-	//alert(e.keyCode);
+};
+
+//Note: this function is not actually called by the browser
+Input.prototype.handleKeyPress= function (e) {
 };
 
 Input.prototype.handleKeyUp = function (e) {
-	//switch (e.keyCode) {
-	//	case KEYCODE_A: 
-	//	case KEYCODE_LEFT: 
-	//	case KEYCODE_D: 
-	//	case KEYCODE_RIGHT:
-	//	case KEYCODE_W:
-	//	alert(e.keyCode);
-	//}
+	this.player.setSpeedAndAnimation(0,0);
 };
