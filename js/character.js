@@ -2,10 +2,12 @@
 PLAYER = 1;
 
 //DIRECTION definition(same as keycode for convience)
-DIR_UP 		= KEYCODE_UP;
 DIR_LEFT	= KEYCODE_LEFT;
+DIR_UP 		= KEYCODE_UP;
 DIR_RIGHT	= KEYCODE_RIGHT;
 DIR_DOWN	= KEYCODE_DOWN;
+DIRSTR = ["left","up","right","down"];
+DIRUNIT=[{x:-1,y:0},{x:0,y:-1},{x:1,y:0},{x:0,y:1}];
 
 /*
  * The constructor of Character class
@@ -16,6 +18,8 @@ var Character = function(type,name){
 	this.name = name;       // Name of Character:w
 	this.image = null;      // The image displayed on map
 	this.prop = null;      
+	this.dir = DIR_RIGHT;   // The direction of character
+	this.moving=false;		// whether the character is moving
 	this.dir = DIR_RIGHT;   // The direction of character
 	this.dirChange = false;
 
@@ -45,16 +49,31 @@ var CharacterProtoType = {
 		this.stage.AddObject(item);
 	},
 
+	setSpeedAndAnimation : function(vX,vY){
+		this.vX=vX;
+		this.vY=vY;
+		this.moving=(this.vX!=0 || this.vY!=0);
+		prefix=this.moving?"walk":"idle";
+		this.gotoAndPlay(prefix+DIRSTR[this.dir-DIR_LEFT]);
+	},
+
 	setDirection : function(dir){
-		if(this.dir !== dir)
-		{
-			this.dirChange = true;
-			this.dir = dir;
+		//This function is called as long as the direction key is pressed.
+		//For performance concern, we reset its speed and animation only if the character change direction or it starts to move
+		if(this.dir!=dir || !this.moving){
+			this.dir=dir;
+			this.moving=true;
+			dirIndex=this.dir-DIR_LEFT;
+			vX=DIRUNIT[dirIndex].x*this.step;
+			vY=DIRUNIT[dirIndex].y*this.step;
+			this.setSpeedAndAnimation(vX,vY);
 		}
 	},
 
 	setProp : function(prop){
 		this.prop=prop;
+		this.x=prop.x;
+		this.y=prop.y;
 	},
 
 	setImage: function(img){
@@ -84,15 +103,7 @@ var CharacterProtoType = {
 		this.initialize(spriteSheet);
 
 		// Start at walkright frame
-		this.gotoAndPlay("walkright");
-
-		// Start position
-		this.x=0;
-		this.y=0;
-
-		// Start velocity
-		this.vX=this.step;
-		this.vY=0;
+		this.setSpeedAndAnimation(0,0);
 
 		// Start frame
 		this.currentFrame=8;
@@ -105,34 +116,14 @@ var CharacterProtoType = {
 
 	// The move function which trigger animation based on direction
 	move : function(){
-		if(this.dirChange)
-		{
-			this.dirChange = false;
-			switch (this.dir) {
-				case DIR_UP:
-					this.vX=0;
-					this.vY=-this.step;
-					this.gotoAndPlay("walkup");
-					break;
-				case DIR_DOWN:
-					this.vX=0;
-					this.vY=this.step;
-					this.gotoAndPlay("walkdown");
-					break;
-				case DIR_LEFT:
-					this.vX=-this.step;
-					this.vY=0;
-					this.gotoAndPlay("walkleft");
-					break;
-				case DIR_RIGHT:
-					this.vX=this.step;
-					this.vY=0;
-					this.gotoAndPlay("walkright");
-					break;
-			}
+		if(!this.moving)
+			return;
+		if(this.type==PLAYER)
+			this.parent.moveCenter(this.vX,this.vY);
+		else{
+			this.x += this.vX;
+			this.y += this.vY;
 		}
-		this.x += this.vX;
-		this.y += this.vY;
 	},
 
 };
