@@ -118,11 +118,22 @@ var CharacterProtoType = {
 	move : function(){
 		if(!this.moving)
 			return;
-		if(this.type==PLAYER)
-			this.parent.moveCenter(this.vX,this.vY);
+
+		//Test if the new position can be passed
+		newx=this.x+this.vX;
+		newy=this.y+this.vY;
+		if(!this.parent.isPassable(newx,newy))
+			return;
+		
+		if(this.type==PLAYER){
+			if(!this.parent.moveOtherObjs(this, this.vX, this.vY)){
+				this.x = newx;
+				this.y = newy;
+			}
+		}
 		else{
-			this.x += this.vX;
-			this.y += this.vY;
+			this.x = newx;
+			this.y = newy;
 		}
 	},
 
