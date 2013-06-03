@@ -44,8 +44,6 @@ tick: function () {
 loadMap: function (mapName) {
 	this.sourceManager.setOnReady(this.start.bind(this,mapName));
 	this.sourceManager.loadMap(mapName);
-<<<<<<< HEAD
-	this.sourceManager.startDownload(this.start.bind(this,mapName));
 },
 
 loadUI: function() {
@@ -55,8 +53,5 @@ loadUI: function() {
 		 self.UserInterface = window.UserInterface;
 		 self.UIController = window.UIController;
    });
-}
-=======
 },
->>>>>>> 0cfcd68e915a6075906742e8454c87d93d7d8a7f
 }
