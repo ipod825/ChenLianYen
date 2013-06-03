@@ -6,6 +6,8 @@ KEYCODE_DOWN= 40;
 function Input(rpg){
 	this.rpg = rpg;
 	this.player = rpg.player;
+	this.logger=new ConsoleLogger();
+	this.logger.setLogLevel("verbose");
 }
 
 //Note: this function is called by the browser
