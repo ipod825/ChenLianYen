@@ -39,7 +39,7 @@ moveOtherObjs: function(target, vX, vY){
 		
 	//Move all objs except the target in the reverse direction
 	kids=this.children;
-	for(i=0; i<kids.length;++i){
+	for(var i=0; i<kids.length;++i){
 		if(kids[i]==target)
 			continue;
 		kids[i].x-=target.vX;
