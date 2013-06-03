@@ -82,6 +82,8 @@ loadAudio : function(name) {
 },
 
 loadImage : function(obj, name){
+	pattern=/.+\/(.+)\.png/;
+	name=name.replace(pattern,'$1');
 	if(this.images[name]){
 		obj.setImage(this.images[obj.name]);
 		return this.images[name];
@@ -128,7 +130,7 @@ loadMap : function(name){
 	this.ajax(url, function(ret) {
 		var prop= JSON.parse(ret);
 		map.setProp(prop);
-		self.loadImage(map, map.name);
+		self.loadImage(map, map.imageName);
 		self.handleElementLoad();
 	});
 	this.maps[name] = map;
