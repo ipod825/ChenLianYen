@@ -5,7 +5,6 @@ function Rpg(canvas) {
 	this.stage = new MyStage(canvas, this.sourceManager);
 	this.sourceManager.setStage(this.stage); //To show the downloaing progress on the stage;
 	this.player = this.sourceManager.loadCharacter(PLAYER,"player");
-	this.UIController = window.UIController;
 	this.input=new Input(this);
 
 	
@@ -45,5 +44,19 @@ tick: function () {
 loadMap: function (mapName) {
 	this.sourceManager.setOnReady(this.start.bind(this,mapName));
 	this.sourceManager.loadMap(mapName);
+<<<<<<< HEAD
+	this.sourceManager.startDownload(this.start.bind(this,mapName));
 },
+
+loadUI: function() {
+	var self = this;
+	$("#rpgDiv").load("./CSS/UILayout.html", function(){
+		 this.children().hide();
+		 self.UserInterface = window.UserInterface;
+		 self.UIController = window.UIController;
+   });
+}
+=======
+},
+>>>>>>> 0cfcd68e915a6075906742e8454c87d93d7d8a7f
 }

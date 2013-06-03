@@ -2,7 +2,9 @@
 	implement the Observer Pattern
 */
 
-var UIController = {}
+var UIController = {};
+
+(function(q){
 	var topics {},
 		subUid = -1;
 	
@@ -60,6 +62,21 @@ var UIController = {}
 }(UIController))
 
 
-var UIContainer = function(){
-   
-}
+var UserInterface = {};
+
+(function(q){
+	var _jqRPGDIV = null,
+		list = [];
+
+	q.initialize = function(jqRPGDIV){
+			_jqRPGDIV = jqRPGDIV;
+			
+			_jqRPGDIV.children("div").each(function(index, element){
+				var uiName = this.attr("id");
+				
+				list[uiName] = this.createUI(_jqRPGDIV.children("#"+uiName));
+			});
+	}
+}(UserInterface))
+
+

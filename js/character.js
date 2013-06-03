@@ -10,7 +10,9 @@ DIRSTR = ["left","up","right","down"];
 DIRUNIT=[{x:-1,y:0},{x:0,y:-1},{x:1,y:0},{x:0,y:1}];
 
 /*
- * The constructor of Character class
+ * Class: Character
+ *     This is base class of all movable objects on the map. It can be a
+ *     player, a monster, or an NPC.
  */
 var Character = function(type,name){
 
@@ -26,14 +28,13 @@ var Character = function(type,name){
 	this.frequency = 1;     // Animation frequency
 	this.step = 2;          // Velocity of moving for every frame
 
+	this.target = null;     // The targeting position or object
 	this.bag = [];          // TODO Items hold by character
-
 	this.stage = null;      // TODO reference of stage for dropping item
 
 	// For debuggging
 	this.logger.setLogLevel("verbose");
 };
-
 
 // The prototype defined as an object
 var CharacterProtoType = { 
@@ -57,13 +58,34 @@ var CharacterProtoType = {
 		this.gotoAndPlay(prefix+DIRSTR[this.dir-DIR_LEFT]);
 	},
 
+	/*
+	 * Function: setTarget
+	 *     This function is the public interface for setting the character's
+	 *     target. When client click on the map, the stage class should set 
+	 *     the character's target with this function
+	 *
+	 * Parameters:
+	 *     _target - the input target pass by other to set
+	 */
+	setTarget : function(_target)
+	{
+		// Check input target
+		if(!_target)
+		{
+			this.logger.error(this.tag, "setTarget: input target not exist");
+			return;
+		}
+		// Target valid
+		this.target = _target;
+	},
+
 	setDirection : function(dir){
-		//This function is called as long as the direction key is pressed.
-		//For performance concern, we reset its speed and animation only if the character change direction or it starts to move
-		if(this.dir!=dir || !this.moving){
-			this.dir=dir;
-			this.moving=true;
-			dirIndex=this.dir-DIR_LEFT;
+		// This function is called as long as the direction key is pressed.
+		// For performance concern, we reset its speed and animation only if the character change direction or it starts to move
+		if(this.dir != dir || !this.moving){
+			this.dir = dir;
+			this.moving = true;
+			dirIndex = this.dir-DIR_LEFT;
 			vX=DIRUNIT[dirIndex].x*this.step;
 			vY=DIRUNIT[dirIndex].y*this.step;
 			this.setSpeedAndAnimation(vX,vY);
@@ -109,12 +131,18 @@ var CharacterProtoType = {
 		this.currentFrame=8;
 	},
 
-	// The main tick function, which is executed every loop
+	/* 
+	 * Function: tick
+	 *     The main tick function, which is executed every loop
+	 */
 	tick : function(){
 		this.move();
 	},
 
-	// The move function which trigger animation based on direction
+	/* 
+	 * Function: move
+	 * The move function which trigger animation based on direction
+	 */
 	move : function(){
 		if(!this.moving)
 			return;
@@ -135,7 +163,7 @@ var CharacterProtoType = {
 			this.x = newx;
 			this.y = newy;
 		}
-	},
+	}
 
 };
 
