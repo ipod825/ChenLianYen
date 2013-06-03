@@ -4,14 +4,25 @@
 		<img src="./Images/player.png"/>
 	</div>
 	<div>
-		<button id="btGAMESTART">GAME START</button>> <br/>
-		<button id="btOPTION">OPTIONS</button>> <br/>
+		<button id="btGAMESTART">GAME START</button><br/>
+		<button id="btOPTION">OPTIONS</button><br/>
 		<br/>
-		<button id="btHIDE" onclick="$('#MainScreen').hide()">HIDE</button>
+		<button id="btHIDE" onclick="$('#MainScreen').hide()">HIDE</button><br/>
 	</div>
 </div>
 
-<div class="dialogue">
+<div id="Dialogue" class="dialogue">
 	<p class="dialogueText"></p>
 	<button>Proceed</button>
+</div>
+
+<div id="HUD">
+	<div id="QuestHUD">
+	</div>
+	<div id="BottomBar">
+		<button id="btInventory"></button>
+		<button id="btStatus"></button>
+		<button id="btQuest"></button>
+		<button id="btPause"></button>
+	</div>
 </div>
