@@ -5,7 +5,6 @@ function Map(name){
 	this.prop;
 	this.name=name;
 	this.tileSize=32;
-	this.cell;
 	this.image;		//the background image
 	this.width;		//number of tiles per row
 	this.height;	//number of tiles per column
@@ -26,43 +25,34 @@ setProp : function(prop){
 initCell : function(pixHeight, pixWidth){
 	this.height = this.toTileIndex(pixHeight);
 	this.width = this.toTileIndex(pixWidth);
-	this.tiles = new Array(this.height);
-	for(var i=0; i<this.height; ++i){
-		this.tiles[i]=new Array(this.width);
-		for(var j=0;j<this.width;++j){
-			this.tiles[i][j]=FREE;
+	this.tiles = new Array(this.width);
+	for(var i=0; i<this.width; ++i){
+		this.tiles[i]=new Array(this.height);
+		for(var j=0;j<this.height;++j){
+			this.setTile(i,j,FREE);
 		}
 	}
 
 	objs=this.prop.layers[1].objects;
 	for(var i=0; i<objs.length; ++i){
-		r=this.getBlockRect(objs[i]);
-		this.configureBlock(r.y,r.x,r.height,r.width,BLOCK);
+		this.setArea(this.toTileRectangle(objs[i]), BLOCK);
 	}
 },
 
-getBlockRect : function (o){
-	return new Rectangle(this.toTileIndex(o.x),
-						this.toTileIndex(o.y),
-						this.toTileIndex(o.width),
-						this.toTileIndex(o.height));
-			
-},
-
-configureBlock : function(r, c, height, width, type){
-	for(var i=r;i<r+height;++i){
-		for(var j=c;j<c+width;++j){
-			this.tiles[i][j]=type;
+setArea: function(area, type){
+	for(var i=area.x;i<area.x+area.width;++i){
+		for(var j=area.y;j<area.y+area.height;++j){
+			this.setTile(i,j,type);
 		}
 	}
 },
 
 checkCell : function(){
-	for(var i=0;i<this.height;++i){
-		for(var j=0;j<this.width;++j){
-			if(this.tiles[i][j]){
+	for(var i=0;i<this.width;++i){
+		for(var j=0;j<this.height;++j){
+			if(this.getTile(i,j)){
 				var shape = new createjs.Shape();
-				shape.graphics.beginStroke("f30000").drawRect(j*this.tileSize, i*this.tileSize, this.tileSize, this.tileSize);
+				shape.graphics.beginStroke("f30000").drawRect(i*this.tileSize, j*this.tileSize, this.tileSize, this.tileSize);
 				this.image.getStage().addChild(shape);
 			
 			}
@@ -70,14 +60,65 @@ checkCell : function(){
 	}
 },
 
-isPassable : function(c,r){
-	tiler=this.toTileIndex(r-this.image.y);
-	tilec=this.toTileIndex(c-this.image.x);
-	return (this.tiles[tiler][tilec]==FREE);
+isPassable : function(obj, pos){
+	p = this.toTilePoint(new Point(pos.x-this.image.x, pos.y-this.image.y));
+	return (this.getTile(p.x,p.y)===obj || this.getTile(p.x, p.y)==FREE );
+},
+
+resetObjectPosition : function(obj,newPos){
+	newx=this.toTileIndex(newP.x);
+	newy=this.toTileIndex(newP.y);
+	if(obj.posOnMap.x!=newx || obj.posOnMap.y!=newy){
+		try{
+			this.setTile(obj.posOnMap.y,obj.posOnMap.x,FREE);
+
+			//oldx=obj.posOnMap.x;
+			//oldy=obj.posOnMap.y;
+			//var shape = new createjs.Shape();
+			//shape.graphics.beginStroke("230000").drawRect(oldx*this.tileSize, oldy*this.tileSize, this.tileSize, this.tileSize);
+			//this.image.getStage().addChild(shape);
+		}
+		catch(e){}
+		obj.posOnMap=new Point(newx,newy);
+		this.setTile(newy,newx,obj);
+	}
+
+},
+
+objectOnPos: function(pos){
+	p = this.toTilePoint(pos);
+	obj=this.getTile(p.x,p.y);
+	if(obj<=BLOCK)
+		obj=null;
+	return obj;
+},
+
+getTile : function(x,y){
+	return this.tiles[x][y];
+},
+
+setTile : function(x,y,value){
+	this.tiles[x][y]=value;
 },
 
 toTileIndex : function(index){
 	return Math.round(index/this.tileSize);
+},
+
+toTilePoint : function(p){
+	return new Point(this.toTileIndex(p.x), this.toTileIndex(p.y));
+},
+
+sameTileIndex :function(x1, x2){
+	return (this.toTileIndex(Math.abs(x1-x2))==0);
+},
+
+toTileRectangle: function (r){
+	return new Rectangle(this.toTileIndex(r.x),
+						this.toTileIndex(r.y),
+						this.toTileIndex(r.width),
+						this.toTileIndex(r.height));
+			
 },
 
 setImage: function(img){
