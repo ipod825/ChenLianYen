@@ -46,11 +46,8 @@ var Character = function(type, name, stage){
 	this.bag = [];                 // Items hold by character
 	this.target = null;            // The targeting position or object
 	this.stage = this.getStage();  // reference of stage for dropping item
+    // TODO this is not working because stage add child after this constructor
      
-    for(var obj in this)
-    {
-        this.logger.verbose(this.tag, "Character: " + obj + " = " + this[obj]);
-    }
 };
 
 // The prototype defined as an object
