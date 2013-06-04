@@ -4,9 +4,9 @@ function MyStage(canvas, sourceManager){
 	height=$(canvas).height();
 	this.center=new Point(width/2,height/2);		//The center of the screen
 	this.viewBox=new MyRectangle(0,0,width,height);	//The bounding box of the screen
+	this.bgBox;
 	this.sourceManager = sourceManager;
 	this.currentMap = null;
-	this.bg=null;	//The background object
 }
 
 
@@ -15,8 +15,9 @@ MyStageProtoType={
 	setCurrentMap : function(mapName){
 		this.currentMap = this.sourceManager.loadMap(mapName)
 		this.removeAllChildren();
-		this.bg=this.currentMap.image;
-		this.addChild(this.bg);
+		bg=this.currentMap.image;
+		this.addChild(bg);
+		this.bgBox=new MyRectangle(bg.x, bg.y, bg.image.width, bg.image.height);
 	},
 
 	isPassable : function(obj, p){
@@ -37,9 +38,10 @@ MyStageProtoType={
 			return false;
 
 		//We do not move other objects if the viewBox is out of (intersect with) the background box
-		bgBox=new MyRectangle(this.bg.x, this.bg.y, this.bg.image.width, this.bg.image.height);
-		if(this.viewBox.intersect(bgBox.move(-vX,-vY)))
+		if(this.viewBox.intersect(this.bgBox.move(-vX,-vY))){
+			this.bgBox.move(vX,vY);
 			return false;
+		}
 
 		//Move all objs except the target in the reverse direction
 		kids=this.children;
