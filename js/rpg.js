@@ -1,7 +1,5 @@
 function Rpg(canvas) {
-	width=$(canvas).width();
-	height=$(canvas).height();
-	this.sourceManager = new SourceManager(width,height);
+	this.sourceManager = new SourceManager($(canvas).width,$(canvas).height);
 	this.stage = new MyStage(canvas, this.sourceManager);
 	this.sourceManager.setStage(this.stage); //To show the downloaing progress on the stage;
 	this.player = this.sourceManager.loadCharacter(PLAYER,"player");

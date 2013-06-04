@@ -5,7 +5,6 @@ function Map(name){
 	this.prop;
 	this.name=name;
 	this.tileSize=32;
-	this.cell;
 	this.image;		//the background image
 	this.width;		//number of tiles per row
 	this.height;	//number of tiles per column
@@ -70,10 +69,31 @@ checkCell : function(){
 	}
 },
 
-isPassable : function(c,r){
+isPassable : function(obj, c,r){
 	tiler=this.toTileIndex(r-this.image.y);
 	tilec=this.toTileIndex(c-this.image.x);
-	return (this.tiles[tiler][tilec]==FREE);
+	return (this.tiles[tiler][tilec]===obj || this.tiles[tiler][tilec]==FREE );
+	
+},
+
+resetObjectPosition : function(obj,newP){
+	newx=this.toTileIndex(newP.x);
+	newy=this.toTileIndex(newP.y);
+	if(obj.posOnMap.x!=newx || obj.posOnMap.y!=newy){
+		try{
+			this.tiles[obj.posOnMap.y][obj.posOnMap.x]=FREE;
+
+			oldr=obj.posOnMap.y;
+			oldc=obj.posOnMap.x;
+			var shape = new createjs.Shape();
+			shape.graphics.beginStroke("230000").drawRect(oldc*this.tileSize, oldr*this.tileSize, this.tileSize, this.tileSize);
+			this.image.getStage().addChild(shape);
+		}
+		catch(e){}
+		obj.posOnMap=new Point(newx,newy);
+		this.tiles[newy][newx]=obj;
+	}
+
 },
 
 toTileIndex : function(index){

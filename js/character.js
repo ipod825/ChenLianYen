@@ -32,6 +32,7 @@ var Character = function(type,name){
 	this.target = null;     // The targeting position or object
 	this.bag = [];          // TODO Items hold by character
 	this.stage = null;      // TODO reference of stage for dropping item
+	this.posOnMap=new Point(-1,-1);
 
 	// For debuggging
 	this.logger.setLogLevel("verbose");
@@ -149,22 +150,29 @@ var CharacterProtoType = {
 			return;
 
 		//Test if the new position can be passed
-		newx = this.x + this.vX;
-		newy = this.y + this.vY;
-		if(!this.parent.isPassable(newx,newy))
+		newP = new Point(this.x + this.vX, this.y + this.vY);
+		if(!this.getStage().isPassable(this, newP))
 			return;
 		
 		if(this.type === PLAYER){
-			if(!this.parent.moveOtherObjs(this, this.vX, this.vY)){
-				this.x = newx;
-				this.y = newy;
+			if(!this.getStage().moveOtherObjs(this, this.vX, this.vY)){
+				this.resetPosition(newP);
 			}
 		}
 		else{
-			this.x = newx;
-			this.y = newy;
+			this.resetPosition(newP);
 		}
-	}
+	},
+
+	//notify the stage to matain its tiles
+	resetPosition : function(newP){
+		this.x = newP.x;
+		this.y = newP.y;
+		this.getStage().resetObjectPosition(this,newP);
+	},
+
+
+
 
 };
 
