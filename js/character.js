@@ -15,27 +15,43 @@ DIRUNIT=[{x:-1,y:0},{x:0,y:-1},{x:1,y:0},{x:0,y:1}];
  *     This is base class of all movable objects on the map. It can be a
  *     player, a monster, or an NPC.
  */
-var Character = function(type,name){
+var Character = function(type, name, stage){
+	// For debuggging
+	this.logger.setLogLevel("verbose");
 
+	// Check input parameters
+	if(!type)
+	{ this.logger.error(this.tag, "Charcter: type undefined"); }
+	if(!name)
+	{ this.logger.error(this.tag, "Charcter: name undefined"); }
+	if(!stage)
+	{ this.logger.debug(this.tag, "Charcter: stage undefined"); }
+
+	// Identity related variables
+	this.name = name;       // Name of Character
 	this.type = type;       // Identifier
-	this.name = name;       // Name of Character:w
+
+	// Display related variables
 	this.image = null;      // The image displayed on map
 	this.prop = null;      
+
+	// Animation related variables
+	this.dirChange = false; // flag set when direction changes
 	this.dir = DIR_RIGHT;   // The direction of character
 	this.moving = false;    // whether the character is moving
-	this.dir = DIR_RIGHT;   // The direction of character
-	this.dirChange = false;
-
 	this.frequency = 1;     // Animation frequency
 	this.step = 2;          // Velocity of moving for every frame
 
-	this.target = null;     // The targeting position or object
-	this.bag = [];          // TODO Items hold by character
-	this.stage = null;      // TODO reference of stage for dropping item
+	// Memeber objects and reference
 	this.posOnMap=new Point(-1,-1);
-
-	// For debuggging
-	this.logger.setLogLevel("verbose");
+	this.bag = [];                 // Items hold by character
+	this.target = null;            // The targeting position or object
+	this.stage = this.getStage();  // reference of stage for dropping item
+     
+    for(var obj in this)
+    {
+        this.logger.verbose(this.tag, "Character: " + obj + " = " + this[obj]);
+    }
 };
 
 // The prototype defined as an object
@@ -45,6 +61,14 @@ var CharacterProtoType = {
 	tag : "[Character]: ",
 	logger : new ConsoleLogger(),
 
+	/*
+	 * Function: dropItem
+	 *     This function let player dropp the item choose by client. Usually
+	 *     this function is invoked by UI when user choose the itme to drop
+	 *
+	 * Parameters:
+	 *     item - the item to drop chosen by client
+	 */
 	dropItem : function(item){
 		// TODO 
 		var removeIndex = this.bag.indexOf(item);
@@ -52,12 +76,20 @@ var CharacterProtoType = {
 		this.stage.AddObject(item);
 	},
 
+	/*
+	 * Function: setSpeedAnaAnimation
+	 *     This function set the animation related members in character
+	 *
+	 * Parameters:
+	 *     vX - the velocity of the character in x direction
+	 *     vY - the velocity of the character in y direction
+	 */
 	setSpeedAndAnimation : function(vX,vY){
 		this.vX=vX;
 		this.vY=vY;
-		this.moving=(this.vX!=0 || this.vY!=0);
-		prefix=this.moving?"walk":"idle";
-		this.gotoAndPlay(prefix+DIRSTR[this.dir-DIR_LEFT]);
+		this.moving = (this.vX!=0 || this.vY!=0);
+		prefix = this.moving? "walk" : "idle";
+		this.gotoAndPlay(prefix + DIRSTR[this.dir-DIR_LEFT]);
 	},
 
 	/*
@@ -67,12 +99,12 @@ var CharacterProtoType = {
 	 *     the character's target with this function
 	 *
 	 * Parameters:
-	 *     _target - the input target pass by other to set
+	 *     target - the input target pass by other to set
 	 */
-	setTarget : function(_target)
+	setTarget : function(target)
 	{
 		// Check input target
-		if(!_target)
+		if(!target)
 		{
 			this.logger.error(this.tag, "setTarget: input target not exist");
 			return;
