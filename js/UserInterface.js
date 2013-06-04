@@ -5,7 +5,7 @@
 var UIController = {};
 
 (function(q){
-	var topics {},
+	var topics = {},
 		subUid = -1;
 	
 	q.publish = function(topic, args) {
@@ -68,15 +68,21 @@ var UserInterface = {};
 	var _jqRPGDIV = null,
 		list = [];
 
-	q.initialize = function(jqRPGDIV){
-			_jqRPGDIV = jqRPGDIV;
+	q.initialize = function(RPGDIV){
+			_jqRPGDIV = $(RPGDIV);
 			
 			_jqRPGDIV.children("div").each(function(index, element){
-				var uiName = this.attr("id");
+				var uiName = $(this).attr("id");
 				
-				list[uiName] = this.createUI(_jqRPGDIV.children("#"+uiName));
+				// list[uiName] = $(this).createUI(_jqRPGDIV.children("#"+uiName));
 			});
-	}
+	};
+	
+	q.show = function(UIName){
+		_jqRPGDIV.children("#"+UIName).show();
+	
+	};
+	
 }(UserInterface))
 
 
