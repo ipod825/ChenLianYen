@@ -5,12 +5,28 @@
  *     the ability to talk to npc
  * 
  * Paramters:
+ *     battleManager - the reference to battle manager
  *     questManager - the reference to the quest manager
  *     status - (optional) the status of the player
  */
 var Player = function(battleManager, questManager, status)
 {
+	// Check input parameters
+	if(!battleManager)
+	{
+		this.logger.error(this.tag, "Player: battleManager undefined");
+	}
+	if(!questManager)
+	{
+		this.logger.error(this.tag, "Player: questManager undefined");
+	}
+	if(!status)
+	{
+		this.logger.debug(this.tag, "Player: status undefined");
+	}
+
 	// Calling parent constructor
+	// TODO update constructor
 	Player.prototype.apply(this, battleManager, status);
 	//AttackableCharacter.apply(this, battleManager, status);
 	//AttackableCharacter.call(this, battleManager, status);
