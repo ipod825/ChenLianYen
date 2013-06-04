@@ -1,5 +1,6 @@
 //TYPE definition
-PLAYER = 1;
+//PLAYER = 1;
+PLAYER = "player";
 
 //DIRECTION definition(same as keycode for convience)
 DIR_LEFT	= KEYCODE_LEFT;
@@ -21,7 +22,7 @@ var Character = function(type,name){
 	this.image = null;      // The image displayed on map
 	this.prop = null;      
 	this.dir = DIR_RIGHT;   // The direction of character
-	this.moving=false;		// whether the character is moving
+	this.moving = false;    // whether the character is moving
 	this.dir = DIR_RIGHT;   // The direction of character
 	this.dirChange = false;
 
@@ -148,12 +149,12 @@ var CharacterProtoType = {
 			return;
 
 		//Test if the new position can be passed
-		newx=this.x+this.vX;
-		newy=this.y+this.vY;
+		newx = this.x + this.vX;
+		newy = this.y + this.vY;
 		if(!this.parent.isPassable(newx,newy))
 			return;
 		
-		if(this.type==PLAYER){
+		if(this.type === PLAYER){
 			if(!this.parent.moveOtherObjs(this, this.vX, this.vY)){
 				this.x = newx;
 				this.y = newy;
