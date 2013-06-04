@@ -25,7 +25,7 @@ var Character = function(type, name, stage){
 	if(!name)
 	{ this.logger.error(this.tag, "Charcter: name undefined"); }
 	if(!stage)
-	{ this.logger.error(this.tag, "Charcter: stage undefined"); }
+	{ this.logger.debug(this.tag, "Charcter: stage undefined"); }
 
 	// Identity related variables
 	this.name = name;       // Name of Character
@@ -43,9 +43,14 @@ var Character = function(type, name, stage){
 	this.step = 2;          // Velocity of moving for every frame
 
 	// Memeber objects and reference
-	this.bag = [];          // Items hold by character
-	this.target = null;     // The targeting position or object
-	this.stage = stage;     // reference of stage for dropping item
+	this.bag = [];                 // Items hold by character
+	this.target = null;            // The targeting position or object
+	this.stage = this.getStage();  // reference of stage for dropping item
+     
+    for(var obj in this)
+    {
+        this.logger.verbose(this.tag, "Character: " + obj + " = " + this[obj]);
+    }
 };
 
 // The prototype defined as an object
@@ -70,12 +75,20 @@ var CharacterProtoType = {
 		this.stage.AddObject(item);
 	},
 
+	/*
+	 * Function: setSpeedAnaAnimation
+	 *     This function set the animation related members in character
+	 *
+	 * Parameters:
+	 *     vX - the velocity of the character in x direction
+	 *     vY - the velocity of the character in y direction
+	 */
 	setSpeedAndAnimation : function(vX,vY){
 		this.vX=vX;
 		this.vY=vY;
-		this.moving=(this.vX!=0 || this.vY!=0);
-		prefix=this.moving?"walk":"idle";
-		this.gotoAndPlay(prefix+DIRSTR[this.dir-DIR_LEFT]);
+		this.moving = (this.vX!=0 || this.vY!=0);
+		prefix = this.moving? "walk" : "idle";
+		this.gotoAndPlay(prefix + DIRSTR[this.dir-DIR_LEFT]);
 	},
 
 	/*
