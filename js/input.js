@@ -10,8 +10,13 @@ function Input(rpg){
 	this.logger.setLogLevel("verbose");
 }
 
+Input.prototype={
+handleClick : function(e){
+	alert("handleClick");
+},
+
 //Note: this function is called by the browser
-Input.prototype.handleKeyDown = function (e) {
+handleKeyDown : function (e) {
 	switch (e.keyCode) {
 		case KEYCODE_UP:
 		case KEYCODE_DOWN:
@@ -23,12 +28,14 @@ Input.prototype.handleKeyDown = function (e) {
 			//alert(e.keyCode);
 			break;
 	}
-};
+},
 
 //Note: this function is not actually called by the browser
-Input.prototype.handleKeyPress= function (e) {
-};
+handleKeyPress : function (e) {
+},
 
-Input.prototype.handleKeyUp = function (e) {
+handleKeyUp : function (e) {
 	this.player.setSpeedAndAnimation(0,0);
-};
+},
+
+}

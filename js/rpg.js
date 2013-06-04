@@ -10,6 +10,7 @@ function Rpg(canvas) {
 	
 
 	var self = this;
+	window.onclick= function(e){ self.input.handleClick(e);}
 	document.onkeydown = function (e) { self.input.handleKeyDown(e); };
 	document.onkeypress= function (e) { self.input.handleKeyPress(e); };
 	document.onkeyup = function (e) { self.input.handleKeyUp(e); };
