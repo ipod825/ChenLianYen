@@ -27,6 +27,18 @@ MyStageProtoType={
 		return this.currentMap.isPassable(obj, pos);
 	},
 
+	isSamePos : function(p1,p2){
+		return this.currentMap.isSamePosOnMap(p1,p2);
+	},
+
+	posOnMap : function(p){
+		return this.currentMap.toTilePoint(p);
+	},
+
+	findPath : function(beg, end){
+		return this.currentMap.findPath(beg,end);
+	},
+
 	//Update the tiles when an object move
 	resetObjectPosition : function(obj,newP){
 		this.currentMap.resetObjectPosition(obj,newP);
@@ -60,7 +72,7 @@ MyStageProtoType={
 
 	setTarget : function(p){
 		obj=this.currentMap.objectOnPos(p);
-		this.player.setTarget({"obj":obj,"pos":p});
+		this.player.setTarget({"obj":obj,"pos":this.currentMap.toTilePoint(p)});
 	}
 
 }

@@ -1,8 +1,8 @@
 function Rpg(canvas) {
 	this.sourceManager = new SourceManager($(canvas).width,$(canvas).height);
-	this.stage = new MyStage(canvas, this.sourceManager);
-	this.sourceManager.setStage(this.stage); //To show the downloaing progress on the stage;
 	this.player = this.sourceManager.loadCharacter(PLAYER,"player");
+	this.stage = new MyStage(canvas, this.sourceManager, this.player);
+	this.sourceManager.setStage(this.stage); //To show the downloaing progress on the stage;
 	this.input=new Input(this);
 
 	
@@ -18,8 +18,8 @@ Rpg.prototype={
 
 start: function (mapName) {
 	this.stage.setCurrentMap(mapName);
-	this.stage.addChild(this.player);
 	this.stage.currentMap.checkCell();
+	this.addCharacter(this.player);
 	Ticker.addListener(this.player);
 
 
@@ -29,6 +29,11 @@ start: function (mapName) {
 	// Targeting 60 FPS
 	Ticker.useRAF = false;
 	Ticker.setFPS(60);
+},
+
+addCharacter : function(character){
+	this.stage.addChild(character);
+	character.initPosOnMap();
 },
 
 tick: function () {
