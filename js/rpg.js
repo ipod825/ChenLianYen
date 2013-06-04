@@ -11,7 +11,10 @@ function Rpg(canvas) {
 	// 
 
 	var self = this;
-	window.onclick= function(e){ self.input.handleClick(e);}
+	//window.onclick= function(e){ self.input.handleClick(e);}
+	window.onclick = function(e){
+		self.input.handleClick(e);
+	}
 	document.onkeydown = function (e) { self.input.handleKeyDown(e); };
 	document.onkeypress= function (e) { self.input.handleKeyPress(e); };
 	document.onkeyup = function (e) { self.input.handleKeyUp(e); };
@@ -25,7 +28,7 @@ start: function (mapName) {
 	this.addCharacter(this.player);
 	Ticker.addListener(this.player);
 
-	this.UserInterface.show("HUD");
+	//this.UserInterface.show("HUD");
 
 	// we want to do some work before we update the canvas, otherwise we could use Ticker.addListener(stage);
 	Ticker.addListener(this);
