@@ -48,7 +48,7 @@ var Character = function(type, name, stage){
 	this.dirChange = false; // Flag set when direction changes
 	this.dir = DIR_RIGHT;   // The direction of character
 	this.moving = false;    // Whether the character is moving
-	this.targetMet = true; // Default targetMet is true 
+	this.targetMet = true; 	// Default targetMet is true 
 	this.pathToTarget;
 	this.frequency = 1;     // Animation frequency
 	this.step = 2;          // Velocity of moving for every frame
@@ -266,3 +266,4 @@ Character.prototype = new BitmapAnimation();
 for (var obj in CharacterProtoType) { 
 	Character.prototype[obj] = CharacterProtoType[obj]; 
 } 
+
