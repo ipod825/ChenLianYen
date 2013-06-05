@@ -75,9 +75,11 @@ var CharacterProtoType = {
 	 * Parameters:
 	 *     item - the item to drop chosen by client
 	 */
-	dropItem : function(item){
+	dropItem : function(item)
+	{
 		this.logger.verbose(this.tag, "dropItem: +++START+++ item.type = "
-		                    + item.type + ", item.number = " + item.number);
+		                    + item.type + ", item.number = " + item.number
+		                    + "item.description" + item.description);
 		var removeIndex = this.bag.indexOf(item);
 		this.splice(removeIndex, 1);
 		var stage = this.getStage();
@@ -85,6 +87,14 @@ var CharacterProtoType = {
 		{ this.logger.error(this.tag, "dropItem: getStage() return undefined"); }
 		else
 		{ this.stage.AddObject(item); }
+	},
+
+	addItem : function(item)
+	{
+		this.logger.verbose(this.tag, "addItem: +++START+++ item.type = "
+		                    + item.type + ", item.number = " + item.number 
+		                    + "item.description = " + item.description);
+		this.bag.push(item);
 	},
 
 	/*

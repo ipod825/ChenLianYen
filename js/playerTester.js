@@ -49,7 +49,10 @@ start: function (mapName) {
 	// TODO test dropItem
 	var testItem = new Item("itemPotion", 2, "health potion");
 	console.log("player.bag = " + this.player.bag);
+	this.player.addItem(testItem);
+	console.log("player.bag = " + this.player.bag);
 	this.player.dropItem(testItem);
+	console.log("player.bag = " + this.player.bag);
 
 	// TODO test setTarget
 	//var testTarget = new Target();
