@@ -24,14 +24,16 @@ DIRUNIT=[{x:-1,y:0},{x:0,y:-1},{x:1,y:0},{x:0,y:1}];
 var Character = function(type, name, stage){
 	// For debuggging
 	this.logger.setLogLevel("all");
+    this.logger.verbose(this.tag, "Character: +++START+++ " + "type = " + type 
+                        + ", name = " + name + ", stage = " + stage);
 
 	// Check input parameters
 	if(!type)
-	{ this.logger.error(this.tag, "Charcter: type undefined"); }
+	{ this.logger.error(this.tag, "Character: type undefined"); }
 	if(!name)
-	{ this.logger.error(this.tag, "Charcter: name undefined"); }
+	{ this.logger.error(this.tag, "Character: name undefined"); }
 	if(!stage)
-	{ this.logger.debug(this.tag, "Charcter: stage undefined"); }
+	{ this.logger.debug(this.tag, "Character: stage undefined"); }
 
 	// Identity related variables
 	this.name = name;       // Name of Character
@@ -74,6 +76,8 @@ var CharacterProtoType = {
 	 *     item - the item to drop chosen by client
 	 */
 	dropItem : function(item){
+		this.logger.verbose(this.tag, "dropItem: +++START+++ " + "item.type = "
+		                    + item.type + ", item.number = " + item.number);
 		var removeIndex = this.bag.indexOf(item);
 		this.splice(removeIndex, 1);
 		var stage = this.getStage();
@@ -92,6 +96,8 @@ var CharacterProtoType = {
 	 *     vY - the velocity of the character in y direction
 	 */
 	setSpeedAndAnimation : function(vX,vY){
+		//this.logger.verbose(this.tag, "setSpeedAndAnimation: +++START+++ "
+		//                    + "vX = " + vX + ", vY = " + vY);
 		this.vX=vX;
 		this.vY=vY;
 		this.moving = (this.vX!=0 || this.vY!=0);
@@ -129,7 +135,7 @@ var CharacterProtoType = {
 		if(this.dir != dir || !this.moving){
 			this.dir = dir;
 			this.moving = true;
-			dirIndex = this.dir-DIR_LEFT;
+			dirIndex = this.dir - DIR_LEFT;
 			vX=DIRUNIT[dirIndex].x*this.step;
 			vY=DIRUNIT[dirIndex].y*this.step;
 			this.setSpeedAndAnimation(vX,vY);
