@@ -14,6 +14,11 @@ DIRUNIT=[{x:-1,y:0},{x:0,y:-1},{x:1,y:0},{x:0,y:1}];
  * Class: Character
  *     This is base class of all movable objects on the map. It can be a
  *     player, a monster, or an NPC.
+ * 
+ * Parameters:
+ *     type - the identifier of the player
+ *     name - the name of the player
+ *     stage - (optional) the stage reference
  */
 var Character = function(type, name, stage){
 	// For debuggging
@@ -45,12 +50,8 @@ var Character = function(type, name, stage){
 	// Memeber objects and reference
 	this.bag = [];                 // Items hold by character
 	this.target = null;            // The targeting position or object
-	this.stage = this.getStage();  // reference of stage for dropping item
+	//this.stage = this.getStage();  // reference of stage for dropping item
      
-    for(var obj in this)
-    {
-        this.logger.verbose(this.tag, "Character: " + obj + " = " + this[obj]);
-    }
 };
 
 // The prototype defined as an object
@@ -72,7 +73,11 @@ var CharacterProtoType = {
 		// TODO 
 		var removeIndex = this.bag.indexOf(item);
 		this.splice(removeIndex, 1);
-		this.stage.AddObject(item);
+		var stage = this.getStage();
+		if(!stage)
+		{ this.logger.error(this.tag, "dropItem: getStage() return undefined"); }
+		else
+		{ this.stage.AddObject(item); }
 	},
 
 	/*
