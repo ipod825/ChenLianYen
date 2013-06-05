@@ -133,7 +133,8 @@ var CharacterProtoType = {
 	setDirection : function(dir){
 		//this.logger.verbose(this.tag, "setTarget: +++START+++ dirrection = " + dir);
 		// This function is called as long as the direction key is pressed.
-		// For performance concern, we reset its speed and animation only if the character change direction or it starts to move
+		// For performance concern, we reset its speed and animation only if 
+		// the character change direction or it starts to move
 		target = null;
 		targetMet = false;
 		if(this.dir != dir || !this.moving){
@@ -235,17 +236,6 @@ var CharacterProtoType = {
 		//		return;
 		//}
 
-		//if(!this.targetMet){
-		//	if(this.posOnMap == this.target.pos){
-		//		this.targetMet=true;
-		//		this.setSpeedAndAnimation(0,0);
-		//		return;
-		//	}
-		//	else{
-		//		this.decideDirection();
-		//	}
-		//}
-
 		// Test if the new position can be passed
 		var newP = new Point(this.x + this.vX, this.y + this.vY);
 		if(!this.getStage().isPassable(this, newP))
@@ -259,6 +249,18 @@ var CharacterProtoType = {
 		else{
 			this.resetPosition(newP);
 		}
+
+		//if(!this.targetMet){
+			if(this.posOnMap == this.target.pos || target === "undefined"){
+				this.targetMet=true;
+				this.setSpeedAndAnimation(0,0);
+				return;
+			}
+			else{
+				this.decideDirection();
+			}
+		//}
+
 	},
 
 	//notify the stage to matain its tiles
