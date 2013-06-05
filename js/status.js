@@ -19,6 +19,9 @@ var Status = function(status)
 	this.attack = 120;   // Default attack is 120
 	this.defence = 100;  // Default defence is 100
 
+	this.exp = 0;        // Default exp is 0
+	this.expMax = 100;   // Default expMax is 100
+
 	this.money = 0;      // Default money is 0
 
 	if(status)

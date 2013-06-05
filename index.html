@@ -13,8 +13,11 @@
 <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
 <script src="http://code.createjs.com/easeljs-0.6.1.min.js"></script>
 
+<script src='./js/graph.js'></script>
+<script src='./js/astar.js'></script>
 <script src="./js/utils.js"></script>
 <script src="./js/input.js"></script>
+<script src="./js/UserInterface.js"></script>
 <script src="./js/sourceManager.js"></script>
 <script src="./js/consoleLogger.js"></script>
 <script src="./js/character.js"></script>
@@ -32,20 +35,12 @@ function startGame() {
 
     rpg = new Rpg(canvas);
 	rpg.loadMap("example");
+	rpg.loadUI();
 }
 
 $(document).ready(function() {
    startGame();
    
-   //I love UI 
-   /*var RPGDIV = $("#rpgDiv");
-   $("#rpgDiv").load("./CSS/UILayout.html", function(){
-		 RPGDIV.children().hide();
-		 RPGDIV.children("#MainScreen").fadeIn("slow");
-   });*/
-  
-   //var jqDialogue =  $("#rpgDiv .dialogue")
-   //jqDialogue.show("blind", {percent: 100}, 500);
 });
 </script>
 </head>

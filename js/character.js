@@ -2,11 +2,12 @@
 //PLAYER = 1;
 PLAYER = "player";
 
-//DIRECTION definition(same as keycode for convience)
 DIR_LEFT	= KEYCODE_LEFT;
 DIR_UP 		= KEYCODE_UP;
 DIR_RIGHT	= KEYCODE_RIGHT;
 DIR_DOWN	= KEYCODE_DOWN;
+
+//DIRECTION definition(same as keycode for convience)
 DIRSTR = ["left","up","right","down"];
 DIRUNIT=[{x:-1,y:0},{x:0,y:-1},{x:1,y:0},{x:0,y:1}];
 
@@ -14,18 +15,25 @@ DIRUNIT=[{x:-1,y:0},{x:0,y:-1},{x:1,y:0},{x:0,y:1}];
  * Class: Character
  *     This is base class of all movable objects on the map. It can be a
  *     player, a monster, or an NPC.
+ * 
+ * Parameters:
+ *     type - the identifier of the player
+ *     name - the name of the player
+ *     stage - (optional) the stage reference
  */
 var Character = function(type, name, stage){
 	// For debuggging
-	this.logger.setLogLevel("verbose");
+	this.logger.setLogLevel("all");
+	this.logger.verbose(this.tag, "Character: +++START+++ type = " + type 
+	                    + ", name = " + name + ", stage = " + stage);
 
 	// Check input parameters
 	if(!type)
-	{ this.logger.error(this.tag, "Charcter: type undefined"); }
+	{ this.logger.error(this.tag, "Character: type undefined"); }
 	if(!name)
-	{ this.logger.error(this.tag, "Charcter: name undefined"); }
+	{ this.logger.error(this.tag, "Character: name undefined"); }
 	if(!stage)
-	{ this.logger.debug(this.tag, "Charcter: stage undefined"); }
+	{ this.logger.debug(this.tag, "Character: stage undefined"); }
 
 	// Identity related variables
 	this.name = name;       // Name of Character
@@ -36,17 +44,19 @@ var Character = function(type, name, stage){
 	this.prop = null;      
 
 	// Animation related variables
-	this.dirChange = false; // flag set when direction changes
+	this.posOnMap = new Point(-1,-1);
+	this.dirChange = false; // Flag set when direction changes
 	this.dir = DIR_RIGHT;   // The direction of character
-	this.moving = false;    // whether the character is moving
+	this.moving = false;    // Whether the character is moving
+	this.targetMet = false; // Default targetMet is false
+	this.pathToTarget;
 	this.frequency = 1;     // Animation frequency
 	this.step = 2;          // Velocity of moving for every frame
 
 	// Memeber objects and reference
 	this.bag = [];                 // Items hold by character
 	this.target = null;            // The targeting position or object
-	this.stage = this.getStage();  // reference of stage for dropping item
-    // TODO this is not working because stage add child after this constructor
+	//this.stage = this.getStage();  // reference of stage for dropping item
      
 };
 
@@ -66,10 +76,15 @@ var CharacterProtoType = {
 	 *     item - the item to drop chosen by client
 	 */
 	dropItem : function(item){
-		// TODO 
+		this.logger.verbose(this.tag, "dropItem: +++START+++ item.type = "
+		                    + item.type + ", item.number = " + item.number);
 		var removeIndex = this.bag.indexOf(item);
 		this.splice(removeIndex, 1);
-		this.stage.AddObject(item);
+		var stage = this.getStage();
+		if(!stage)
+		{ this.logger.error(this.tag, "dropItem: getStage() return undefined"); }
+		else
+		{ this.stage.AddObject(item); }
 	},
 
 	/*
@@ -81,6 +96,8 @@ var CharacterProtoType = {
 	 *     vY - the velocity of the character in y direction
 	 */
 	setSpeedAndAnimation : function(vX,vY){
+		//this.logger.verbose(this.tag, "setSpeedAndAnimation: +++START+++ "
+		//                    + "vX = " + vX + ", vY = " + vY);
 		this.vX=vX;
 		this.vY=vY;
 		this.moving = (this.vX!=0 || this.vY!=0);
@@ -99,6 +116,7 @@ var CharacterProtoType = {
 	 */
 	setTarget : function(target)
 	{
+		this.logger.verbose(this.tag, "setTarget: +++START+++ target = " + target);
 		// Check input target
 		if(!target)
 		{
@@ -106,19 +124,44 @@ var CharacterProtoType = {
 			return;
 		}
 		// Target valid
-		this.target = _target;
+		this.target = target;
+		this.targetMet=false;
+		this.pathToTarget = this.getStage().findPath(this.posOnMap, this.target.pos);
+		this.pathToTarget.unshift(this.posOnMap);
 	},
 
 	setDirection : function(dir){
+		//this.logger.verbose(this.tag, "setTarget: +++START+++ dirrection = " + dir);
 		// This function is called as long as the direction key is pressed.
 		// For performance concern, we reset its speed and animation only if the character change direction or it starts to move
+		target = null;
+		targetMet = false;
 		if(this.dir != dir || !this.moving){
 			this.dir = dir;
 			this.moving = true;
-			dirIndex = this.dir-DIR_LEFT;
+			dirIndex = this.dir - DIR_LEFT;
 			vX=DIRUNIT[dirIndex].x*this.step;
 			vY=DIRUNIT[dirIndex].y*this.step;
 			this.setSpeedAndAnimation(vX,vY);
+		}
+	},
+
+	decideDirection : function(){
+		if(this.posOnMap.x ==  this.pathToTarget[0].x && this.posOnMap.y == this.pathToTarget[0].y){
+			this.pathToTarget.shift();
+			if(this.pathToTarget.length==0){
+				this.targetMet=true;
+				this.setSpeedAndAnimation(0,0);
+				return;
+			}
+			diffx = this.pathToTarget[0].x-this.posOnMap.x;
+			diffy = this.pathToTarget[0].y-this.posOnMap.y;
+			var newDir;
+			if(diffx==0)
+				newDir=(diffy>0)?DIR_DOWN:DIR_UP;
+			else
+				newDir=(diffx>0)?DIR_RIGHT:DIR_LEFT;
+			this.setDirection(newDir);
 		}
 	},
 
@@ -126,6 +169,10 @@ var CharacterProtoType = {
 		this.prop=prop;
 		this.x=prop.x;
 		this.y=prop.y;
+	},
+
+	initPosOnMap : function(){
+		this.resetPosition(new Point(this.x, this.y));
 	},
 
 	setImage: function(img){
@@ -137,18 +184,18 @@ var CharacterProtoType = {
 			frames: { width: 32, height: 48, regX: 0, regY: 0},
 			// The definition of every animation it takes and the transition relation
 			animations: {
-				walkdown: 	{frames:[0,  0,  1,  1,  1,  2,  2,  3,  3,  3], 
+				walkdown:   {frames:[0,  0,  1,  1,  1,  2,  2,  3,  3,  3], 
 				             next: "walkdown", frequency:this.frequency},
-				walkleft: 	{frames:[4,  4,  5,  5,  5,  6,  6,  7,  7,  7], 
+				walkleft:   {frames:[4,  4,  5,  5,  5,  6,  6,  7,  7,  7], 
 				             next: "walkleft", frequency:this.frequency},
-				walkright: 	{frames:[8,  8,  9,  9,  9,  10, 10, 11, 11, 11], 
+				walkright:  {frames:[8,  8,  9,  9,  9,  10, 10, 11, 11, 11], 
 				             next: "walkright", frequency:this.frequency},
-				walkup: 	{frames:[12, 12, 13, 13, 13, 14, 14, 15, 15, 15], 
+				walkup:     {frames:[12, 12, 13, 13, 13, 14, 14, 15, 15, 15], 
 				             next: "walkup", frequency:this.frequency},
-				idledown: 	 [0,  0,  false],
-				idleleft: 	 [4,  4,  false],
-				idleright: 	 [8,  8,  false],
-				idleup: 	 [12, 12, false]
+				idledown:    [0,  0,  false],
+				idleleft:    [4,  4,  false],
+				idleright:   [8,  8,  false],
+				idleup:      [12, 12, false]
 			}
 		});
 		// Set sprite sheet to bitmap animation
@@ -166,7 +213,16 @@ var CharacterProtoType = {
 	 *     The main tick function, which is executed every loop
 	 */
 	tick : function(){
-		this.move();
+		if(!this.moving && this.targetMet)
+		{ /* no need to move */ }
+		else if(!this.moving && !this.targetMet)
+		{ this.logger.error(this.tag, "tick: not moving but target is not reached"); }
+		else if(this.moving && this.targetMet)
+		{ this.logger.error(this.tag, "tick: moving and target is reached"); }
+		else
+		{
+			this.move();
+		}
 	},
 
 	/* 
@@ -174,26 +230,47 @@ var CharacterProtoType = {
 	 * The move function which trigger animation based on direction
 	 */
 	move : function(){
-		if(!this.moving)
+		//if(!this.moving){
+		//	if(this.targetMet)
+		//		return;
+		//}
+
+		//if(!this.targetMet){
+		//	if(this.posOnMap == this.target.pos){
+		//		this.targetMet=true;
+		//		this.setSpeedAndAnimation(0,0);
+		//		return;
+		//	}
+		//	else{
+		//		this.decideDirection();
+		//	}
+		//}
+
+		// Test if the new position can be passed
+		var newP = new Point(this.x + this.vX, this.y + this.vY);
+		if(!this.getStage().isPassable(this, newP))
 			return;
 
-		//Test if the new position can be passed
-		newx = this.x + this.vX;
-		newy = this.y + this.vY;
-		if(!this.parent.isPassable(newx,newy))
-			return;
-		
 		if(this.type === PLAYER){
-			if(!this.parent.moveOtherObjs(this, this.vX, this.vY)){
-				this.x = newx;
-				this.y = newy;
+			if(!this.getStage().moveOtherObjs(this, this.vX, this.vY)){
+				this.resetPosition(newP);
 			}
 		}
 		else{
-			this.x = newx;
-			this.y = newy;
+			this.resetPosition(newP);
 		}
-	}
+	},
+
+	//notify the stage to matain its tiles
+	resetPosition : function(newP){
+		this.x = newP.x;
+		this.y = newP.y;
+		this.getStage().resetObjectPosition(this,newP);
+	},
+
+	getPos : function(){
+		return new Point(this.x, this.y);
+	},
 
 };
 
