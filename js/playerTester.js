@@ -8,8 +8,6 @@ function Rpg(canvas) {
 	this.UserInterface = window.UserInterface;
 	this.UIController = window.UIController;
 
-	// 
-
 	var self = this;
 	//window.onclick= function(e){ self.input.handleClick(e);}
 	window.onclick = function(e){
@@ -24,7 +22,7 @@ Rpg.prototype={
 
 start: function (mapName) {
 	this.stage.setCurrentMap(mapName);
-	this.stage.checkCell();
+	this.stage.currentMap.checkCell();
 	this.addCharacter(this.player);
 	Ticker.addListener(this.player);
 
@@ -35,6 +33,28 @@ start: function (mapName) {
 	// Targeting 60 FPS
 	Ticker.useRAF = false;
 	Ticker.setFPS(60);
+
+	// TESTER SCRIPT START
+	//for(var times = 0; times < 30; ++times)
+	//{
+	//	this.player.setDirection(DIR_LEFT);
+	//	console.log("player.posOnMap = " + this.player.posOnMap);
+	//}
+	//for(var times = 0; times < 10; ++times)
+	//{
+	//	this.player.setDirection(DIR_DOWN);
+	//	console.log("player.posOnMap = " + this.player.posOnMap);
+	//}
+
+	// TODO test dropItem
+	var testItem = new Item("itemPotion", 2, "health potion");
+	console.log("player.bag = " + this.player.bag);
+	this.player.dropItem(testItem);
+
+	// TODO test setTarget
+	//var testTarget = new Target();
+	//this.player.setTarget(testTarget);
+
 },
 
 addCharacter : function(character){

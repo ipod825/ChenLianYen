@@ -1,0 +1,61 @@
+<html>
+<head>
+<title>ChenLianYen RPG</title>
+<link rel="shortcut icon" href="../Images/Icons/favicon.ico"/>
+<link rel="stylesheet" type="text/css" href="../CSS/style.css" />
+<!-- Import EaselJS Framework -->
+
+<script>
+	createjs = window;
+	//TODO Why?
+</script>
+
+<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+<script src="http://code.createjs.com/easeljs-0.6.1.min.js"></script>
+
+<script src='../js/graph.js'></script>
+<script src='../js/astar.js'></script>
+<script src="../js/utils.js"></script>
+<script src="../js/input.js"></script>
+<script src="../js/UserInterface.js"></script>
+<script src="../js/sourceManager.js"></script>
+<script src="../js/consoleLogger.js"></script>
+<script src="../js/character.js"></script>
+<script src="../js/mystage.js"></script>
+<script src="../js/map.js"></script>
+<!-- Original script 
+	<script src="./js/rpg.js"></script>
+-->
+<!-- Tester script -->
+<script src="../js/playerTester.js"></script>
+
+<script>
+var canvas;
+var rpg;
+
+function startGame() {
+	//find canvas and load images, wait for last image to load
+	canvas = document.getElementById("rpgCanvas");
+
+    rpg = new Rpg(canvas);
+	rpg.loadMap("example");
+	rpg.loadUI();
+}
+
+$(document).ready(function() {
+   startGame();
+   
+});
+</script>
+</head>
+	
+<body>
+	<div class="canvasHolder">
+		<div id="rpgDiv"></div>
+		<canvas id="rpgCanvas" width="640" height="640">
+			Your browser doesn't support canvas. Please download IE9+ on <a href="http://ie.microsoft.com/testdrive">IE Test Drive</a> 
+		</canvas>
+		
+	</div>
+</body>
+</html>
