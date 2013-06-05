@@ -187,10 +187,6 @@ var CharacterProtoType = {
 		this.regY=prop.regY;
 	},
 
-	initPosOnMap : function(){
-		this.setPosition(new Point(this.x, this.y));
-	},
-
 	setImage: function(img){
 		this.image=img;
 		var spriteSheet = new SpriteSheet({

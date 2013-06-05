@@ -25,7 +25,8 @@ Rpg.prototype={
 start: function (mapName) {
 	this.stage.setCurrentMap(mapName);
 	this.stage.checkCell();
-	this.addCharacter(this.player);
+	//this.addCharacter(this.player);
+	this.stage.addChildOnMap(this.player);
 	Ticker.addListener(this.player);
 
 	//this.UserInterface.show("HUD");
