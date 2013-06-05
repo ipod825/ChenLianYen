@@ -86,7 +86,10 @@ var CharacterProtoType = {
 		if(!stage)
 		{ this.logger.error(this.tag, "dropItem: getStage() return undefined"); }
 		else
-		{ this.getStage().AddObject(item); }
+		{ 
+			// TODO item should inherits DisplayObject to make it work
+			stage.addChild(item); 
+		}
 	},
 
 	addItem : function(item)
