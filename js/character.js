@@ -78,7 +78,8 @@ var CharacterProtoType = {
 	dropItem : function(item)
 	{
 		this.logger.verbose(this.tag, "dropItem: +++START+++ item.type = "
-		                    + item.type + ", item.number = " + item.number);
+		                    + item.type + ", item.number = " + item.number
+		                    + "item.description" + item.description);
 		var removeIndex = this.bag.indexOf(item);
 		this.bag.splice(removeIndex, 1);
 		var stage = this.getStage();
@@ -90,8 +91,9 @@ var CharacterProtoType = {
 
 	addItem : function(item)
 	{
-		this.logger.verbose(this.tag, "dropItem: +++START+++ item.type = "
-		                    + item.type + ", item.number = " + item.number);
+		this.logger.verbose(this.tag, "addItem: +++START+++ item.type = "
+		                    + item.type + ", item.number = " + item.number 
+		                    + "item.description = " + item.description);
 		this.bag.push(item);
 	},
 
