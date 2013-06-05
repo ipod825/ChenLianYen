@@ -80,12 +80,12 @@ var CharacterProtoType = {
 		this.logger.verbose(this.tag, "dropItem: +++START+++ item.type = "
 		                    + item.type + ", item.number = " + item.number);
 		var removeIndex = this.bag.indexOf(item);
-		this.splice(removeIndex, 1);
+		this.bag.splice(removeIndex, 1);
 		var stage = this.getStage();
 		if(!stage)
 		{ this.logger.error(this.tag, "dropItem: getStage() return undefined"); }
 		else
-		{ this.stage.AddObject(item); }
+		{ this.getStage().AddObject(item); }
 	},
 
 	addItem : function(item)
