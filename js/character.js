@@ -2,11 +2,12 @@
 //PLAYER = 1;
 PLAYER = "player";
 
-//DIRECTION definition(same as keycode for convience)
 DIR_LEFT	= KEYCODE_LEFT;
 DIR_UP 		= KEYCODE_UP;
 DIR_RIGHT	= KEYCODE_RIGHT;
 DIR_DOWN	= KEYCODE_DOWN;
+
+//DIRECTION definition(same as keycode for convience)
 DIRSTR = ["left","up","right","down"];
 DIRUNIT=[{x:-1,y:0},{x:0,y:-1},{x:1,y:0},{x:0,y:1}];
 
@@ -44,8 +45,11 @@ var Character = function(type, name, stage){
 	this.dirChange = false; // flag set when direction changes
 	this.dir = DIR_RIGHT;   // The direction of character
 	this.moving = false;    // whether the character is moving
+	this.targetMet = true;
+	this.pathToTarget;
 	this.frequency = 1;     // Animation frequency
 	this.step = 2;          // Velocity of moving for every frame
+	this.posOnMap = new Point(-1,-1);
 
 	// Memeber objects and reference
 	this.bag = [];                 // Items hold by character
@@ -114,7 +118,10 @@ var CharacterProtoType = {
 			return;
 		}
 		// Target valid
-		this.target = _target;
+		this.target = target;
+		this.targetMet=false;
+		this.pathToTarget = this.getStage().findPath(this.posOnMap, this.target.pos);
+		this.pathToTarget.unshift(this.posOnMap);
 	},
 
 	setDirection : function(dir){
@@ -130,10 +137,33 @@ var CharacterProtoType = {
 		}
 	},
 
+	decideDirection : function(){
+		if(this.posOnMap.x ==  this.pathToTarget[0].x && this.posOnMap.y == this.pathToTarget[0].y){
+			this.pathToTarget.shift();
+			if(this.pathToTarget.length==0){
+				this.targetMet=true;
+				this.setSpeedAndAnimation(0,0);
+				return;
+			}
+			diffx = this.pathToTarget[0].x-this.posOnMap.x;
+			diffy = this.pathToTarget[0].y-this.posOnMap.y;
+			var newDir;
+			if(diffx==0)
+				newDir=(diffy>0)?DIR_DOWN:DIR_UP;
+			else
+				newDir=(diffx>0)?DIR_RIGHT:DIR_LEFT;
+			this.setDirection(newDir);
+		}
+	},
+
 	setProp : function(prop){
 		this.prop=prop;
 		this.x=prop.x;
 		this.y=prop.y;
+	},
+
+	initPosOnMap : function(){
+		this.resetPosition(new Point(this.x, this.y));
 	},
 
 	setImage: function(img){
@@ -182,26 +212,49 @@ var CharacterProtoType = {
 	 * The move function which trigger animation based on direction
 	 */
 	move : function(){
-		if(!this.moving)
-			return;
+		if(!this.moving){
+			if(this.targetMet)
+				return;
+		}
+
+		if(!this.targetMet){
+			if(this.posOnMap== this.target.pos){
+				this.targetMet=true;
+				this.setSpeedAndAnimation(0,0);
+				return;
+			}
+			else{
+				this.decideDirection();
+			}
+		}
 
 		//Test if the new position can be passed
-		newx = this.x + this.vX;
-		newy = this.y + this.vY;
-		if(!this.parent.isPassable(newx,newy))
+		newP = new Point(this.x + this.vX, this.y + this.vY);
+		if(!this.getStage().isPassable(this, newP))
 			return;
 		
 		if(this.type === PLAYER){
-			if(!this.parent.moveOtherObjs(this, this.vX, this.vY)){
-				this.x = newx;
-				this.y = newy;
+			if(!this.getStage().moveOtherObjs(this, this.vX, this.vY)){
+				this.resetPosition(newP);
 			}
 		}
 		else{
-			this.x = newx;
-			this.y = newy;
+			this.resetPosition(newP);
 		}
-	}
+	},
+
+	//notify the stage to matain its tiles
+	resetPosition : function(newP){
+		this.x = newP.x;
+		this.y = newP.y;
+		this.getStage().resetObjectPosition(this,newP);
+	},
+
+	getPos : function(){
+		return new Point(this.x, this.y);
+	},
+
+
 
 };
 
