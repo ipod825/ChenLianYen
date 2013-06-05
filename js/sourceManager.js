@@ -96,7 +96,7 @@ loadImage : function(obj, name){
 	pattern=/.+\/(.+)\.png/;
 	name=name.replace(pattern,'$1');
 	if(this.images[name]){
-		obj.setImage(this.images[obj.name]);
+		obj.setImage(this.images[name]);
 		return this.images[name];
 	}
 	++this.numElementsToLoad;
@@ -104,7 +104,7 @@ loadImage : function(obj, name){
 	img = new Image();
 	img.src = url;
 	img.onload = function(obj){
-		obj.setImage(this.images[obj.name]);
+		obj.setImage(this.images[name]);
 		this.handleElementLoad();
 	}.bind(this, obj);
 	img.onerror = this.handleElementError;
@@ -134,15 +134,15 @@ loadMap : function(name){
 	if (this.maps[name]) {
 		return this.maps[name];
 	}
-	map = new Map(name);
+	map = new Map();
 	++this.numElementsToLoad;
 	var url = 'Maps/' + name + '.json';
 	var self=this;
 	this.ajax(url, function(ret) {
 		var prop= JSON.parse(ret);
 		map.setProp(prop);
-		self.loadImage(map, map.imageName);
-		self.handleElementLoad();
+		self.loadImage(map, name);
+		self.handleElementLoad(name);
 	});
 	this.maps[name] = map;
 	return map;

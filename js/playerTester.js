@@ -23,17 +23,41 @@ Rpg.prototype={
 start: function (mapName) {
 	this.stage.setCurrentMap(mapName);
 	this.stage.checkCell();
-	//this.addCharacter(this.player);
-	this.stage.addChildOnMap(this.player);
+	this.addCharacter(this.player);
 	Ticker.addListener(this.player);
 
-	this.UserInterface.show("HUD");
+	//this.UserInterface.show("HUD");
 
 	// we want to do some work before we update the canvas, otherwise we could use Ticker.addListener(stage);
 	Ticker.addListener(this);
 	// Targeting 60 FPS
 	Ticker.useRAF = false;
 	Ticker.setFPS(60);
+
+	// TESTER SCRIPT START
+	//for(var times = 0; times < 30; ++times)
+	//{
+	//	this.player.setDirection(DIR_LEFT);
+	//	console.log("player.posOnMap = " + this.player.posOnMap);
+	//}
+	//for(var times = 0; times < 10; ++times)
+	//{
+	//	this.player.setDirection(DIR_DOWN);
+	//	console.log("player.posOnMap = " + this.player.posOnMap);
+	//}
+
+	// TODO test dropItem
+	var testItem = new Item("itemPotion", 2, "health potion");
+	console.log("player.bag = " + this.player.bag);
+	this.player.addItem(testItem);
+	console.log("player.bag = " + this.player.bag);
+	this.player.dropItem(testItem);
+	console.log("player.bag = " + this.player.bag);
+
+	// TODO test setTarget
+	//var testTarget = new Target();
+	//this.player.setTarget(testTarget);
+
 },
 
 addCharacter : function(character){
@@ -58,5 +82,6 @@ loadMap: function (mapName) {
 loadUI: function() {
 	var self = this;
 	this.sourceManager.loadUI($("#rpgDiv"), "./CSS/UILayout.html");
+
 },
 }

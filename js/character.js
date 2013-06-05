@@ -24,8 +24,8 @@ DIRUNIT=[{x:-1,y:0},{x:0,y:-1},{x:1,y:0},{x:0,y:1}];
 var Character = function(type, name, stage){
 	// For debuggging
 	this.logger.setLogLevel("all");
-    this.logger.verbose(this.tag, "Character: +++START+++ " + "type = " + type 
-                        + ", name = " + name + ", stage = " + stage);
+	this.logger.verbose(this.tag, "Character: +++START+++ type = " + type 
+	                    + ", name = " + name + ", stage = " + stage);
 
 	// Check input parameters
 	if(!type)
@@ -45,10 +45,10 @@ var Character = function(type, name, stage){
 
 	// Animation related variables
 	this.posOnMap = new Point(-1,-1);
-	this.dirChange = false; // flag set when direction changes
+	this.dirChange = false; // Flag set when direction changes
 	this.dir = DIR_RIGHT;   // The direction of character
-	this.moving = false;    // whether the character is moving
-	this.targetMet = true;
+	this.moving = false;    // Whether the character is moving
+	this.targetMet = true; 	// Default targetMet is true 
 	this.pathToTarget;
 	this.frequency = 1;     // Animation frequency
 	this.step = 2;          // Velocity of moving for every frame
@@ -75,16 +75,29 @@ var CharacterProtoType = {
 	 * Parameters:
 	 *     item - the item to drop chosen by client
 	 */
-	dropItem : function(item){
-		this.logger.verbose(this.tag, "dropItem: +++START+++ " + "item.type = "
-		                    + item.type + ", item.number = " + item.number);
+	dropItem : function(item)
+	{
+		this.logger.verbose(this.tag, "dropItem: +++START+++ item.type = "
+		                    + item.type + ", item.number = " + item.number
+		                    + "item.description" + item.description);
 		var removeIndex = this.bag.indexOf(item);
-		this.splice(removeIndex, 1);
+		this.bag.splice(removeIndex, 1);
 		var stage = this.getStage();
 		if(!stage)
 		{ this.logger.error(this.tag, "dropItem: getStage() return undefined"); }
 		else
-		{ this.stage.AddObject(item); }
+		{ 
+			// TODO item should inherits DisplayObject to make it work
+			stage.addChild(item); 
+		}
+	},
+
+	addItem : function(item)
+	{
+		this.logger.verbose(this.tag, "addItem: +++START+++ item.type = "
+		                    + item.type + ", item.number = " + item.number 
+		                    + "item.description = " + item.description);
+		this.bag.push(item);
 	},
 
 	/*
@@ -116,6 +129,7 @@ var CharacterProtoType = {
 	 */
 	setTarget : function(target)
 	{
+		this.logger.verbose(this.tag, "setTarget: +++START+++ target = " + target);
 		// Check input target
 		if(!target)
 		{
@@ -126,12 +140,14 @@ var CharacterProtoType = {
 		this.target = target;
 		this.targetMet=false;
 		this.pathToTarget = this.getStage().findPath(this.posOnMap, this.target.pos);
-		this.pathToTarget.unshift(this.posOnMap);
 	},
 
 	setDirection : function(dir){
+		//this.logger.verbose(this.tag, "setTarget: +++START+++ dirrection = " + dir);
 		// This function is called as long as the direction key is pressed.
 		// For performance concern, we reset its speed and animation only if the character change direction or it starts to move
+		target = null;
+		targetMet = false;
 		if(this.dir != dir || !this.moving){
 			this.dir = dir;
 			this.moving = true;
@@ -148,8 +164,10 @@ var CharacterProtoType = {
 			if(this.pathToTarget.length==0){
 				this.targetMet=true;
 				this.setSpeedAndAnimation(0,0);
+				this.logger.log("targetMet");
 				return;
 			}
+			this.logger.log("Current:"+this.posOnMap+"tmpTarget:"+new Point(this.pathToTarget[0].x,this.pathToTarget[0].y)+"finalTaarget:"+this.pathToTarget[this.pathToTarget.length-1]);
 			diffx = this.pathToTarget[0].x-this.posOnMap.x;
 			diffy = this.pathToTarget[0].y-this.posOnMap.y;
 			var newDir;
@@ -163,12 +181,10 @@ var CharacterProtoType = {
 
 	setProp : function(prop){
 		this.prop=prop;
-		this.x=prop.x;
-		this.y=prop.y;
-	},
-
-	initPosOnMap : function(){
-		this.resetPosition(new Point(this.x, this.y));
+		this.x=prop.x*TILE_SIZE;
+		this.y=prop.y*TILE_SIZE;
+		this.regX=prop.regX;
+		this.regY=prop.regY;
 	},
 
 	setImage: function(img){
@@ -180,18 +196,18 @@ var CharacterProtoType = {
 			frames: { width: 32, height: 48, regX: 0, regY: 0},
 			// The definition of every animation it takes and the transition relation
 			animations: {
-				walkdown: 	{frames:[0,  0,  1,  1,  1,  2,  2,  3,  3,  3], 
+				walkdown:   {frames:[0,  0,  1,  1,  1,  2,  2,  3,  3,  3], 
 				             next: "walkdown", frequency:this.frequency},
-				walkleft: 	{frames:[4,  4,  5,  5,  5,  6,  6,  7,  7,  7], 
+				walkleft:   {frames:[4,  4,  5,  5,  5,  6,  6,  7,  7,  7], 
 				             next: "walkleft", frequency:this.frequency},
-				walkright: 	{frames:[8,  8,  9,  9,  9,  10, 10, 11, 11, 11], 
+				walkright:  {frames:[8,  8,  9,  9,  9,  10, 10, 11, 11, 11], 
 				             next: "walkright", frequency:this.frequency},
-				walkup: 	{frames:[12, 12, 13, 13, 13, 14, 14, 15, 15, 15], 
+				walkup:     {frames:[12, 12, 13, 13, 13, 14, 14, 15, 15, 15], 
 				             next: "walkup", frequency:this.frequency},
-				idledown: 	 [0,  0,  false],
-				idleleft: 	 [4,  4,  false],
-				idleright: 	 [8,  8,  false],
-				idleup: 	 [12, 12, false]
+				idledown:    [0,  0,  false],
+				idleleft:    [4,  4,  false],
+				idleright:   [8,  8,  false],
+				idleup:      [12, 12, false]
 			}
 		});
 		// Set sprite sheet to bitmap animation
@@ -209,7 +225,9 @@ var CharacterProtoType = {
 	 *     The main tick function, which is executed every loop
 	 */
 	tick : function(){
-		this.move();
+		if(!this.moving && this.targetMet){ /* no need to move */ }
+		else
+			this.move();
 	},
 
 	/* 
@@ -217,42 +235,30 @@ var CharacterProtoType = {
 	 * The move function which trigger animation based on direction
 	 */
 	move : function(){
-		if(!this.moving){
-			if(this.targetMet)
-				return;
-		}
-
 		if(!this.targetMet){
-			if(this.posOnMap== this.target.pos){
-				this.targetMet=true;
-				this.setSpeedAndAnimation(0,0);
-				return;
-			}
-			else{
-				this.decideDirection();
-			}
+			this.decideDirection();
 		}
 
-		//Test if the new position can be passed
-		newP = new Point(this.x + this.vX, this.y + this.vY);
+		// Test if the new position can be passed
+		var newP = new Point(this.x + this.vX, this.y + this.vY);
 		if(!this.getStage().isPassable(this, newP))
 			return;
-		
+
 		if(this.type === PLAYER){
-			if(!this.getStage().moveOtherObjs(this, this.vX, this.vY)){
-				this.resetPosition(newP);
-			}
+			//Keep the player moving at center if possible, otherwise, move it as usual
+			if(!this.getStage().moveOtherObjs(this, this.vX, this.vY))
+				this.setPosition(newP);
 		}
 		else{
-			this.resetPosition(newP);
+			this.setPosition(newP);
 		}
 	},
 
 	//notify the stage to matain its tiles
-	resetPosition : function(newP){
+	setPosition : function(newP){
 		this.x = newP.x;
 		this.y = newP.y;
-		this.getStage().resetObjectPosition(this,newP);
+		this.getStage().setPosOnMap(this,newP);
 	},
 
 	getPos : function(){
@@ -267,3 +273,4 @@ Character.prototype = new BitmapAnimation();
 for (var obj in CharacterProtoType) { 
 	Character.prototype[obj] = CharacterProtoType[obj]; 
 } 
+
