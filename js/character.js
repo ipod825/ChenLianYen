@@ -167,7 +167,7 @@ var CharacterProtoType = {
 				this.logger.log("targetMet");
 				return;
 			}
-			this.logger.log("Current:"+this.posOnMap+"Target:"+new Point(this.pathToTarget[0].x,this.pathToTarget[0].y));
+			this.logger.log("Current:"+this.posOnMap+"tmpTarget:"+new Point(this.pathToTarget[0].x,this.pathToTarget[0].y)+"finalTaarget:"+this.pathToTarget[this.pathToTarget.length-1]);
 			diffx = this.pathToTarget[0].x-this.posOnMap.x;
 			diffy = this.pathToTarget[0].y-this.posOnMap.y;
 			var newDir;
@@ -181,14 +181,14 @@ var CharacterProtoType = {
 
 	setProp : function(prop){
 		this.prop=prop;
-		this.x=prop.x*TILE_SIE;
-		this.y=prop.y*TILE_SIE;
+		this.x=prop.x*TILE_SIZE;
+		this.y=prop.y*TILE_SIZE;
 		this.regX=prop.regX;
 		this.regY=prop.regY;
 	},
 
 	initPosOnMap : function(){
-		this.resetPosition(new Point(this.x, this.y));
+		this.setPosition(new Point(this.x, this.y));
 	},
 
 	setImage: function(img){
@@ -249,22 +249,20 @@ var CharacterProtoType = {
 			return;
 
 		if(this.type === PLAYER){
-			//if(!this.getStage().moveOtherObjs(this, this.vX, this.vY))
-				this.resetPosition(newP);
-			//else
-			//	this.resetPosition(new Point(this.x, this.y));
+			//Keep the player moving at center if possible, otherwise, move it as usual
+			if(!this.getStage().moveOtherObjs(this, this.vX, this.vY))
+				this.setPosition(newP);
 		}
 		else{
-			this.resetPosition(newP);
+			this.setPosition(newP);
 		}
 	},
 
 	//notify the stage to matain its tiles
-	resetPosition : function(newP){
+	setPosition : function(newP){
 		this.x = newP.x;
 		this.y = newP.y;
-		this.getStage().resetObjectPosition(this,newP);
-		this.logger.log("resetTo:"+newP);
+		this.getStage().setPosOnMap(this,newP);
 	},
 
 	getPos : function(){
