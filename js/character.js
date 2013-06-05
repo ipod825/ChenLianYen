@@ -48,7 +48,7 @@ var Character = function(type, name, stage){
 	this.dirChange = false; // Flag set when direction changes
 	this.dir = DIR_RIGHT;   // The direction of character
 	this.moving = false;    // Whether the character is moving
-	this.targetMet = false; // Default targetMet is false
+	this.targetMet = true; // Default targetMet is true 
 	this.pathToTarget;
 	this.frequency = 1;     // Animation frequency
 	this.step = 2;          // Velocity of moving for every frame
@@ -127,7 +127,6 @@ var CharacterProtoType = {
 		this.target = target;
 		this.targetMet=false;
 		this.pathToTarget = this.getStage().findPath(this.posOnMap, this.target.pos);
-		this.pathToTarget.unshift(this.posOnMap);
 	},
 
 	setDirection : function(dir){
@@ -152,8 +151,10 @@ var CharacterProtoType = {
 			if(this.pathToTarget.length==0){
 				this.targetMet=true;
 				this.setSpeedAndAnimation(0,0);
+				this.logger.log("targetMet");
 				return;
 			}
+			this.logger.log("Current:"+this.posOnMap+"Target:"+new Point(this.pathToTarget[0].x,this.pathToTarget[0].y));
 			diffx = this.pathToTarget[0].x-this.posOnMap.x;
 			diffy = this.pathToTarget[0].y-this.posOnMap.y;
 			var newDir;
@@ -167,8 +168,10 @@ var CharacterProtoType = {
 
 	setProp : function(prop){
 		this.prop=prop;
-		this.x=prop.x;
-		this.y=prop.y;
+		this.x=prop.x*TILE_SIE;
+		this.y=prop.y*TILE_SIE;
+		this.regX=prop.regX;
+		this.regY=prop.regY;
 	},
 
 	initPosOnMap : function(){
@@ -213,16 +216,9 @@ var CharacterProtoType = {
 	 *     The main tick function, which is executed every loop
 	 */
 	tick : function(){
-		if(!this.moving && this.targetMet)
-		{ /* no need to move */ }
-		else if(!this.moving && !this.targetMet)
-		{ this.logger.error(this.tag, "tick: not moving but target is not reached"); }
-		else if(this.moving && this.targetMet)
-		{ this.logger.error(this.tag, "tick: moving and target is reached"); }
+		if(!this.moving && this.targetMet){ /* no need to move */ }
 		else
-		{
 			this.move();
-		}
 	},
 
 	/* 
@@ -230,21 +226,9 @@ var CharacterProtoType = {
 	 * The move function which trigger animation based on direction
 	 */
 	move : function(){
-		//if(!this.moving){
-		//	if(this.targetMet)
-		//		return;
-		//}
-
-		//if(!this.targetMet){
-		//	if(this.posOnMap == this.target.pos){
-		//		this.targetMet=true;
-		//		this.setSpeedAndAnimation(0,0);
-		//		return;
-		//	}
-		//	else{
-		//		this.decideDirection();
-		//	}
-		//}
+		if(!this.targetMet){
+			this.decideDirection();
+		}
 
 		// Test if the new position can be passed
 		var newP = new Point(this.x + this.vX, this.y + this.vY);
@@ -252,9 +236,10 @@ var CharacterProtoType = {
 			return;
 
 		if(this.type === PLAYER){
-			if(!this.getStage().moveOtherObjs(this, this.vX, this.vY)){
+			//if(!this.getStage().moveOtherObjs(this, this.vX, this.vY))
 				this.resetPosition(newP);
-			}
+			//else
+			//	this.resetPosition(new Point(this.x, this.y));
 		}
 		else{
 			this.resetPosition(newP);
@@ -266,6 +251,7 @@ var CharacterProtoType = {
 		this.x = newP.x;
 		this.y = newP.y;
 		this.getStage().resetObjectPosition(this,newP);
+		this.logger.log("resetTo:"+newP);
 	},
 
 	getPos : function(){

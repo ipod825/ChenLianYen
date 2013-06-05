@@ -24,7 +24,7 @@ Rpg.prototype={
 
 start: function (mapName) {
 	this.stage.setCurrentMap(mapName);
-	this.stage.currentMap.checkCell();
+	this.stage.checkCell();
 	this.addCharacter(this.player);
 	Ticker.addListener(this.player);
 
