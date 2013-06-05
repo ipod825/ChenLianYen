@@ -48,7 +48,7 @@ var Character = function(type, name, stage){
 	this.dirChange = false; // Flag set when direction changes
 	this.dir = DIR_RIGHT;   // The direction of character
 	this.moving = false;    // Whether the character is moving
-	this.targetMet = false; // Default targetMet is false
+	this.targetMet = true;  // Default targetMet is true
 	this.pathToTarget;
 	this.frequency = 1;     // Animation frequency
 	this.step = 2;          // Velocity of moving for every frame
@@ -57,7 +57,7 @@ var Character = function(type, name, stage){
 	this.bag = [];                 // Items hold by character
 	this.target = null;            // The targeting position or object
 	//this.stage = this.getStage();  // reference of stage for dropping item
-     
+ 
 };
 
 // The prototype defined as an object
@@ -75,7 +75,8 @@ var CharacterProtoType = {
 	 * Parameters:
 	 *     item - the item to drop chosen by client
 	 */
-	dropItem : function(item){
+	dropItem : function(item)
+	{
 		this.logger.verbose(this.tag, "dropItem: +++START+++ item.type = "
 		                    + item.type + ", item.number = " + item.number);
 		var removeIndex = this.bag.indexOf(item);
@@ -95,13 +96,24 @@ var CharacterProtoType = {
 	 *     vX - the velocity of the character in x direction
 	 *     vY - the velocity of the character in y direction
 	 */
-	setSpeedAndAnimation : function(vX,vY){
+	setSpeedAndAnimation : function(vX,vY)
+	{
 		//this.logger.verbose(this.tag, "setSpeedAndAnimation: +++START+++ "
 		//                    + "vX = " + vX + ", vY = " + vY);
 		this.vX=vX;
 		this.vY=vY;
 		this.moving = (this.vX!=0 || this.vY!=0);
-		prefix = this.moving? "walk" : "idle";
+		if(this.moving)
+		{
+			prefix = "walk";
+			targetMet = false;
+		}
+		else
+		{
+			prefix = "idle";
+			targetMet = true;
+		}
+		//prefix = this.moving? "walk" : "idle";
 		this.gotoAndPlay(prefix + DIRSTR[this.dir-DIR_LEFT]);
 	},
 
@@ -120,29 +132,31 @@ var CharacterProtoType = {
 		// Check input target
 		if(!target)
 		{
+			this.target = null;
+			this.targetMet = true;
 			this.logger.error(this.tag, "setTarget: input target not exist");
 			return;
 		}
 		// Target valid
 		this.target = target;
-		this.targetMet=false;
+		this.targetMet = false;
 		this.pathToTarget = this.getStage().findPath(this.posOnMap, this.target.pos);
 		this.pathToTarget.unshift(this.posOnMap);
 	},
 
 	setDirection : function(dir){
-		//this.logger.verbose(this.tag, "setTarget: +++START+++ dirrection = " + dir);
 		// This function is called as long as the direction key is pressed.
 		// For performance concern, we reset its speed and animation only if 
 		// the character change direction or it starts to move
-		target = null;
-		targetMet = false;
+		//this.logger.verbose(this.tag, "setDirection: +++START+++ direction = " + dir);
+		this.target = null;
+		this.targetMet = false;
 		if(this.dir != dir || !this.moving){
 			this.dir = dir;
 			this.moving = true;
-			dirIndex = this.dir - DIR_LEFT;
-			vX=DIRUNIT[dirIndex].x*this.step;
-			vY=DIRUNIT[dirIndex].y*this.step;
+			var dirIndex = this.dir - DIR_LEFT;
+			var vX = DIRUNIT[dirIndex].x * this.step;
+			var vY = DIRUNIT[dirIndex].y * this.step;
 			this.setSpeedAndAnimation(vX,vY);
 		}
 	},
@@ -151,7 +165,7 @@ var CharacterProtoType = {
 		if(this.posOnMap.x ==  this.pathToTarget[0].x && this.posOnMap.y == this.pathToTarget[0].y){
 			this.pathToTarget.shift();
 			if(this.pathToTarget.length==0){
-				this.targetMet=true;
+				this.targetMet = true;
 				this.setSpeedAndAnimation(0,0);
 				return;
 			}
@@ -214,12 +228,23 @@ var CharacterProtoType = {
 	 *     The main tick function, which is executed every loop
 	 */
 	tick : function(){
+		// TODO
+		// This part still reports some error, but it may be resulted from that
+		// the main loop is not controllable by object out of easel library
 		if(!this.moving && this.targetMet)
 		{ /* no need to move */ }
 		else if(!this.moving && !this.targetMet)
-		{ this.logger.error(this.tag, "tick: not moving but target is not reached"); }
+		{ 
+			// abnormal state but does happen
+			this.logger.error(this.tag, "tick: not moving but target is not reached"); 
+			this.move();
+		}
 		else if(this.moving && this.targetMet)
-		{ this.logger.error(this.tag, "tick: moving and target is reached"); }
+		{ 
+			// abnormal state but does happen
+			this.logger.error(this.tag, "tick: moving and target is reached"); 
+			this.move();
+		}
 		else
 		{
 			this.move();
@@ -231,16 +256,13 @@ var CharacterProtoType = {
 	 * The move function which trigger animation based on direction
 	 */
 	move : function(){
-		//if(!this.moving){
-		//	if(this.targetMet)
-		//		return;
-		//}
 
 		// Test if the new position can be passed
 		var newP = new Point(this.x + this.vX, this.y + this.vY);
 		if(!this.getStage().isPassable(this, newP))
 			return;
 
+		// Move the player or the background depending on the position
 		if(this.type === PLAYER){
 			if(!this.getStage().moveOtherObjs(this, this.vX, this.vY)){
 				this.resetPosition(newP);
@@ -250,26 +272,40 @@ var CharacterProtoType = {
 			this.resetPosition(newP);
 		}
 
-		//if(!this.targetMet){
-			if(this.posOnMap == this.target.pos || target === "undefined"){
-				this.targetMet=true;
+		if(!(this.target))
+		{
+			// Character is not targeting anything, just moving with keyboard
+			// In this case, the targetMet should be true while not moving
+			// and false while moving
+			this.targetMet = true;
+			return;
+		}
+		else 
+		{
+			// Still targeting something
+			if(this.posOnMap == this.target.pos)
+			{
+				// Character is targeting something and reaches it
+				this.targetMet = true;
 				this.setSpeedAndAnimation(0,0);
 				return;
 			}
 			else{
+				// Character is targeting something but not reaches it
 				this.decideDirection();
 			}
-		//}
+		}
 
 	},
 
-	//notify the stage to matain its tiles
+	// Notify the stage to matain its tiles
 	resetPosition : function(newP){
 		this.x = newP.x;
 		this.y = newP.y;
 		this.getStage().resetObjectPosition(this,newP);
 	},
 
+	// Return the current position
 	getPos : function(){
 		return new Point(this.x, this.y);
 	},

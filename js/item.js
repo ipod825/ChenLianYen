@@ -25,6 +25,12 @@
  */
 var Item = function(type, number, description)
 {
+	// For debugging
+	this.logger.setLogLevel("all");
+	this.logger.verbose(this.tag, "Item: +++START+++ type = " + type + 
+	                    ", number = " + number + 
+	                    ", description = " + description);
+
 	this.type = "";        // Default type is empty string
 	this.number = 1;       // Default item has only one instance
 	this.description = ""; // Default description is empty string
@@ -33,7 +39,7 @@ var Item = function(type, number, description)
 	this.performUsage = null;
 
 	// Move parameters to correct order
-	if(typeof(number) === "string"))
+	if(typeof(number) === "string")
 	{
 		description = number;
 		number = null;
