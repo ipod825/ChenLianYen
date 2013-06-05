@@ -23,7 +23,7 @@ DIRUNIT=[{x:-1,y:0},{x:0,y:-1},{x:1,y:0},{x:0,y:1}];
  */
 var Character = function(type, name, stage){
 	// For debuggging
-	this.logger.setLogLevel("verbose");
+	this.logger.setLogLevel("all");
 
 	// Check input parameters
 	if(!type)
@@ -42,6 +42,7 @@ var Character = function(type, name, stage){
 	this.prop = null;      
 
 	// Animation related variables
+	this.posOnMap = new Point(-1,-1);
 	this.dirChange = false; // flag set when direction changes
 	this.dir = DIR_RIGHT;   // The direction of character
 	this.moving = false;    // whether the character is moving
@@ -49,7 +50,6 @@ var Character = function(type, name, stage){
 	this.pathToTarget;
 	this.frequency = 1;     // Animation frequency
 	this.step = 2;          // Velocity of moving for every frame
-	this.posOnMap = new Point(-1,-1);
 
 	// Memeber objects and reference
 	this.bag = [];                 // Items hold by character
@@ -74,7 +74,6 @@ var CharacterProtoType = {
 	 *     item - the item to drop chosen by client
 	 */
 	dropItem : function(item){
-		// TODO 
 		var removeIndex = this.bag.indexOf(item);
 		this.splice(removeIndex, 1);
 		var stage = this.getStage();
@@ -253,8 +252,6 @@ var CharacterProtoType = {
 	getPos : function(){
 		return new Point(this.x, this.y);
 	},
-
-
 
 };
 

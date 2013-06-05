@@ -1,26 +1,35 @@
-/*
- * Class AttackableCharacter
- *
+
+/* 
+ * Class: AttackableCharacter
  * This is the class which represents all the characters that can be an
  * attacker or an attackee. This class is inherited by Player and Monster,
  * which means that NPC is not attackable
- */
-
-/* 
- * AttackableCharacter Constructor
  *
- * Input:
- *     -> battleManager
- *        The reference of battle manager in order to manager battles
+ * Parameters:
+ *     type - the identifier character
+ *     name - the name of the character
+ *     stage - (optional) the reference to stage
+ *     battleManager - The reference of battle manager to manager battles
+ *     statue - (optional) the status to the attackable character
  */
-var AttackableCharacter = function(battleManager, status)
+var AttackableCharacter = function(type, name, stage, battleManager, status)
 {
-	this.target = null;                    // Default target is not set
+	// For debugging
+	this.logger.setLogLevel("all");
 
-	if(status)
-	{
-		this.status = new Status(status);  // New a status with given status
+	// Check input type and pass to parent constructor
+	if(stage instanceof Stage)
+	{ this.prototype.call(this, type, name, stage); }
+	else
+	{ 
+		status = battleManager;
+		battleManager = stage;
+		this.prototype.call(this, type, name, undefined); 
 	}
+
+	// Initialize status and battleManager
+	if(status)
+	{ this.status = new Status(status); }  // New status with given status
 	else
 	{ this.status = new Status(); }        // New a status with default value
 
@@ -29,12 +38,8 @@ var AttackableCharacter = function(battleManager, status)
 	{ this.battleManager = battleManager; }
 	else
 	{
-		this.logger.error(this.tag, "AttackableCharacter: " + 
-		                  " input battleManager invalid");
+		this.logger.error(this.tag, "AttackableCharacter: battleManager undefined");
 	}
-
-    // For debugging
-	this.logger.setLogLevel("verbose");
 };
 
 // Predefined attackable character prototype
