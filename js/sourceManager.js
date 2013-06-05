@@ -74,7 +74,8 @@ setOnReady: function (callbackMethod) {
 	++self.numElementsToLoad;
 	obj.load("./CSS/UILayout.html", function(){
 		 $(this).children().hide();
-		 window.UserInterface.initialize($(this));
+		 
+		 window.UserInterface.initialize(this);
 		 self.handleElementLoad();
    });
 },

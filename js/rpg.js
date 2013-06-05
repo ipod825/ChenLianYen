@@ -8,8 +8,6 @@ function Rpg(canvas) {
 	this.UserInterface = window.UserInterface;
 	this.UIController = window.UIController;
 
-	// 
-
 	var self = this;
 	//window.onclick= function(e){ self.input.handleClick(e);}
 	window.onclick = function(e){
@@ -28,7 +26,7 @@ start: function (mapName) {
 	this.addCharacter(this.player);
 	Ticker.addListener(this.player);
 
-	//this.UserInterface.show("HUD");
+	this.UserInterface.show("HUD");
 
 	// we want to do some work before we update the canvas, otherwise we could use Ticker.addListener(stage);
 	Ticker.addListener(this);
@@ -59,6 +57,5 @@ loadMap: function (mapName) {
 loadUI: function() {
 	var self = this;
 	this.sourceManager.loadUI($("#rpgDiv"), "./CSS/UILayout.html");
-
 },
 }

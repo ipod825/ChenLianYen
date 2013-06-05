@@ -70,19 +70,39 @@ var UserInterface = {};
 
 	q.initialize = function(RPGDIV){
 			_jqRPGDIV = $(RPGDIV);
-			
 			_jqRPGDIV.children("div").each(function(index, element){
 				var uiName = $(this).attr("id");
 				
-				// list[uiName] = $(this).createUI(_jqRPGDIV.children("#"+uiName));
+				list[uiName] = $(this);
 			});
 	};
 	
-	q.show = function(UIName){
-		_jqRPGDIV.children("#"+UIName).show();
-	
+	q.show = function(uiName){
+		if(list[uiName] == undefined) return;
+		
+		list[uiName].show();
 	};
+	
 	
 }(UserInterface))
 
 
+function HUD(obj, UIC){
+	this.initialize(obj, UIC);
+}
+
+HUD.prototype{
+	obj : null;
+	initialize : function(_obj){
+		obj = _obj;
+		
+		UIC.subscribe("HP_Update", HPUpdate);
+	},
+	
+	HPUpdate : func(topic, args){
+		/* args = {HP : value}*/
+		if(topic != "HP_Update") return;
+		
+		obj.children("#HealthBar > span").css("width", args.HP + "%");	
+	},
+}
