@@ -328,6 +328,7 @@ button{
 }
 
 .window {
+	pointer-events: auto;
 	background: -moz-linear-gradient(top, rgba(252,255,244,0.85) 0%, rgba(223,229,215,0.85) 40%, rgba(179,190,173,0.85) 100%);
 	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(252,255,244,0.85)), color-stop(40%,rgba(223,229,215,0.85)), color-stop(100%,rgba(179,190,173,0.85)));
 	background: -webkit-linear-gradient(top, rgba(252,255,244,0.85) 0%,rgba(223,229,215,0.85) 40%,rgba(179,190,173,0.85) 100%);
