@@ -18,6 +18,7 @@ function SourceManager(width, height) {
 	this.maps={};
 	this.characters={};
 
+	this.onready=null;
 	this.checkSoundExtension();
 
 };
@@ -74,8 +75,7 @@ setOnReady: function (callbackMethod) {
 	++self.numElementsToLoad;
 	obj.load("./CSS/UILayout.html", function(){
 		 $(this).children().hide();
-		 
-		 window.UserInterface.initialize(this);
+		 window.UserInterface.initialize($(this));
 		 self.handleElementLoad();
    });
 },
@@ -193,7 +193,9 @@ handleElementLoad : function() {
 		Ticker.removeAllListeners();
 		this.numElementsLoaded = 0;
 		this.numElementsToLoad = 0;
-		this.onready();//set by setOnready
+		if(this.onready)
+			this.onready();//set by setOnready
+		this.onready=null;
 	}
 },
 

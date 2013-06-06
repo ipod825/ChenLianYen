@@ -9,10 +9,8 @@ function Rpg(canvas) {
 	this.UIController = window.UIController;
 
 	var self = this;
-	//window.onclick= function(e){ self.input.handleClick(e);}
-	window.onclick = function(e){
-		self.input.handleClick(e);
-	}
+	window.onclick= function(e){ self.input.handleClick(e);}
+	//this.stage.addEventListener("click",self.input.handleClick.bind(self.input));
 	document.onkeydown = function (e) { self.input.handleKeyDown(e); };
 	document.onkeypress= function (e) { self.input.handleKeyPress(e); };
 	document.onkeyup = function (e) { self.input.handleKeyUp(e); };
@@ -23,8 +21,7 @@ Rpg.prototype={
 start: function (mapName) {
 	this.stage.setCurrentMap(mapName);
 	this.stage.checkCell();
-	//this.addCharacter(this.player);
-	this.stage.addChildOnMap(this.player);
+	this.addCharacter(this.player);
 	Ticker.addListener(this.player);
 
 	this.UserInterface.show("HUD");
@@ -58,5 +55,6 @@ loadMap: function (mapName) {
 loadUI: function() {
 	var self = this;
 	this.sourceManager.loadUI($("#rpgDiv"), "./CSS/UILayout.html");
+
 },
 }

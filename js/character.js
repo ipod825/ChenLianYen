@@ -75,29 +75,16 @@ var CharacterProtoType = {
 	 * Parameters:
 	 *     item - the item to drop chosen by client
 	 */
-	dropItem : function(item)
-	{
+	dropItem : function(item){
 		this.logger.verbose(this.tag, "dropItem: +++START+++ item.type = "
-		                    + item.type + ", item.number = " + item.number
-		                    + "item.description" + item.description);
+		                    + item.type + ", item.number = " + item.number);
 		var removeIndex = this.bag.indexOf(item);
-		this.bag.splice(removeIndex, 1);
+		this.splice(removeIndex, 1);
 		var stage = this.getStage();
 		if(!stage)
 		{ this.logger.error(this.tag, "dropItem: getStage() return undefined"); }
 		else
-		{ 
-			// TODO item should inherits DisplayObject to make it work
-			stage.addChild(item); 
-		}
-	},
-
-	addItem : function(item)
-	{
-		this.logger.verbose(this.tag, "addItem: +++START+++ item.type = "
-		                    + item.type + ", item.number = " + item.number 
-		                    + "item.description = " + item.description);
-		this.bag.push(item);
+		{ this.stage.AddObject(item); }
 	},
 
 	/*
@@ -185,6 +172,10 @@ var CharacterProtoType = {
 		this.y=prop.y*TILE_SIZE;
 		this.regX=prop.regX;
 		this.regY=prop.regY;
+	},
+
+	initPosOnMap : function(){
+		this.setPosition(new Point(this.x, this.y));
 	},
 
 	setImage: function(img){

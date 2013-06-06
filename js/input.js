@@ -15,8 +15,9 @@ Input.prototype={
 handleClick : function(e){
 	//this.player.setTarget(this.stage)
 	//alert(e);
-	if(e.toElement.id=="rpgDiv")
+	//if(e.toElement.id=="rpgDiv")
 		this.stage.setTarget(new Point(e.offsetX, e.offsetY));
+//		this.stage.setTarget(new Point(e.stageX, e.stageY));
 },
 
 //Note: this function is called by the browser

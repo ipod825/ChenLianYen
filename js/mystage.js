@@ -83,17 +83,6 @@ MyStageProtoType={
 	 *
 	 */
 
-	//Add the object on the canvas and record it in the tiles
-	addChildOnMap : function(child){
-		this.setPosOnMap(child,new Point(child.x,child.y));
-		Stage.prototype.addChild.call(this,child);
-	},
-
-	removeChildOnMap : function(child){
-		this.setPosOnMap(FREE,new Point(child.x,child.y));
-		Stage.prototype.removeChild.call(this,child);
-	},
-
 	//Check if a tile is movable. The unit of pos is in pixel.
 	//The object itself is passed to check the case that the object is just moving in the same tile(different pixel)
 	isPassable : function(obj, pos){
@@ -101,7 +90,6 @@ MyStageProtoType={
 		return (this.getTile(p.x,p.y)===obj || this.getTile(p.x, p.y)==FREE );
 	},
 
-	//The unit of beg and end are tiles
 	findPath : function(beg, end){
 		var graph = new Graph(this.tiles);
 		var start = graph.nodes[beg.x][beg.y];
@@ -111,11 +99,8 @@ MyStageProtoType={
 		return path;
 	},
 
-	//The input unit is pixel, the output position unit is tile
 	setTarget : function(p){
 		p=this.relPointOnMap(p);
-		if(this.getTile(p.x,p.y)==BLOCK)
-			return;
 		obj=this.objectOnPos(p);
 		this.player.setTarget({"obj":obj,"pos":p});
 	},
