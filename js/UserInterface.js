@@ -97,13 +97,27 @@ HUD.prototype = {
 		obj = _obj;
 		
 		_UIC.subscribe("HP_UPDATE", HPUpdate);
-		_UIC.subscribe("EXP_UPDATE");
+		_UIC.subscribe("EXP_UPDATE", EXPUpdate);
+		_UIC.subscribe("QUEST_UPDATE", QuestUpdate);
 	},
 	
-	HPUpdate : function(topic, args){
-		/* args = {HP : value}*/
-		if(topic != "HP_UPDATE") return;
+   HPUpdate : function(topic, args){
+      /* args = {HP : value}*/
+      if(topic != "HP_UPDATE") return;
 		
-		obj.children("#HealthBar > span").css("width", args.HP + "%");	
-	},
+      obj.children("#HealthBar > span").css("width", args.HP + "%");	
+   },
+
+    EXPUpdate : function(topic, args){
+      if(topic != "EXP_UPDATE") return;
+
+      obj.children("#EXPBar > span").css("width", args.EXP + "%");
+    },
+
+    QuestUpdate : function(topic, args){
+      if(topic != "EXP_UPDATE") return;
+
+
+    }, 
+
 }
