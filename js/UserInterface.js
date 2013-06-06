@@ -91,17 +91,18 @@ function HUD(obj, UIC){
 	this.initialize(obj, UIC);
 }
 
-HUD.prototype{
-	obj : null;
-	initialize : function(_obj){
+HUD.prototype = {
+	obj : null,
+	initialize : function(_obj, _UIC){
 		obj = _obj;
 		
-		UIC.subscribe("HP_Update", HPUpdate);
+		_UIC.subscribe("HP_UPDATE", HPUpdate);
+		_UIC.subscribe("EXP_UPDATE");
 	},
 	
-	HPUpdate : func(topic, args){
+	HPUpdate : function(topic, args){
 		/* args = {HP : value}*/
-		if(topic != "HP_Update") return;
+		if(topic != "HP_UPDATE") return;
 		
 		obj.children("#HealthBar > span").css("width", args.HP + "%");	
 	},
