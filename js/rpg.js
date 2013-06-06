@@ -5,7 +5,7 @@ function Rpg(canvas) {
 	this.sourceManager.setStage(this.stage); //To show the downloaing progress on the stage;
 	this.input=new Input(this);
 	
-	this.uiController;
+	this.UserInterface;
 	//this.UserInterface = window.UserInterface;
 	//this.UIController = window.UIController;
 
@@ -25,7 +25,7 @@ start: function (mapName) {
 	this.addCharacter(this.player);
 	Ticker.addListener(this.player);
 
-	//this.UserInterface.show("HUD");
+	this.UserInterface.show("HUD");
 
 	// we want to do some work before we update the canvas, otherwise we could use Ticker.addListener(stage);
 	Ticker.addListener(this);
@@ -54,7 +54,7 @@ loadMap: function (mapName) {
 },
 
 loadUI: function(uiDiv,uifile) {
-	this.uiController= new UIController(uiDiv,uifile);
+	this.UserInterface= new UserInterface(uiDiv,uifile);
 },
 //loadUI: function() {
 //	var self = this;

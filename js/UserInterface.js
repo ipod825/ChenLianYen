@@ -2,6 +2,13 @@
 	implement the Observer Pattern
 */
 
+/*	!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+ *	This file is not used by index.html now
+ * A written version by mingo is js/userinterface.js
+ *
+ *
+ *
+ * */
 var UIController = {};
 
 (function(q){

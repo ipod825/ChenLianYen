@@ -39,7 +39,7 @@ function startGame() {
     rpg = new Rpg(canvas);
 	canvas.onclick= function (e){ rpg.input.handleClick(e); }
  
-	rpg.loadUI("#uiDiv","./ui.html");
+	rpg.loadUI("#uiDiv","./CSS/UILayout.html");
 	rpg.loadMap("example");
 }
 
@@ -55,8 +55,6 @@ $(document).ready(function() {
 		<canvas id="rpgCanvas" width="640px" height="640px">
 			Your browser doesn't support canvas. Please download IE9+ on <a href="http://ie.microsoft.com/testdrive">IE Test Drive</a> 
 		</canvas>
-	<div id="uiDiv" class="canvasHolder">
-		<!--<div id="uiDiv"> </div>-->
-	</div>
+	<div id="uiDiv"> </div>
 </body>
 </html>

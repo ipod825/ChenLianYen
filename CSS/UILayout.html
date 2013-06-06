@@ -1,4 +1,4 @@
-
+<!--
 <div id="MainScreen">
 	<div >
 		<img src="./Images/player.png"/>
@@ -10,23 +10,51 @@
 		<button id="btHIDE" onclick="$('#MainScreen').hide()">HIDE</button><br/>
 	</div>
 </div>
+-->
 
-<div id="Dialogue" class="dialogue">
-	<p class="dialogueText"></p>
-	<button>Proceed</button>
-</div>
 
 <div id="HUD">
+	<!--
+	<div id="bar_hp">
+		<div id="hp"></div>
+	</div>
+	-->
 	<div id="QuestHUD"></div>
 	<div id="StatusHUD">
 		<div id="HealthBar" class="meter red"><span style="width: 100%"></span></div>
 		<div id="ExpBar" class="meter orange"><span style="width: 50%"></span></div>
 	</div>
+
+	<div id="header">
+		<div id="sound" class="sound-play"></div>
+		<div id="gold"> : <span>0</span></div>
+		<div id="option" onclick="toggleVisibility('#options')"></div>
+	</div>
+
+	<div id="options" class="window" >
+		<h1>Options</h1>
+		<fieldset><legend>Languages</legend>
+			<label><input type="radio" name="lang" value="en" checked> English</label><br />
+			<label><input type="radio" name="lang" value="fr"> Français</label>
+		</fieldset>
+		<h1>Help</h1>
+		<ul>
+			<li>Enter or Space : Speak, Action</li>
+			<li>Arrows : Move</li>
+			<li>A : Attack (if sword equipped)</li>
+		</ul>
+	</div>
+
 	<div id="BottomBar">
-		<button id="btHideUI" onclick="$('#rpgDiv').children().hide()">HideUI</button>
+		<button id="btHideUI" onclick="$('#uiDiv').children().hide()">HideUI</button>
 		<button id="btPause">Pause</button>	
 		<button id="btQuest">Quest</button>
 		<button id="btStatus">Status</button>
 		<button id="btInventory">Inventory</button>
 	</div>
+</div>
+
+<div id="Dialogue" class="dialogue">
+	<p class="dialogueText"></p>
+	<button>Proceed</button>
 </div>

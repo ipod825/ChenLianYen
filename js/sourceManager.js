@@ -70,15 +70,17 @@ setOnReady: function (callbackMethod) {
  *
  * Load  and cache the sources, assign the sources callback function to handleElementLoad
  */
- loadUI : function(obj, name){
+/*
+loadUI : function(obj, name){
 	var self = this;
 	++self.numElementsToLoad;
 	obj.load("./CSS/UILayout.html", function(){
-		 $(this).children().hide();
-		 window.UserInterface.initialize($(this));
-		 self.handleElementLoad();
-   });
+		$(this).children().hide();
+		window.UserInterface.initialize($(this));
+		self.handleElementLoad();
+	});
 },
+*/
 
 loadAudio : function(name) {
 	if (!this.audioExtension)
