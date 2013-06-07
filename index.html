@@ -30,14 +30,11 @@
 <script src="./js/rpg.js"></script>
 
 <script>
-var canvas;
 var rpg;
 
 function startGame() {
 	//find canvas and load images, wait for last image to load
-	canvas = document.getElementById("rpgCanvas");
-    rpg = new Rpg(canvas);
-	canvas.onclick= function (e){ rpg.input.handleClick(e); }
+    rpg = new Rpg("rpgCanvas");
  
 	rpg.loadUI("#uiDiv","./CSS/UILayout.html");
 	rpg.loadMap("example");

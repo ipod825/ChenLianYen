@@ -18,22 +18,17 @@ DIRUNIT=[{x:-1,y:0},{x:0,y:-1},{x:1,y:0},{x:0,y:1}];
  * 
  * Parameters:
  *     type - the identifier of the player
- *     name - the name of the player
- *     stage - (optional) the stage reference
  */
-var Character = function(type, name, stage){
+var Character = function(type, name){
 	// For debuggging
 	this.logger.setLogLevel("all");
-	this.logger.verbose(this.tag, "Character: +++START+++ type = " + type 
-	                    + ", name = " + name + ", stage = " + stage);
+	this.logger.verbose(this.tag, "Character: +++START+++ type = " + type + ", name = " + name);
 
 	// Check input parameters
 	if(!type)
 	{ this.logger.error(this.tag, "Character: type undefined"); }
 	if(!name)
 	{ this.logger.error(this.tag, "Character: name undefined"); }
-	if(!stage)
-	{ this.logger.debug(this.tag, "Character: stage undefined"); }
 
 	// Identity related variables
 	this.name = name;       // Name of Character
@@ -52,12 +47,15 @@ var Character = function(type, name, stage){
 	this.pathToTarget;
 	this.frequency = 1;     // Animation frequency
 	this.step = 2;          // Velocity of moving for every frame
+	this.numFrameX = 4;
+	this.numFrameY = 4;
 
 	// Memeber objects and reference
 	this.bag = [];                 // Items hold by character
 	this.target = null;            // The targeting position or object
 	//this.stage = this.getStage();  // reference of stage for dropping item
      
+	this.boundingShape;
 };
 
 // The prototype defined as an object
@@ -84,7 +82,7 @@ var CharacterProtoType = {
 		if(!stage)
 		{ this.logger.error(this.tag, "dropItem: getStage() return undefined"); }
 		else
-		{ this.stage.AddObject(item); }
+		{ this.stage.addChild(item); }
 	},
 
 	/*
@@ -168,23 +166,23 @@ var CharacterProtoType = {
 
 	setProp : function(prop){
 		this.prop=prop;
-		this.x=prop.x*TILE_SIZE;
-		this.y=prop.y*TILE_SIZE;
+		initP = this.tileCenter(new Point(prop.x,prop.y));
+		this.x=initP.x;
+		this.y=initP.y;
 		this.regX=prop.regX;
 		this.regY=prop.regY;
 	},
 
-	initPosOnMap : function(){
-		this.setPosition(new Point(this.x, this.y));
-	},
-
 	setImage: function(img){
 		this.image=img;
+		frameWidth=img.width/this.numFrameX;
+		frameHeight=img.height/this.numFrameY;
 		var spriteSheet = new SpriteSheet({
 			// The large image used to define frames
 			images: [this.image], //image to use
 			// Frame size definition
-			frames: { width: 32, height: 48, regX: 0, regY: 0},
+			frames: { width: frameWidth, height: frameHeight, regX: frameWidth/2, regY: frameHeight/2},
+			//frames: { width: 100, height: 100, regX: 50, regY: 50},
 			// The definition of every animation it takes and the transition relation
 			animations: {
 				walkdown:   {frames:[0,  0,  1,  1,  1,  2,  2,  3,  3,  3], 
@@ -237,8 +235,10 @@ var CharacterProtoType = {
 
 		if(this.type === PLAYER){
 			//Keep the player moving at center if possible, otherwise, move it as usual
-			if(!this.getStage().moveOtherObjs(this, this.vX, this.vY))
-				this.setPosition(newP);
+			if(this.getStage().moveOtherObjs(this, this.vX, this.vY))
+				this.setPosition(this.getPos());	//renew the posOnMap
+			else
+				this.setPosition(newP);				//fail to move in the center, move as usual
 		}
 		else{
 			this.setPosition(newP);
@@ -250,10 +250,24 @@ var CharacterProtoType = {
 		this.x = newP.x;
 		this.y = newP.y;
 		this.getStage().setPosOnMap(this,newP);
+
+		if(this.boundingShape)
+			this.getStage().removeChild(this.boundingShape);
+		this.boundingShape = new Shape();
+		xx=this.x-2*this.regX;
+		yy=this.y-this.regY;
+		ww=2*this.regX;
+		hh=2*this.regY;
+		this.boundingShape.graphics.beginStroke("a30000").drawRect(xx, yy, ww, hh);
+		this.getStage().addChild(this.boundingShape);
 	},
 
 	getPos : function(){
 		return new Point(this.x, this.y);
+	},
+
+	tileCenter : function(p){
+		return p.scalarPlus(0.5).scalarMult(TILE_SIZE);
 	},
 
 };

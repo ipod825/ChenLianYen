@@ -1,5 +1,6 @@
-function Rpg(canvas) {
-	this.sourceManager = new SourceManager($(canvas).width,$(canvas).height);
+function Rpg(canvasId) {
+	canvas=document.getElementById(canvasId);
+	this.sourceManager = new SourceManager(canvas.width,canvas.height);
 	this.player = this.sourceManager.loadCharacter(PLAYER,"player");
 	this.stage = new MyStage(canvas, this.sourceManager, this.player);
 	this.sourceManager.setStage(this.stage); //To show the downloaing progress on the stage;
@@ -10,8 +11,7 @@ function Rpg(canvas) {
 	//this.UIController = window.UIController;
 
 	var self = this;
-	//window.onclick= function(e){ self.input.handleClick(e);}
-	//this.stage.addEventListener("click",self.input.handleClick.bind(self.input));
+	canvas.onclick= function (e){ self.input.handleClick(e); }
 	document.onkeydown = function (e) { self.input.handleKeyDown(e); };
 	document.onkeypress= function (e) { self.input.handleKeyPress(e); };
 	document.onkeyup = function (e) { self.input.handleKeyUp(e); };
@@ -22,7 +22,7 @@ Rpg.prototype={
 start: function (mapName) {
 	this.stage.setCurrentMap(mapName);
 	this.stage.checkCell();
-	this.addCharacter(this.player);
+	this.stage.addChild(this.player);
 	Ticker.addListener(this.player);
 
 	this.UserInterface.show("HUD");
@@ -32,11 +32,6 @@ start: function (mapName) {
 	// Targeting 60 FPS
 	Ticker.useRAF = false;
 	Ticker.setFPS(60);
-},
-
-addCharacter : function(character){
-	this.stage.addChild(character);
-	character.initPosOnMap();
 },
 
 tick: function () {
