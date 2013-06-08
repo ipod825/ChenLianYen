@@ -43,7 +43,10 @@ MyStageProtoType={
 	 * Return : bool
 	 */
 	isPassable : function(obj, pos){
-		p = this.relPointOnMap(pos);
+		if(obj.dir==DIR_DOWN)
+			p = this.relPointOnMap(new Point(pos.x,pos.y+16));
+		else
+			p = this.relPointOnMap(pos);
 		if(p.equal(obj.posOnMap))
 			return true;
 		return ( this.getTile(p.x, p.y)==FREE );
@@ -148,9 +151,12 @@ MyStageProtoType={
 		this.tiles[x][y]=value;
 	},
 
-	indexOnMap : function(index){
-		a=Math.round(index/TILE_SIZE);
+	roundIndexOnMap : function(index){
 		return Math.round(index/TILE_SIZE);
+	},
+
+	indexOnMap : function(index){
+		return Math.floor(index/TILE_SIZE);
 	},
 
 	pointOnMap : function(p,y){
@@ -169,10 +175,10 @@ MyStageProtoType={
 
 
 	rectangleOnMap : function (r){
-		return new Rectangle(this.indexOnMap(r.x),
-			this.indexOnMap(r.y),
-			this.indexOnMap(r.width),
-			this.indexOnMap(r.height));
+		return new Rectangle(this.roundIndexOnMap(r.x),
+			this.roundIndexOnMap(r.y),
+			this.roundIndexOnMap(r.width),
+			this.roundIndexOnMap(r.height));
 
 	},
 

@@ -1,11 +1,8 @@
 {
-	"x": 1,
-	"y": 2,
-	"regX": 16,
-	"regY": 24,
+	"x": 4,
+	"y": 7,
 	"id": "1",
 	"name": "EV001",
-
 	"image": [ "player.png", "player_SWD_01.png", "player_SWD_02.png"],
 	"pattern": 0,
 	"trigger": "action_button",

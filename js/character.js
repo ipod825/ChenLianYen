@@ -55,7 +55,6 @@ var Character = function(type, name){
 	this.target = null;            // The targeting position or object
 	//this.stage = this.getStage();  // reference of stage for dropping item
      
-	this.boundingShape;
 };
 
 // The prototype defined as an object
@@ -169,19 +168,19 @@ var CharacterProtoType = {
 		initP = this.tileCenter(new Point(prop.x,prop.y));
 		this.x=initP.x;
 		this.y=initP.y;
-		this.regX=prop.regX;
-		this.regY=prop.regY;
 	},
 
 	setImage: function(img){
 		this.image=img;
 		frameWidth=img.width/this.numFrameX;
 		frameHeight=img.height/this.numFrameY;
+		this.regX=frameWidth/2;
+		this.regY=frameHeight/2;
 		var spriteSheet = new SpriteSheet({
 			// The large image used to define frames
 			images: [this.image], //image to use
 			// Frame size definition
-			frames: { width: frameWidth, height: frameHeight, regX: frameWidth/2, regY: frameHeight/2},
+			frames: { width: frameWidth, height: frameHeight, regX: 0, regY: 0},
 			//frames: { width: 100, height: 100, regX: 50, regY: 50},
 			// The definition of every animation it takes and the transition relation
 			animations: {
@@ -250,16 +249,6 @@ var CharacterProtoType = {
 		this.x = newP.x;
 		this.y = newP.y;
 		this.getStage().setPosOnMap(this,newP);
-
-		if(this.boundingShape)
-			this.getStage().removeChild(this.boundingShape);
-		this.boundingShape = new Shape();
-		xx=this.x-2*this.regX;
-		yy=this.y-this.regY;
-		ww=2*this.regX;
-		hh=2*this.regY;
-		this.boundingShape.graphics.beginStroke("a30000").drawRect(xx, yy, ww, hh);
-		this.getStage().addChild(this.boundingShape);
 	},
 
 	getPos : function(){
@@ -267,7 +256,7 @@ var CharacterProtoType = {
 	},
 
 	tileCenter : function(p){
-		return p.scalarPlus(0.5).scalarMult(TILE_SIZE);
+		return p.scalarMinus(0.5).scalarMult(TILE_SIZE);
 	},
 
 };
