@@ -171,7 +171,7 @@ var CharacterProtoType = {
 		this.y=initP.y;
 	},
 
-	setImage: function(imgName, img){
+	addImage: function(imgName, img){
 		this.images[imgName]=img;
 	},
 

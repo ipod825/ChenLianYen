@@ -1,7 +1,8 @@
 function Map(name){
 	this.name = name;
 	this.prop;
-	this.images={};
+	//this.images={};
+	this.images=[];
 	this.image;		//the background image
 	this.tiles;
 	this.layers={};
@@ -21,19 +22,47 @@ MapPrototype = {
 			this.layers[layersArr[i].name]=layersArr[i];
 	},
 
-	setImage: function(imgName, img){
-		this.images[imgName]=img;
+	addImage: function(imgName, img){
+		//this.images[imgName]=img;
+		this.images.push(img);
 	},
 
 	changeImage: function(imgName){
 		if(!imgName)
 			imgName=this.name;
-		img= this.images[imgName];
-		this.width = img.width;
-		this.height = img.height;
-		this.tiles=new Tile(img.width, img.height);
-		this.addChild(new Bitmap(img));
+		//img= this.images[imgName];
+		background=this.layers["Background"];
+		this.width = background.width;
+		this.height = background.height;
+		this.tiles=new Tile(this.width, this.height);
 
+		var spriteSheet = new SpriteSheet({
+			// The large image used to define frames
+			images: this.images,
+			// Frame size definition
+			frames: { width: TILE_SIZE, height: TILE_SIZE, regX: 0, regY: 0},
+		});
+
+		bmpSeq=new BitmapAnimation(spriteSheet);
+		for(var y=0;y<this.height;++y){
+			for(var x=0;x<this.width;++x){
+				bmpSeq.x=x*TILE_SIZE;
+				bmpSeq.y=y*TILE_SIZE;
+				bmpSeq.currentFrame=background.data[y*this.width+x]-1;
+				this.addChild(bmpSeq);
+				bmpSeq = bmpSeq.clone();
+			}
+		}
+		//this.addChild(new Bitmap(img));
+
+		objs=this.layers["Items"].objects;
+		for(var i=0; i<objs.length; ++i){
+			bmpSeq.x=this.tiles.toTRoundIndex(objs[i].x)*TILE_SIZE;
+			bmpSeq.y=this.tiles.toTRoundIndex(objs[i].y)*TILE_SIZE;
+			bmpSeq.currentFrame=objs[i].gid-1;
+			this.addChild(bmpSeq);
+			bmpSeq = bmpSeq.clone();
+		}
 		
 
 		objs=this.layers["Collision"].objects;

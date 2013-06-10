@@ -13,6 +13,31 @@
         }, 
         {
          "height":24,
+         "name":"Items",
+         "objects":[
+                {
+                 "gid":961,
+                 "height":0,
+                 "name":"",
+                 "properties":
+                    {
+
+                    },
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":320,
+                 "y":320
+                }],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "width":40,
+         "x":0,
+         "y":0
+        }, 
+        {
+         "height":24,
          "name":"Collision",
          "objects":[
                 {
@@ -151,6 +176,21 @@
          "imagewidth":1280,
          "margin":0,
          "name":"example",
+         "properties":
+            {
+
+            },
+         "spacing":0,
+         "tileheight":32,
+         "tilewidth":32
+        }, 
+        {
+         "firstgid":961,
+         "image":"..\/Images\/sword.png",
+         "imageheight":32,
+         "imagewidth":32,
+         "margin":0,
+         "name":"sword",
          "properties":
             {
 

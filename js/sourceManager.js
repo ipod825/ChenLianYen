@@ -106,7 +106,7 @@ loadImage : function(obj, name){
 	img = new Image();
 	img.src = url;
 	img.onload = function(obj){
-		obj.setImage(name, this.images[name]);
+		obj.addImage(name, this.images[name]);
 		this.handleElementLoad();
 	}.bind(this, obj);
 	img.onerror = this.handleElementError;

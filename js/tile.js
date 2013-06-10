@@ -1,6 +1,6 @@
 function Tile(width, height){
-	this.width = this.toTIndex(width);
-	this.height = this.toTIndex(height);
+	this.width = width;
+	this.height = height;
 	this.grid = new Array(this.width);
 	for(var i=0; i<this.width; ++i){
 		this.grid[i]=new Array(this.height);

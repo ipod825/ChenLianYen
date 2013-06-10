@@ -157,7 +157,7 @@ MyStageProtoType={
 		this.currentMap.changeImage();
 		this.removeAllChildren();
 		this.addChild(this.currentMap);
-		this.bgBox=new MyRectangle(0, 0, this.currentMap.width, this.currentMap.height);
+		this.bgBox=new MyRectangle(0, 0, this.currentMap.width*TILE_SIZE, this.currentMap*TILE_SIZE);
 		this.tiles=this.currentMap.tiles.clone();
 	},
 
