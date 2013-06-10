@@ -137,14 +137,16 @@ loadMap : function(name){
 	if (this.maps[name]) {
 		return this.maps[name];
 	}
-	map = new Map();
+	map = new Map(name);
 	++this.numElementsToLoad;
 	var url = 'Maps/' + name + '.json';
 	var self=this;
 	this.ajax(url, function(ret) {
 		var prop= JSON.parse(ret);
-		map.setProp(prop);
-		self.loadImage(map, name);
+		map.setProp(prop, self.loadImage);
+		for(var i=0; i<prop.tilesets.length; ++i){
+			self.loadImage(map, prop.tilesets[i].image);
+		}
 		self.handleElementLoad(name);
 	});
 	this.maps[name] = map;

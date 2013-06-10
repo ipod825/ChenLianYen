@@ -258,7 +258,7 @@ var CharacterProtoType = {
 	setPosition : function(newP){
 		this.x = newP.x;
 		this.y = newP.y;
-		this.getStage().setPosOnMap(this,newP);
+		this.getStage().setPosOnTile(this,newP);
 	},
 
 	getPos : function(){

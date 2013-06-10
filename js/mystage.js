@@ -8,7 +8,6 @@ function MyStage(canvas, sourceManager, player){
 	this.viewBox=new MyRectangle(0,0,canvas.width,canvas.height);	//The bounding box of the screen
 	this.bgBox;
 	this.currentMap;
-	this.bg;
 	this.sourceManager = sourceManager;
 	this.tiles;
 	this.player=player;
@@ -31,7 +30,7 @@ MyStageProtoType={
 	 */
 	addChild : function(child){
 		if(child.posOnMap)
-			this.setPosOnMap(child, child.getPos());
+			this.setPosOnTile(child, child.getPos());
 		Stage.prototype.addChild.call(this,child);
 	},
 
@@ -44,12 +43,12 @@ MyStageProtoType={
 	 */
 	isPassable : function(obj, pos){
 		if(obj.dir==DIR_DOWN)
-			p = this.relPointOnMap(new Point(pos.x,pos.y+16));
+			p = this.relPointOnTile(new Point(pos.x,pos.y+16));
 		else
-			p = this.relPointOnMap(pos);
+			p = this.relPointOnTile(pos);
 		if(p.equal(obj.posOnMap))
 			return true;
-		return ( this.getTile(p.x, p.y)==FREE );
+		return ( this.tiles.get(p.x, p.y)==FREE );
 	},
 
 	/*
@@ -60,7 +59,7 @@ MyStageProtoType={
 	 * Return : Path between beg and end
 	 */
 	findPath : function(beg, end){
-		var graph = new Graph(this.tiles);
+		var graph = new Graph(this.tiles.grid);
 		var start = graph.nodes[beg.x][beg.y];
 		var end = graph.nodes[end.x][end.y];
 		path = astar.search(graph.nodes, start, end);
@@ -74,7 +73,7 @@ MyStageProtoType={
 	 * 	p: The position in pixel unit
 	 */
 	setTarget : function(p){
-		p=this.relPointOnMap(p);
+		p=this.relPointOnTile(p);
 		obj=this.objectOnPos(p);
 		this.player.setTarget({"obj":obj,"pos":p});
 	},
@@ -85,14 +84,14 @@ MyStageProtoType={
 	 * 	obj : The object who queries
 	 * 	newP : The new position of the obj
 	 */
-	setPosOnMap : function(obj,newP){
-		newP=this.relPointOnMap(newP);
+	setPosOnTile : function(obj,newP){
+		newP=this.relPointOnTile(newP);
 		if(obj.posOnMap.x !== newP.x || obj.posOnMap.y != newP.y){
 			try{
-				this.setTile(obj.posOnMap.x,obj.posOnMap.y,FREE);
+				this.tiles.set(obj.posOnMap.x,obj.posOnMap.y,FREE);
 			}
 			catch(e){}
-			this.setTile(newP.x,newP.y,obj);
+			this.tiles.set(newP.x,newP.y,obj);
 			obj.posOnMap=newP;
 		}
 	},
@@ -137,97 +136,35 @@ MyStageProtoType={
 	/* Internal use */
 
 	objectOnPos: function(pos){
-		obj=this.getTile(pos.x,pos.y);
+		obj=this.tiles.get(pos.x,pos.y);
 		if(obj<=BLOCK)
 			obj=null;
 		return obj;
 	},
 
-	getTile : function(x,y){
-		return this.tiles[x][y];
+	relPointOnTile : function(p){
+		return this.tiles.toTPoint(this.localToLocal(p.x,p.y,this.currentMap));
 	},
 
-	setTile : function(x,y,value){
-		this.tiles[x][y]=value;
-	},
-
-	roundIndexOnMap : function(index){
-		return Math.round(index/TILE_SIZE);
-	},
-
-	indexOnMap : function(index){
-		return Math.floor(index/TILE_SIZE);
-	},
-
-	pointOnMap : function(p,y){
-		if(y)
-			return new Point(this.indexOnMap(p), this.indexOnMap(y));
-		else
-			return new Point(this.indexOnMap(p.x), this.indexOnMap(p.y));
-	},
-
-	relPointOnMap : function(p){
-		bgp=new Point(this.bg.x, this.bg.y);
-		rel=this.localToLocal(p.x,p.y,this.bg);
-		return this.pointOnMap(rel);
-		//return this.pointOnMap(this.localToLocal(p.x,p.y,this.bg));
-	},
-
-
-	rectangleOnMap : function (r){
-		return new Rectangle(this.roundIndexOnMap(r.x),
-			this.roundIndexOnMap(r.y),
-			this.roundIndexOnMap(r.width),
-			this.roundIndexOnMap(r.height));
-
-	},
 
 	sameTileIndex :function(x1, x2){
-		return (this.indexOnMap(Math.abs(x1-x2))==0);
+		return (this.tiles.toTIndex(Math.abs(x1-x2))==0);
 	},
 
 	/*	Init part */
 	setCurrentMap : function(mapName){
-		this.currentMap = this.sourceManager.loadMap(mapName)
+		this.currentMap = this.sourceManager.loadMap(mapName);
+		this.currentMap.changeImage();
 		this.removeAllChildren();
-		this.bg=this.currentMap.image;
-		bgWidth=this.bg.image.width;
-		bgHeight=this.bg.image.height;
-		this.addChild(this.bg);
-		this.bgBox=new MyRectangle(this.bg.x, this.bg.y, bgWidth, bgHeight);
-		this.initTiles(bgWidth, bgHeight);
+		this.addChild(this.currentMap);
+		this.bgBox=new MyRectangle(0, 0, this.currentMap.width, this.currentMap.height);
+		this.tiles=this.currentMap.tiles.clone();
 	},
-
-	initTiles : function(bgWidth, bgHeight){
-		width = this.indexOnMap(bgWidth);
-		height = this.indexOnMap(bgHeight);
-		this.tiles = new Array(width);
-		for(var i=0; i<width; ++i){
-			this.tiles[i]=new Array(height);
-			for(var j=0;j<height;++j){
-				this.setTile(i,j,FREE);
-			}
-		}
-
-		objs=this.currentMap.prop.layers[1].objects;
-		for(var i=0; i<objs.length; ++i){
-			this.setArea(this.rectangleOnMap(objs[i]), BLOCK);
-		}
-	},
-
-	setArea : function(area, type){
-		for(var i=area.x;i<area.x+area.width;++i){
-			for(var j=area.y;j<area.y+area.height;++j){
-				this.setTile(i,j,type);
-			}
-		}
-	},
-
 
 	checkCell : function(){
-		for(var i=0;i<this.tiles.length;++i){
-			for(var j=0;j<this.tiles[i].length;++j){
-				if(this.getTile(i,j)){
+		for(var i=0;i<this.tiles.width;++i){
+			for(var j=0;j<this.tiles.height;++j){
+				if(this.tiles.get(i,j)){
 					var shape = new createjs.Shape();
 					shape.graphics.beginStroke("f30000").drawRect(i*TILE_SIZE, j*TILE_SIZE, TILE_SIZE, TILE_SIZE);
 					this.addChild(shape);
