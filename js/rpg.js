@@ -23,6 +23,7 @@ start: function (mapName) {
 	this.stage.setCurrentMap(mapName);
 	this.stage.checkCell();
 	this.stage.addChild(this.player);
+	this.player.changeImage();
 	Ticker.addListener(this.player);
 
 	this.UserInterface.show("HUD");

@@ -35,7 +35,8 @@ var Character = function(type, name){
 	this.type = type;       // Identifier
 
 	// Display related variables
-	this.image = null;      // The image displayed on map
+	this.images = [];      // The image displayed on map
+	this.image;
 	this.prop = null;      
 
 	// Animation related variables
@@ -170,15 +171,23 @@ var CharacterProtoType = {
 		this.y=initP.y;
 	},
 
-	setImage: function(img){
-		this.image=img;
+	setImage: function(imgName, img){
+		this.images[imgName]=img;
+	},
+
+	changeImage : function(suffix){
+		if(!suffix)
+			suffix="";
+		else
+			suffix="_"+suffix;
+		img=this.images[this.name+suffix];
 		frameWidth=img.width/this.numFrameX;
 		frameHeight=img.height/this.numFrameY;
 		this.regX=frameWidth/2;
 		this.regY=frameHeight/2;
 		var spriteSheet = new SpriteSheet({
 			// The large image used to define frames
-			images: [this.image], //image to use
+			images: [img], //image to use
 			// Frame size definition
 			frames: { width: frameWidth, height: frameHeight, regX: 0, regY: 0},
 			//frames: { width: 100, height: 100, regX: 50, regY: 50},
@@ -207,6 +216,7 @@ var CharacterProtoType = {
 		// Start frame
 		this.currentFrame=8;
 	},
+
 
 	/* 
 	 * Function: tick

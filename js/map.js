@@ -16,8 +16,7 @@ Map.prototype = {
 		this.imageName=this.prop.tilesets[0].image;
 	},
 
-
-	setImage: function(img){
+	setImage: function(imgName, img){
 		this.image=new Bitmap(img);
 	},
 }
