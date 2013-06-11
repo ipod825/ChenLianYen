@@ -23,8 +23,7 @@
  *     var item = new Item("itemHealthPotion", 2);
  *     var item = new Item("itemHealthPotion");
  */
-var Item = function(type, number, description)
-{
+var Item = function(type, number, description) {
 	// For debugging
 	this.logger.setLogLevel("all");
 	this.logger.verbose(this.tag, "Item: +++START+++ type = " + type + 

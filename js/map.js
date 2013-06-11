@@ -3,10 +3,10 @@ function Map(name){
 	this.prop;
 	//this.images={};
 	this.images=[];
-	this.image;		//the background image
-	this.tiles;
+	this.tiles=null;
 	this.layers={};
 	this.logger.setLogLevel("verbose");
+	this.bg;
 
 }
 
@@ -14,6 +14,11 @@ MapPrototype = {
 
 	tag : "[Map]: ",
 	logger : new ConsoleLogger(),
+
+	clone : function(){
+		//Container c=Container.prototype.clone.call(this);
+		//c.images=this.images;
+	},
 
 	setProp : function(prop){
 		this.prop=prop;
@@ -27,10 +32,7 @@ MapPrototype = {
 		this.images.push(img);
 	},
 
-	changeImage: function(imgName){
-		if(!imgName)
-			imgName=this.name;
-		//img= this.images[imgName];
+	initTiles: function(){
 		background=this.layers["Background"];
 		this.width = background.width;
 		this.height = background.height;
@@ -64,12 +66,21 @@ MapPrototype = {
 			bmpSeq = bmpSeq.clone();
 		}
 		
+		objs=this.layers["Characters"].objects;
+		for(var i=0; i<objs.length; ++i){
+			bmpSeq.x=this.tiles.toTRoundIndex(objs[i].x)*TILE_SIZE;
+			bmpSeq.y=this.tiles.toTRoundIndex(objs[i].y)*TILE_SIZE;
+			bmpSeq.currentFrame=objs[i].gid-1;
+			this.addChild(bmpSeq);
+			bmpSeq = bmpSeq.clone();
+		}
 
 		objs=this.layers["Collision"].objects;
 		for(var i=0; i<objs.length; ++i){
 			this.tiles.setArea(objs[i], BLOCK);
 		}
 	},
+
 }
 
 Map.prototype= new Container();

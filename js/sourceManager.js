@@ -98,7 +98,7 @@ loadImage : function(obj, name){
 	pattern=/(.+\/)?(.+)\.png/;
 	name=name.replace(pattern,'$2');
 	if(this.images[name]){
-		obj.setImage(this.images[name]);
+		//obj.setImage(this.images[name]);
 		return this.images[name];
 	}
 	++this.numElementsToLoad;

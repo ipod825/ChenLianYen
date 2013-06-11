@@ -1,16 +1,15 @@
 FREE=0;
 BLOCK=1;
 
-function MyStage(canvas, sourceManager, player){
+function MyStage(canvas, rpg){
 	Stage.call(this,canvas);
 //	this.center= this.pointOnMap(width/2,height/2);	//The center of the screen
 	this.center= new Point(canvas.width/2,canvas.height/2);	//The center of the screen
 	this.viewBox=new MyRectangle(0,0,canvas.width,canvas.height);	//The bounding box of the screen
+	this.rpg=rpg;
 	this.bgBox;
 	this.currentMap;
-	this.sourceManager = sourceManager;
 	this.tiles;
-	this.player=player;
 	this.logger.setLogLevel("all");
 }
 
@@ -67,16 +66,6 @@ MyStageProtoType={
 		return path;
 	},
 
-	/*
-	 * Set the target for the player when user click on the canvas
-	 * Paramters:
-	 * 	p: The position in pixel unit
-	 */
-	setTarget : function(p){
-		p=this.relPointOnTile(p);
-		obj=this.objectOnPos(p);
-		this.player.setTarget({"obj":obj,"pos":p});
-	},
 
 	/*
 	 * Update the tiles when an object move
@@ -135,11 +124,13 @@ MyStageProtoType={
 
 	/* Internal use */
 
-	objectOnPos: function(pos){
-		obj=this.tiles.get(pos.x,pos.y);
+	targetOnPos: function(pos){
+		p=this.relPointOnTile(pos);
+		obj=this.tiles.get(p.x,p.y);
 		if(obj<=BLOCK)
 			obj=null;
-		return obj;
+		target={"obj":obj,"pos":p};
+		return target;
 	},
 
 	relPointOnTile : function(p){
@@ -152,13 +143,12 @@ MyStageProtoType={
 	},
 
 	/*	Init part */
-	setCurrentMap : function(mapName){
-		this.currentMap = this.sourceManager.loadMap(mapName);
-		this.currentMap.changeImage();
+	setCurrentMap : function(map){
+		this.bgBox=new MyRectangle(0, 0, map.width*TILE_SIZE, map*TILE_SIZE);
+		this.currentMap=map;
+		this.tiles=map.tiles.clone();
 		this.removeAllChildren();
 		this.addChild(this.currentMap);
-		this.bgBox=new MyRectangle(0, 0, this.currentMap.width*TILE_SIZE, this.currentMap*TILE_SIZE);
-		this.tiles=this.currentMap.tiles.clone();
 	},
 
 	checkCell : function(){

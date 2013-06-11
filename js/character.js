@@ -50,6 +50,7 @@ var Character = function(type, name){
 	this.step = 2;          // Velocity of moving for every frame
 	this.numFrameX = 4;
 	this.numFrameY = 4;
+	this.suffix = "none";
 
 	// Memeber objects and reference
 	this.bag = [];                 // Items hold by character
@@ -175,11 +176,16 @@ var CharacterProtoType = {
 		this.images[imgName]=img;
 	},
 
-	changeImage : function(suffix){
+	resetImage: function(suffix){
 		if(!suffix)
 			suffix="";
 		else
 			suffix="_"+suffix;
+		if(this.suffix==suffix)
+			return;
+		else
+			this.suffix==suffix;
+
 		img=this.images[this.name+suffix];
 		frameWidth=img.width/this.numFrameX;
 		frameHeight=img.height/this.numFrameY;

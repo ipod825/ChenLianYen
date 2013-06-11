@@ -13,6 +13,31 @@
         }, 
         {
          "height":24,
+         "name":"Characters",
+         "objects":[
+                {
+                 "gid":986,
+                 "height":0,
+                 "name":"",
+                 "properties":
+                    {
+
+                    },
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":192,
+                 "y":256
+                }],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "width":40,
+         "x":0,
+         "y":0
+        }, 
+        {
+         "height":24,
          "name":"Items",
          "objects":[
                 {
@@ -197,6 +222,54 @@
             },
          "spacing":0,
          "tileheight":32,
+         "tilewidth":32
+        }, 
+        {
+         "firstgid":962,
+         "image":"..\/Images\/bear.png",
+         "imageheight":192,
+         "imagewidth":128,
+         "margin":0,
+         "name":"enemy",
+         "properties":
+            {
+
+            },
+         "spacing":0,
+         "tileheight":32,
+         "tileproperties":
+            {
+             "0":
+                {
+                 "name":"bear"
+                },
+             "9":
+                {
+                 "name":"bear"
+                }
+            },
+         "tilewidth":32
+        }, 
+        {
+         "firstgid":986,
+         "image":"..\/Images\/player.png",
+         "imageheight":192,
+         "imagewidth":128,
+         "margin":0,
+         "name":"player",
+         "properties":
+            {
+
+            },
+         "spacing":0,
+         "tileheight":32,
+         "tileproperties":
+            {
+             "0":
+                {
+                 "name":"player"
+                }
+            },
          "tilewidth":32
         }],
  "tilewidth":32,

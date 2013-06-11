@@ -6,7 +6,6 @@ KEYCODE_DOWN= 40;
 function Input(rpg){
 	this.rpg = rpg;
 	this.player = rpg.player;
-	this.stage = rpg.stage;
 	this.logger=new ConsoleLogger();
 	this.logger.setLogLevel("verbose");
 }
@@ -16,7 +15,7 @@ handleClick : function(e){
 	//this.player.setTarget(this.stage)
 	//alert(e);
 	//if(e.toElement.id=="rpgDiv")
-		this.stage.setTarget(new Point(e.offsetX, e.offsetY));
+		this.rpg.setTarget(new Point(e.offsetX, e.offsetY));
 //		this.stage.setTarget(new Point(e.stageX, e.stageY));
 },
 
