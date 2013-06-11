@@ -81,13 +81,16 @@ MapPrototype = {
 		
 		objs=this.layers["Monsters"].objects;
 		for(var i=0; i<objs.length; ++i){
-	//		var gid=objs[i].gid;
-	//		var tilesetId = this.getTilesetId(gid);
-	//		var character = new Character(objs[i].type, objs[i].name);
-	//		character.setProp(objs[i]);
-	//		character.addImage(objs[i].name,this.images[tilesetId]);
-	//		character.resetImage();
-	//		this.addChild(character);
+			var gid=objs[i].gid;
+			var tilesetId = this.getTilesetId(gid);
+			var character = new Character(objs[i].type, objs[i].name);
+			objs[i].x=this.tiles.toTRoundIndex(objs[i].x);
+			objs[i].y=this.tiles.toTRoundIndex(objs[i].y);
+			objs[i].dir=objs[i].properties.dir;
+			character.setProp(objs[i]);
+			character.addImage(objs[i].name,this.images[tilesetId]);
+			character.resetImage();
+			this.addChild(character);
 		}
 
 		objs=this.layers["Collision"].objects;

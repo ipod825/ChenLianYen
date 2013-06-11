@@ -170,6 +170,14 @@ var CharacterProtoType = {
 		initP = this.tileCenter(new Point(prop.x,prop.y));
 		this.x=initP.x;
 		this.y=initP.y;
+		if(prop.dir=="down")
+			this.dir=DIR_DOWN;
+		else if(prop.dir=="up")
+			this.dir=DIR_UP;
+		else if(prop.dir=="left")
+			this.dir=DIR_LEFT;
+		else if(prop.dir=="right")
+			this.dir=DIR_RIGHT;
 	},
 
 	addImage: function(imgName, img){
