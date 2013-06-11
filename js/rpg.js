@@ -55,7 +55,7 @@ tick: function () {
  * 	p: The position in pixel unit
  */
 setTarget : function(p){
-	this.player.setTarget(this.stage.objOnPos(p));
+	this.player.setTarget(this.stage.targetOnPos(p));
 },
 
 loadMap: function (mapName) {

@@ -4,6 +4,7 @@ function Map(name){
 	//this.images={};
 	this.images=[];
 	this.tiles=null;
+	this.tilesetIndex=[];
 	this.layers={};
 	this.logger.setLogLevel("verbose");
 	this.bg;
@@ -25,6 +26,18 @@ MapPrototype = {
 		layersArr=this.prop.layers;
 		for (i=0; i<layersArr.length; ++i)
 			this.layers[layersArr[i].name]=layersArr[i];
+	},
+
+	getTilesetId: function(index){
+		id=0;
+		for(i=0;i<this.prop.tilesets.length;++i){
+			if(index>this.prop.tilesets[i].firstgid){
+				++id;
+				continue;
+			}
+			return id;
+		}
+		return id-1;
 	},
 
 	addImage: function(imgName, img){
@@ -66,13 +79,15 @@ MapPrototype = {
 			bmpSeq = bmpSeq.clone();
 		}
 		
-		objs=this.layers["Characters"].objects;
+		objs=this.layers["Monsters"].objects;
 		for(var i=0; i<objs.length; ++i){
-			bmpSeq.x=this.tiles.toTRoundIndex(objs[i].x)*TILE_SIZE;
-			bmpSeq.y=this.tiles.toTRoundIndex(objs[i].y)*TILE_SIZE;
-			bmpSeq.currentFrame=objs[i].gid-1;
-			this.addChild(bmpSeq);
-			bmpSeq = bmpSeq.clone();
+	//		var gid=objs[i].gid;
+	//		var tilesetId = this.getTilesetId(gid);
+	//		var character = new Character(objs[i].type, objs[i].name);
+	//		character.setProp(objs[i]);
+	//		character.addImage(objs[i].name,this.images[tilesetId]);
+	//		character.resetImage();
+	//		this.addChild(character);
 		}
 
 		objs=this.layers["Collision"].objects;

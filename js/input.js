@@ -5,7 +5,6 @@ KEYCODE_RIGHT = 39;
 KEYCODE_DOWN= 40;
 function Input(rpg){
 	this.rpg = rpg;
-	this.player = rpg.player;
 	this.logger=new ConsoleLogger();
 	this.logger.setLogLevel("verbose");
 }
@@ -26,7 +25,7 @@ handleKeyDown : function (e) {
 		case KEYCODE_DOWN:
 		case KEYCODE_LEFT:
 		case KEYCODE_RIGHT:
-			this.player.setDirection(e.keyCode);
+			this.rpg.player.setDirection(e.keyCode);
 			break;
 		default:
 			//alert(e.keyCode);
@@ -39,7 +38,7 @@ handleKeyPress : function (e) {
 },
 
 handleKeyUp : function (e) {
-	this.player.setSpeedAndAnimation(0,0);
+	this.rpg.player.setSpeedAndAnimation(0,0);
 },
 
 }
