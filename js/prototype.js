@@ -2,11 +2,11 @@
  * DisplayObject
  */
 
-DisplayObjectPrototype={}
+BitmapAnimationPrototype={}
 //DisplayObjectPrototype.posOnMap = new Point(-1,-1);
-DisplayObject.prototype["posOnMap"] = null;
+BitmapAnimation.prototype["posOnMap"] = null;
 
 
 for (var obj in DisplayObjectPrototype) { 
-	DisplayObject.prototype[obj] = DisplayObjectPrototype[obj]; 
+	BitmapAnimation.prototype[obj] = BitmapAnimationPrototype[obj]; 
 } 

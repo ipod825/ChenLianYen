@@ -1,3 +1,11 @@
+function objToArray(obj){
+	result=[];
+	for(var i in obj){
+		result.push(obj[i]);
+	}
+	return result;
+}
+
 function MyRectangle(left,top,width,height){
 	this.left=left;
 	this.top=top;

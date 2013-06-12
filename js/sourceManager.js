@@ -114,36 +114,17 @@ loadImage : function(obj, name){
 	return img;
 },
 
-loadCharacter : function(type, name){
-	if (this.characters[name]) {
-		return this.characters[name];
-	}
-	character = new Character(type, name);
-	++this.numElementsToLoad;
-	var url = 'Characters/' + name + '.json';
-	var self=this;
-	this.ajax(url, function(ret) {
-		var prop= JSON.parse(ret);
-		character.setProp(prop);
-		for(var i=0; i<prop.image.length; ++i)
-			self.loadImage(character, prop.image[i]);
-		self.handleElementLoad();
-	});
-	this.characters[name] = character;
-	return character;
-},
-
 loadMap : function(name){
 	if (this.maps[name]) {
 		return this.maps[name];
 	}
-	map = new Map(name);
+	map = new Map(name, this.width, this.height);
 	++this.numElementsToLoad;
 	var url = 'Maps/' + name + '.json';
 	var self=this;
 	this.ajax(url, function(ret) {
 		var prop= JSON.parse(ret);
-		map.setProp(prop, self.loadImage);
+		map.setProp(prop);
 		for(var i=0; i<prop.tilesets.length; ++i){
 			self.loadImage(map, prop.tilesets[i].image);
 		}

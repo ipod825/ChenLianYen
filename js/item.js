@@ -61,8 +61,16 @@ var Item = function(type, number, description) {
 };
 
 // Item Prototype
-Item.prototype = {
+ItemPrototype = {
 	// For debugging
 	tag : "[Item]: ", 
 	logger : new ConsoleLogger(),
 };
+
+
+Item.prototype = new BitmapAnimation(); 
+// Assign the members in the prototype object into the character prototype
+for (var obj in ItemPrototype) { 
+	Item.prototype[obj] = ItemPrototype[obj]; 
+} 
+
