@@ -1,18 +1,17 @@
-function Rpg(canvas) {
-	this.sourceManager = new SourceManager($(canvas).width,$(canvas).height);
-	this.player = this.sourceManager.loadCharacter(PLAYER,"player");
-	this.stage = new MyStage(canvas, this.sourceManager, this.player);
+function Rpg(canvasId) {
+	canvas=document.getElementById(canvasId);
+	this.sourceManager = new SourceManager(canvas.width,canvas.height);
+	this.stage = new MyStage(canvas, this);
 	this.sourceManager.setStage(this.stage); //To show the downloaing progress on the stage;
 	this.input=new Input(this);
+	this.currentMap;
 	
-	this.UserInterface = window.UserInterface;
-	this.UIController = window.UIController;
+	this.UserInterface;
+	//this.UserInterface = window.UserInterface;
+	//this.UIController = window.UIController;
 
 	var self = this;
-	//window.onclick= function(e){ self.input.handleClick(e);}
-	window.onclick = function(e){
-		self.input.handleClick(e);
-	}
+	canvas.onclick= function (e){ self.input.handleClick(e); }
 	document.onkeydown = function (e) { self.input.handleKeyDown(e); };
 	document.onkeypress= function (e) { self.input.handleKeyPress(e); };
 	document.onkeyup = function (e) { self.input.handleKeyUp(e); };
@@ -20,13 +19,19 @@ function Rpg(canvas) {
 
 Rpg.prototype={
 
-start: function (mapName) {
-	this.stage.setCurrentMap(mapName);
+/*
+ * In this function, all media are ready, we should init the map, characters ... with these medias.
+ */
+start: function () {
+	this.currentMap.initTiles();
+	this.stage.setCurrentMap(this.currentMap);
 	this.stage.checkCell();
-	this.addCharacter(this.player);
+	this.player.resetImage();
+
+	this.stage.addChild(this.player);
 	Ticker.addListener(this.player);
 
-	//this.UserInterface.show("HUD");
+	this.UserInterface.show("HUD");
 
 	// we want to do some work before we update the canvas, otherwise we could use Ticker.addListener(stage);
 	Ticker.addListener(this);
@@ -57,12 +62,6 @@ start: function (mapName) {
 	// TODO test setTarget
 	//var testTarget = new Target();
 	//this.player.setTarget(testTarget);
-
-},
-
-addCharacter : function(character){
-	this.stage.addChild(character);
-	character.initPosOnMap();
 },
 
 tick: function () {
@@ -74,14 +73,27 @@ tick: function () {
 	}
 },
 
+/*
+ * Set the target for the player when user click on the canvas
+ * Paramters:
+ * 	p: The position in pixel unit
+ */
+setTarget : function(p){
+	this.player.setTarget(this.stage.targetOnPos(p));
+},
+
 loadMap: function (mapName) {
-	this.sourceManager.setOnReady(this.start.bind(this,mapName));
-	this.sourceManager.loadMap(mapName);
+	this.sourceManager.setOnReady(this.start.bind(this));
+	this.player = this.sourceManager.loadCharacter(PLAYER,"player");
+	this.currentMap=this.sourceManager.loadMap(mapName);
 },
 
-loadUI: function() {
-	var self = this;
-	this.sourceManager.loadUI($("#rpgDiv"), "./CSS/UILayout.html");
-
+loadUI: function(uiDiv,uifile) {
+	this.UserInterface= new UserInterface(uiDiv,uifile);
 },
+//loadUI: function() {
+//	var self = this;
+//	this.sourceManager.loadUI($("#rpgDiv"), "./CSS/UILayout.html");
+//},
 }
+

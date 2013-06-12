@@ -67,6 +67,22 @@ var CharacterProtoType = {
 	logger : new ConsoleLogger(),
 
 	/*
+	 * Function: addItem
+	 *     This function add item to the bag of the character
+	 */
+	addItem : function(item)
+	{
+		if(!item)
+		{
+			this.logger.error(this.tag, "addItem: input item undefined");
+		}
+		else
+		{
+			this.bag.push(item);
+		}
+	},
+
+	/*
 	 * Function: dropItem
 	 *     This function let player dropp the item choose by client. Usually
 	 *     this function is invoked by UI when user choose the itme to drop
