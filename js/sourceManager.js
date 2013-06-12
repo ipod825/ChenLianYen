@@ -6,12 +6,12 @@ function SourceManager(width, height) {
 	this.width=width;
 	this.height=height;
 
-    this.numElementsToLoad = 0;
-    this.numElementsLoaded = 0;
+	this.numElementsToLoad = 0;
+	this.numElementsLoaded = 0;
 
 	this.audioExtension=null;
 
-    this.downloadProgress;
+	this.downloadProgress;
 
 	this.sounds={};
 	this.images={};

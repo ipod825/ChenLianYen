@@ -40,6 +40,7 @@ var Character = function(type, name){
 	this.prop = null;      
 
 	// Animation related variables
+	this.displayObject = null;
 	this.posOnMap = new Point(-1,-1);
 	this.dirChange = false; // Flag set when direction changes
 	this.dir = DIR_RIGHT;   // The direction of character
@@ -56,7 +57,7 @@ var Character = function(type, name){
 	this.bag = [];                 // Items hold by character
 	this.target = null;            // The targeting position or object
 	//this.stage = this.getStage();  // reference of stage for dropping item
-     
+ 
 };
 
 // The prototype defined as an object
@@ -69,17 +70,16 @@ var CharacterProtoType = {
 	/*
 	 * Function: addItem
 	 *     This function add item to the bag of the character
+	 * 
+	 * Parameters: 
+	 *     item - The item to add into bag
 	 */
 	addItem : function(item)
 	{
 		if(!item)
-		{
-			this.logger.error(this.tag, "addItem: input item undefined");
-		}
+		{ this.logger.error(this.tag, "addItem: input item undefined"); }
 		else
-		{
-			this.bag.push(item);
-		}
+		{ this.bag.push(item); }
 	},
 
 	/*
