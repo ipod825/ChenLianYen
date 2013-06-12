@@ -147,7 +147,8 @@ var CharacterProtoType = {
 	setDirection : function(dir){
 		//this.logger.verbose(this.tag, "setTarget: +++START+++ dirrection = " + dir);
 		// This function is called as long as the direction key is pressed.
-		// For performance concern, we reset its speed and animation only if the character change direction or it starts to move
+		// For performance concern, we reset its speed and animation only if the character 
+		// change direction or it starts to move
 		target = null;
 		targetMet = false;
 		if(this.dir != dir || !this.moving){
@@ -186,14 +187,17 @@ var CharacterProtoType = {
 		if(!characterProperty)
 		{
 			this.logger.error(this.tag, "setProp: input characterProperty undefined");
+			return;
 		}
-
 		this.property = characterProperty;
-		initP = this.tileCenter(new Point(this.property.x,this.property.y));
 
-		// Set status with given record
+		// Move the map given the position of the chracter
+		initP = this.tileCenter(new Point(this.property.x,this.property.y));
 		this.x = initP.x;
 		this.y = initP.y;
+
+		// Set status with given record
+		this.frequency = this.property.frequency;
 		switch(this.property.dir)
 		{
 			case "down":
@@ -272,7 +276,9 @@ var CharacterProtoType = {
 	tick : function(){
 		if(!this.moving && this.targetMet){ /* no need to move */ }
 		else
+		{
 			this.move();
+		}
 	},
 
 	/* 
