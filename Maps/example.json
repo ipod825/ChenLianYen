@@ -28,6 +28,34 @@
                  "width":0,
                  "x":224,
                  "y":288
+                }, 
+                {
+                 "gid":1011,
+                 "height":0,
+                 "name":"bear",
+                 "properties":
+                    {
+                     "dir":"down"
+                    },
+                 "type":"Monster",
+                 "visible":true,
+                 "width":0,
+                 "x":320,
+                 "y":416
+                }, 
+                {
+                 "gid":1019,
+                 "height":0,
+                 "name":"bear",
+                 "properties":
+                    {
+                     "dir":"left"
+                    },
+                 "type":"Monster",
+                 "visible":true,
+                 "width":0,
+                 "x":416,
+                 "y":352
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -262,6 +290,21 @@
          "imagewidth":32,
          "margin":0,
          "name":"sword",
+         "properties":
+            {
+
+            },
+         "spacing":0,
+         "tileheight":32,
+         "tilewidth":32
+        }, 
+        {
+         "firstgid":1011,
+         "image":"..\/Images\/bear.png",
+         "imageheight":192,
+         "imagewidth":128,
+         "margin":0,
+         "name":"bear",
          "properties":
             {
 

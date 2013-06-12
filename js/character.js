@@ -38,7 +38,7 @@ var Character = function(type, name){
 	this.prop = null;      
 
 	// Animation related variables
-	this.posOnMap = new Point(-1,-1);
+	this.displayObject = null;
 	this.dirChange = false; // Flag set when direction changes
 	this.dir = DIR_RIGHT;   // The direction of character
 	this.moving = false;    // Whether the character is moving
@@ -68,7 +68,6 @@ var Character = function(type, name){
 		idleright:   [8,  8,  false],
 		idleup:      [12, 12, false]
 	}
-     
 };
 
 // The prototype defined as an object
@@ -77,6 +76,21 @@ var CharacterProtoType = {
 	// For debugging
 	tag : "[Character]: ",
 	logger : new ConsoleLogger(),
+
+	/*
+	 * Function: addItem
+	 *     This function add item to the bag of the character
+	 * 
+	 * Parameters: 
+	 *     item - The item to add into bag
+	 */
+	addItem : function(item)
+	{
+		if(!item)
+		{ this.logger.error(this.tag, "addItem: input item undefined"); }
+		else
+		{ this.bag.push(item); }
+	},
 
 	/*
 	 * Function: dropItem
@@ -178,10 +192,7 @@ var CharacterProtoType = {
 	},
 
 	setProp : function(prop){
-		this.prop=prop;
-		initP = this.tileCenter(new Point(prop.x,prop.y));
-		this.x=initP.x;
-		this.y=initP.y;
+		MapObject.prototype.setProp.call(this,prop);
 		if(prop.dir=="down")
 			this.dir=DIR_DOWN;
 		else if(prop.dir=="up")
@@ -227,22 +238,6 @@ var CharacterProtoType = {
 			this.setPosition(newP);
 		}
 	},
-
-	//notify the stage to matain its tiles
-	setPosition : function(newP){
-		this.x = newP.x;
-		this.y = newP.y;
-		this.parent.setPosOnTile(this,newP);
-	},
-
-	getPos : function(){
-		return new Point(this.x, this.y);
-	},
-
-	tileCenter : function(p){
-		return p.scalarMinus(0.5).scalarMult(TILE_SIZE);
-	},
-
 };
 
 // Character inherits BitmapAnimation

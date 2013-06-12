@@ -1,8 +1,11 @@
 FREE=0;
 BLOCK=1;
 
-function Map(name, cw, ch){
+function Map(name, sourceManager){
 	this.name = name;
+	this.sourceManager = sourceManager;
+	cw = this.sourceManager.canvasWidth;
+	ch = this.sourceManager.canvasHeight;
 	this.center= new Point(cw/2,ch/2);	//The center of the screen
 	this.viewBox=new MyRectangle(0,0,cw,ch);	//The bounding box of the screen
 	this.prop;
@@ -10,7 +13,6 @@ function Map(name, cw, ch){
 	this.tiles=null;
 	this.layers={};
 	this.characters=[];
-	this.player;
 	this.logger.setLogLevel("verbose");
 
 }
@@ -32,6 +34,8 @@ MapPrototype = {
 		if(obj<=BLOCK)
 			obj=null;
 		target={"obj":obj,"pos":p};
+		if(obj)
+			alert(obj);
 		return target;
 	},
 
@@ -49,7 +53,8 @@ MapPrototype = {
 			p = this.relPointOnTile(pos);
 		if(p.equal(obj.posOnMap))
 			return true;
-		return ( this.tiles.get(p.x, p.y)==FREE );
+		obj=this.tiles.get(p.x, p.y);
+		return ( obj==FREE );
 	},
 
 
@@ -105,7 +110,6 @@ MapPrototype = {
 			this.bgBox.move(vX,vY);
 			return false;
 		}
-
 		this.x-=target.vX;
 		this.y-=target.vY;
 		target.x+=target.vX;
@@ -172,6 +176,38 @@ MapPrototype = {
 	/* Put everything(background tiles, characters, items) in to the container, called when all images for this map are ready.
 	 */
 	initGraphics: function(){
+		this.initBackground();
+
+		objs=this.layers["Items"].objects;
+		for(var i=0; i<objs.length; ++i){
+			prop=objs[i];
+			var id=this.name+prop.type+i;
+			prop.x=this.tiles.toTRoundIndex(prop.x);
+			prop.y=this.tiles.toTRoundIndex(prop.y);
+			prop.dir=prop.properties.dir;
+			var item = this.sourceManager.loadItem(id,prop);
+			this.addChild(item);
+			//Ticker.addListener(character);
+		}
+		
+		objs=this.layers["Characters"].objects;
+		for(var i=0; i<objs.length; ++i){
+			prop=objs[i];
+			var id;
+			if(prop.type==PLAYER)
+				id=PLAYER;
+			else
+				id=this.name+prop.type+i;
+			prop.x=this.tiles.toTRoundIndex(prop.x);
+			prop.y=this.tiles.toTRoundIndex(prop.y);
+			prop.dir=prop.properties.dir;
+			var character = this.sourceManager.loadCharacter(id,prop);
+			this.addChild(character);
+			Ticker.addListener(character);
+		}
+	},
+
+	initBackground : function(){
 		imgs=objToArray(this.images);
 		var spriteSheet = new SpriteSheet({
 			// The large image used to define frames
@@ -190,45 +226,6 @@ MapPrototype = {
 				bmpSeq = bmpSeq.clone();
 			}
 		}
-
-		objs=this.layers["Items"].objects;
-		for(var i=0; i<objs.length; ++i){
-			bmpSeq.x=this.tiles.toTRoundIndex(objs[i].x)*TILE_SIZE;
-			bmpSeq.y=this.tiles.toTRoundIndex(objs[i].y)*TILE_SIZE;
-			bmpSeq.currentFrame=objs[i].gid-1;
-			this.addChild(bmpSeq);
-			bmpSeq = bmpSeq.clone();
-		}
-		
-		objs=this.layers["Characters"].objects;
-		for(var i=0; i<objs.length; ++i){
-			var character = this.loadCharacter(i,objs[i]);
-			if(character.name=="player")
-				this.player=character;
-			//else
-				this.addChild(character);
-
-			Ticker.addListener(character);
-		}
-	},
-
-	loadCharacter : function(id, prop){
-		var character;
-		if(this.characters[id]){
-			character =	this.characters[id];
-		}
-		else{
-			character = new Character(prop.type, prop.name);
-			this.characters[id]=character;
-		}
-		prop.x=this.tiles.toTRoundIndex(prop.x);
-		prop.y=this.tiles.toTRoundIndex(prop.y);
-		prop.dir=prop.properties.dir;
-		character.setProp(prop);
-		character.addImage(prop.name,this.images[prop.name]);
-		character.resetImage();
-		character.setSpeedAndAnimation(0,0);
-		return character;
 	},
 
 	checkCell : function(){

@@ -27,7 +27,7 @@ start: function () {
 	this.stage.removeAllChildren();
 	this.stage.addChild(this.currentMap);
 	this.currentMap.checkCell();
-	this.player=this.currentMap.player;
+	this.player=this.sourceManager.characters[PLAYER];
 	//this.stage.addChild(this.player);
 
 	this.UserInterface.show("HUD");

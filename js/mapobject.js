@@ -1,16 +1,23 @@
 function MapObject(type, name){
 	this.type=type;
 	this.name=name;
-	this.posOnMap=null;
+	this.posOnMap = new Point(-1,-1);
 	this.numFrameX;
 	this.numFrameY;
 	this.images={};
 	this.suffix="none";
 	this.animation={};
-
 }
 
 MapObjectPrototype={
+
+	setProp : function(prop){
+		this.prop=prop;
+		initP = this.tileCenter(new Point(prop.x,prop.y));
+		this.x=initP.x;
+		this.y=initP.y;
+	},
+
 	addImage: function(imgName, img){
 		this.images[imgName]=img;
 	},
@@ -37,6 +44,21 @@ MapObjectPrototype={
 		});
 		// Set sprite sheet to bitmap animation
 		this.initialize(spriteSheet);
+	},
+
+	tileCenter : function(p){
+		return p.scalarMinus(0.5).scalarMult(TILE_SIZE);
+	},
+
+	//notify the stage to matain its tiles
+	setPosition : function(newP){
+		this.x = newP.x;
+		this.y = newP.y;
+		this.parent.setPosOnTile(this,newP);
+	},
+
+	getPos : function(){
+		return new Point(this.x, this.y);
 	},
 
 }

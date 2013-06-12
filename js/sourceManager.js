@@ -3,20 +3,21 @@
  * */
 function SourceManager(width, height) {
 	this.stage=null;
-	this.width=width;
-	this.height=height;
+	this.canvasWidth=width;
+	this.canvasHeight=height;
 
-    this.numElementsToLoad = 0;
-    this.numElementsLoaded = 0;
+	this.numElementsToLoad = 0;
+	this.numElementsLoaded = 0;
 
 	this.audioExtension=null;
 
-    this.downloadProgress;
+	this.downloadProgress;
 
 	this.sounds={};
 	this.images={};
 	this.maps={};
 	this.characters={};
+	this.items={};
 
 	this.onready=null;
 	this.checkSoundExtension();
@@ -57,8 +58,8 @@ checkSoundExtension : function(){
 setOnReady: function (callbackMethod) {
 	this.onready = callbackMethod;
 	this.downloadProgress = new Text("-- %", "bold 14px Arial", "#FFF");
-	this.downloadProgress.x = (this.width / 2) - 50;
-	this.downloadProgress.y = this.height / 2;
+	this.downloadProgress.x = (this.canvasWidth / 2) - 50;
+	this.downloadProgress.y = this.canvasHeight / 2;
 	this.stage.addChild(this.downloadProgress);
 
 	//To show downloading progress
@@ -114,11 +115,42 @@ loadImage : function(obj, name){
 	return img;
 },
 
+
+loadItem: function(id, prop){
+	var item;
+	if(this.items[id])
+		item = this.items[id];
+	else{
+		item = new Item(prop.type, prop.name, prop.number, prop.description);
+		this.items[id]=item;
+	}
+	item.setProp(prop);
+	item.addImage(prop.name,this.images[prop.name]);
+	item.resetImage();
+	item.gotoAndPlay("idle");
+	return item;
+},
+
+loadCharacter : function(id, prop){
+	var character;
+	if(this.characters[id])
+		character =	this.characters[id];
+	else{
+		character = new Character(prop.type, prop.name);
+		this.characters[id]=character;
+	}
+	character.setProp(prop);
+	character.addImage(prop.name,this.images[prop.name]);
+	character.resetImage();
+	character.setSpeedAndAnimation(0,0);
+	return character;
+},
+
 loadMap : function(name){
 	if (this.maps[name]) {
 		return this.maps[name];
 	}
-	map = new Map(name, this.width, this.height);
+	map = new Map(name, this);
 	++this.numElementsToLoad;
 	var url = 'Maps/' + name + '.json';
 	var self=this;
