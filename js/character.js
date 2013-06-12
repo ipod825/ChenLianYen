@@ -1,6 +1,6 @@
 //TYPE definition
 //PLAYER = 1;
-PLAYER = "player";
+PLAYER = "Player";
 
 DIR_LEFT	= KEYCODE_LEFT;
 DIR_UP 		= KEYCODE_UP;
@@ -41,7 +41,6 @@ var Character = function(type, name){
 
 	// Animation related variables
 	this.displayObject = null;
-	this.posOnMap = new Point(-1,-1);
 	this.dirChange = false; // Flag set when direction changes
 	this.dir = DIR_RIGHT;   // The direction of character
 	this.moving = false;    // Whether the character is moving
@@ -57,7 +56,20 @@ var Character = function(type, name){
 	this.bag = [];                 // Items hold by character
 	this.target = null;            // The targeting position or object
 	//this.stage = this.getStage();  // reference of stage for dropping item
- 
+	this.animations={
+		walkdown:   {frames:[0,  0,  1,  1,  1,  2,  2,  3,  3,  3], 
+					 next: "walkdown", frequency:this.frequency},
+		walkleft:   {frames:[4,  4,  5,  5,  5,  6,  6,  7,  7,  7], 
+					 next: "walkleft", frequency:this.frequency},
+		walkright:  {frames:[8,  8,  9,  9,  9,  10, 10, 11, 11, 11], 
+					 next: "walkright", frequency:this.frequency},
+		walkup:     {frames:[12, 12, 13, 13, 13, 14, 14, 15, 15, 15], 
+					 next: "walkup", frequency:this.frequency},
+		idledown:    [0,  0,  false],
+		idleleft:    [4,  4,  false],
+		idleright:   [8,  8,  false],
+		idleup:      [12, 12, false]
+	}
 };
 
 // The prototype defined as an object
@@ -141,7 +153,7 @@ var CharacterProtoType = {
 		// Target valid
 		this.target = target;
 		this.targetMet=false;
-		this.pathToTarget = this.getStage().findPath(this.posOnMap, this.target.pos);
+		this.pathToTarget = this.parent.findPath(this.posOnMap, this.target.pos);
 	},
 
 	setDirection : function(dir){
@@ -217,58 +229,6 @@ var CharacterProtoType = {
 		}
 	},
 
-	addImage: function(imgName, img){
-		this.images[imgName]=img;
-	},
-
-	resetImage: function(suffix){
-		if(!suffix)
-			suffix="";
-		else
-			suffix="_"+suffix;
-		if(this.suffix==suffix)
-			return;
-		else
-			this.suffix==suffix;
-
-		img=this.images[this.name+suffix];
-		frameWidth=img.width/this.numFrameX;
-		frameHeight=img.height/this.numFrameY;
-		this.regX=frameWidth/2;
-		this.regY=frameHeight/2;
-		var spriteSheet = new SpriteSheet({
-			// The large image used to define frames
-			images: [img], //image to use
-			// Frame size definition
-			frames: { width: frameWidth, height: frameHeight, regX: 0, regY: 0},
-			//frames: { width: 100, height: 100, regX: 50, regY: 50},
-			// The definition of every animation it takes and the transition relation
-			animations: {
-				walkdown:   {frames:[0,  0,  1,  1,  1,  2,  2,  3,  3,  3], 
-				             next: "walkdown", frequency:this.frequency},
-				walkleft:   {frames:[4,  4,  5,  5,  5,  6,  6,  7,  7,  7], 
-				             next: "walkleft", frequency:this.frequency},
-				walkright:  {frames:[8,  8,  9,  9,  9,  10, 10, 11, 11, 11], 
-				             next: "walkright", frequency:this.frequency},
-				walkup:     {frames:[12, 12, 13, 13, 13, 14, 14, 15, 15, 15], 
-				             next: "walkup", frequency:this.frequency},
-				idledown:    [0,  0,  false],
-				idleleft:    [4,  4,  false],
-				idleright:   [8,  8,  false],
-				idleup:      [12, 12, false]
-			}
-		});
-		// Set sprite sheet to bitmap animation
-		this.initialize(spriteSheet);
-
-		// Start at walkright frame
-		this.setSpeedAndAnimation(0,0);
-
-		// Start frame
-		this.currentFrame=8;
-	},
-
-
 	/* 
 	 * Function: tick
 	 *     The main tick function, which is executed every loop
@@ -292,12 +252,12 @@ var CharacterProtoType = {
 
 		// Test if the new position can be passed
 		var newP = new Point(this.x + this.vX, this.y + this.vY);
-		if(!this.getStage().isPassable(this, newP))
+		if(!this.parent.isPassable(this, newP))
 			return;
 
 		if(this.type === PLAYER){
 			//Keep the player moving at center if possible, otherwise, move it as usual
-			if(this.getStage().moveOtherObjs(this, this.vX, this.vY))
+			if(this.parent.moveOtherObjs(this, this.vX, this.vY))
 				this.setPosition(this.getPos());	//renew the posOnMap
 			else
 				this.setPosition(newP);				//fail to move in the center, move as usual
@@ -306,26 +266,10 @@ var CharacterProtoType = {
 			this.setPosition(newP);
 		}
 	},
-
-	//notify the stage to matain its tiles
-	setPosition : function(newP){
-		this.x = newP.x;
-		this.y = newP.y;
-		this.getStage().setPosOnTile(this,newP);
-	},
-
-	getPos : function(){
-		return new Point(this.x, this.y);
-	},
-
-	tileCenter : function(p){
-		return p.scalarMinus(0.5).scalarMult(TILE_SIZE);
-	},
-
 };
 
 // Character inherits BitmapAnimation
-Character.prototype = new BitmapAnimation(); 
+Character.prototype = new MapObject(); 
 // Assign the members in the prototype object into the character prototype
 for (var obj in CharacterProtoType) { 
 	Character.prototype[obj] = CharacterProtoType[obj]; 

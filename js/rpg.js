@@ -1,7 +1,7 @@
 function Rpg(canvasId) {
 	canvas=document.getElementById(canvasId);
 	this.sourceManager = new SourceManager(canvas.width,canvas.height);
-	this.stage = new MyStage(canvas, this);
+	this.stage = new Stage(canvas);
 	this.sourceManager.setStage(this.stage); //To show the downloaing progress on the stage;
 	this.input=new Input(this);
 	this.currentMap;
@@ -23,13 +23,12 @@ Rpg.prototype={
  * In this function, all media are ready, we should init the map, characters ... with these medias.
  */
 start: function () {
-	this.currentMap.initTiles();
-	this.stage.setCurrentMap(this.currentMap);
-	this.stage.checkCell();
-	this.player.resetImage();
-
-	this.stage.addChild(this.player);
-	Ticker.addListener(this.player);
+	this.currentMap.initGraphics();
+	this.stage.removeAllChildren();
+	this.stage.addChild(this.currentMap);
+	this.currentMap.checkCell();
+	this.player=this.sourceManager.characters[PLAYER];
+	//this.stage.addChild(this.player);
 
 	this.UserInterface.show("HUD");
 
@@ -55,12 +54,11 @@ tick: function () {
  * 	p: The position in pixel unit
  */
 setTarget : function(p){
-	this.player.setTarget(this.stage.targetOnPos(p));
+	this.player.setTarget(this.currentMap.targetOnPos(p));
 },
 
 loadMap: function (mapName) {
 	this.sourceManager.setOnReady(this.start.bind(this));
-	this.player = this.sourceManager.loadCharacter(PLAYER,"player");
 	this.currentMap=this.sourceManager.loadMap(mapName);
 },
 

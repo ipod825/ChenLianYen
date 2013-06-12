@@ -23,7 +23,7 @@
  *     var item = new Item("itemHealthPotion", 2);
  *     var item = new Item("itemHealthPotion");
  */
-var Item = function(type, number, description) {
+var Item = function(type, name, number, description) {
 	// For debugging
 	this.logger.setLogLevel("all");
 	this.logger.verbose(this.tag, "Item: +++START+++ type = " + type + 
@@ -31,6 +31,7 @@ var Item = function(type, number, description) {
 	                    ", description = " + description);
 
 	this.type = "";        // Default type is empty string
+	this.name = name;
 	this.number = 1;       // Default item has only one instance
 	this.description = ""; // Default description is empty string
 	// Effect of using 
@@ -58,11 +59,24 @@ var Item = function(type, number, description) {
 	{ this.logger.warning(this.tag, "[constructor]: parameter 'description' undefined"); }
 	else
 	{ this.description = description; }
+
+	this.animations={ idle: [0,  0,  false], };
+	this.numFrameX = 1;
+	this.numFrameY = 1;
+	this.suffix = "none";
 };
 
 // Item Prototype
-Item.prototype = {
+ItemPrototype = {
 	// For debugging
 	tag : "[Item]: ", 
 	logger : new ConsoleLogger(),
 };
+
+
+Item.prototype = new MapObject(); 
+// Assign the members in the prototype object into the character prototype
+for (var obj in ItemPrototype) { 
+	Item.prototype[obj] = ItemPrototype[obj]; 
+} 
+

@@ -13,10 +13,24 @@
         }, 
         {
          "height":24,
-         "name":"Monsters",
+         "name":"Characters",
          "objects":[
                 {
-                 "gid":962,
+                 "gid":998,
+                 "height":0,
+                 "name":"player",
+                 "properties":
+                    {
+                     "dir":"right"
+                    },
+                 "type":"Player",
+                 "visible":true,
+                 "width":0,
+                 "x":224,
+                 "y":288
+                }, 
+                {
+                 "gid":1011,
                  "height":0,
                  "name":"bear",
                  "properties":
@@ -26,11 +40,11 @@
                  "type":"Monster",
                  "visible":true,
                  "width":0,
-                 "x":416,
-                 "y":384
+                 "x":320,
+                 "y":416
                 }, 
                 {
-                 "gid":970,
+                 "gid":1019,
                  "height":0,
                  "name":"bear",
                  "properties":
@@ -40,34 +54,9 @@
                  "type":"Monster",
                  "visible":true,
                  "width":0,
-                 "x":512,
-                 "y":480
-                }, 
-                {
-                 "gid":974,
-                 "height":0,
-                 "name":"bear",
-                 "properties":
-                    {
-                     "dir":"right"
-                    },
-                 "type":"Monster",
-                 "visible":true,
-                 "width":0,
                  "x":416,
-                 "y":480
+                 "y":352
                 }],
-         "opacity":1,
-         "type":"objectgroup",
-         "visible":true,
-         "width":40,
-         "x":0,
-         "y":0
-        }, 
-        {
-         "height":24,
-         "name":"Npcs",
-         "objects":[],
          "opacity":1,
          "type":"objectgroup",
          "visible":true,
@@ -80,14 +69,15 @@
          "name":"Items",
          "objects":[
                 {
-                 "gid":961,
+                 "gid":1010,
                  "height":0,
-                 "name":"",
+                 "name":"sword",
                  "properties":
                     {
-
+                     "description":"test",
+                     "number":"1"
                     },
-                 "type":"",
+                 "type":"Item",
                  "visible":true,
                  "width":0,
                  "x":320,
@@ -265,6 +255,51 @@
         }, 
         {
          "firstgid":962,
+         "image":"..\/Images\/bear.png",
+         "imageheight":192,
+         "imagewidth":128,
+         "margin":0,
+         "name":"bear",
+         "properties":
+            {
+
+            },
+         "spacing":0,
+         "tileheight":32,
+         "tilewidth":32
+        }, 
+        {
+         "firstgid":986,
+         "image":"..\/Images\/player.png",
+         "imageheight":192,
+         "imagewidth":128,
+         "margin":0,
+         "name":"player",
+         "properties":
+            {
+
+            },
+         "spacing":0,
+         "tileheight":32,
+         "tilewidth":32
+        }, 
+        {
+         "firstgid":1010,
+         "image":"..\/Images\/sword.png",
+         "imageheight":32,
+         "imagewidth":32,
+         "margin":0,
+         "name":"sword",
+         "properties":
+            {
+
+            },
+         "spacing":0,
+         "tileheight":32,
+         "tilewidth":32
+        }, 
+        {
+         "firstgid":1011,
          "image":"..\/Images\/bear.png",
          "imageheight":192,
          "imagewidth":128,
