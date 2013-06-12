@@ -115,20 +115,27 @@ loadImage : function(obj, name){
 },
 
 loadCharacter : function(type, name){
+	// Check if character already exist
 	if (this.characters[name]) {
 		return this.characters[name];
 	}
-	character = new Character(type, name);
+
+	// Character not exist, create new one
+	var character = new Character(type, name);
 	++this.numElementsToLoad;
+
+	// Get character record with ajax
 	var url = 'Characters/' + name + '.json';
-	var self=this;
+	var self = this;
 	this.ajax(url, function(ret) {
-		var prop= JSON.parse(ret);
-		character.setProp(prop);
-		for(var i=0; i<prop.image.length; ++i)
-			self.loadImage(character, prop.image[i]);
+		var characterRecord = JSON.parse(ret);
+		character.setProp(characterRecord);
+		for(var i = 0; i < characterRecord.image.length; ++i)
+			self.loadImage(character, characterRecord.image[i]);
 		self.handleElementLoad();
 	});
+
+	// Add the new character to characters
 	this.characters[name] = character;
 	return character;
 },
