@@ -1,10 +1,8 @@
 {
 	"x": 4,
 	"y": 7,
-	"id": "1",
 	"dir": "right",
 	"image": [ "player.png", "player_SWD_01.png", "player_SWD_02.png"],
-	"trigger": "action_button",
 	"direction": "left",
 	"frequence": 16,
 	"speed": 4,

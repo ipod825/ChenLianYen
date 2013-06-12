@@ -37,7 +37,7 @@ var Character = function(type, name){
 	// Display related variables
 	this.images = [];      // The image displayed on map
 	this.image;
-	this.prop = null;      
+	this.property = null;      
 
 	// Animation related variables
 	this.displayObject = null;
@@ -94,12 +94,12 @@ var CharacterProtoType = {
 		this.logger.verbose(this.tag, "dropItem: +++START+++ item.type = "
 		                    + item.type + ", item.number = " + item.number);
 		var removeIndex = this.bag.indexOf(item);
-		this.splice(removeIndex, 1);
+		this.bag.splice(removeIndex, 1);
 		var stage = this.getStage();
 		if(!stage)
 		{ this.logger.error(this.tag, "dropItem: getStage() return undefined"); }
 		else
-		{ this.stage.addChild(item); }
+		{ this.getStage().addChild(item); }
 	},
 
 	/*
@@ -181,19 +181,36 @@ var CharacterProtoType = {
 		}
 	},
 
-	setProp : function(prop){
-		this.prop=prop;
-		initP = this.tileCenter(new Point(prop.x,prop.y));
-		this.x=initP.x;
-		this.y=initP.y;
-		if(prop.dir=="down")
-			this.dir=DIR_DOWN;
-		else if(prop.dir=="up")
-			this.dir=DIR_UP;
-		else if(prop.dir=="left")
-			this.dir=DIR_LEFT;
-		else if(prop.dir=="right")
-			this.dir=DIR_RIGHT;
+	setProp : function(characterProperty){
+		// Check input status
+		if(!characterProperty)
+		{
+			this.logger.error(this.tag, "setProp: input characterProperty undefined");
+		}
+
+		this.property = characterProperty;
+		initP = this.tileCenter(new Point(this.property.x,this.property.y));
+
+		// Set status with given record
+		this.x = initP.x;
+		this.y = initP.y;
+		switch(this.property.dir)
+		{
+			case "down":
+				this.dir = DIR_DOWN;
+				break;
+			case "up":
+				this.dir = DIR_UP;
+				break;
+			case "left":
+				this.dir = DIR_LEFT;
+				break;
+			case "right":
+				this.dir = DIR_DOWN;
+				break;
+			default:
+				this.logger.error(this.log, "setProp: Undefined direction detected");
+		}
 	},
 
 	addImage: function(imgName, img){

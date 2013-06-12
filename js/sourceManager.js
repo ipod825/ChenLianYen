@@ -125,13 +125,14 @@ loadCharacter : function(type, name){
 	++this.numElementsToLoad;
 
 	// Get character record with ajax
+	// And set the image of the character
 	var url = 'Characters/' + name + '.json';
 	var self = this;
 	this.ajax(url, function(ret) {
-		var characterRecord = JSON.parse(ret);
-		character.setProp(characterRecord);
-		for(var i = 0; i < characterRecord.image.length; ++i)
-			self.loadImage(character, characterRecord.image[i]);
+		var characterProperty = JSON.parse(ret);
+		character.setProp(characterProperty);
+		for(var i = 0; i < characterProperty.image.length; ++i)
+			self.loadImage(character, characterProperty.image[i]);
 		self.handleElementLoad();
 	});
 
