@@ -117,21 +117,6 @@ loadImage : function(obj, name){
 },
 
 
-loadItem: function(id, prop){
-	var item;
-	if(this.items[id])
-		item = this.items[id];
-	else{
-		item = new Item(prop.type, prop.name, prop.number, prop.description);
-		this.items[id]=item;
-	}
-	item.setProp(prop);
-	item.addImage(prop.name,this.images[prop.name]);
-	item.resetImage();
-	item.gotoAndPlay("idle");
-	return item;
-},
-
 loadMapObject: function(id, prop){
 	var mapObjs;
 	if(prop.type=="Item")
@@ -143,7 +128,8 @@ loadMapObject: function(id, prop){
 	if(mapObjs[id])
 		mapObj =	mapObjs[id];
 	else{
-		//Note that the string prop.type must be the same with the class name for this trick to work
+		//To avoid switch case, identify the constructor as a function point by prop.type
+		//Note that "prop.type" must be the same with the class name for this trick to work
 		constructorPtr = window[prop.type];
 		mapObj = new constructorPtr(prop.type, prop.name);
 		mapObjs[id]=mapObj;

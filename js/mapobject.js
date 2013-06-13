@@ -18,13 +18,14 @@ MapObjectPrototype={
 	//Attributes belongs to only the derived class will still be assigned
 	setProp : function(prop){
 		this.prop=prop;
-		initP = this.tileCenter(new Point(prop.x,prop.y));
-		this.x=initP.x;
-		this.y=initP.y;
-		this.posOnMap=toTPoint(this.x, this.y);
-		for (var p in prop) { 
+		initP = toTPoint(new Point(this.prop.x, this.prop.y));
+		center = this.tileCenter(initP);
+		this.prop.x=center.x;
+		this.prop.y=center.y;
+
+		for (var p in this.prop) { 
 			if(p in this)
-				this[p] = prop[p]; 
+				this[p] = this.prop[p]; 
 		} 
 	},
 
@@ -57,7 +58,7 @@ MapObjectPrototype={
 	},
 
 	tileCenter : function(p){
-		return p.scalarMinus(0.5).scalarMult(TILE_SIZE);
+		return p.scalarPlus(0.5).scalarMult(TILE_SIZE);
 	},
 
 	//notify the stage to matain its tiles

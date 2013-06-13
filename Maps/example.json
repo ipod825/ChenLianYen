@@ -109,8 +109,8 @@
                  "type":"Item",
                  "visible":true,
                  "width":0,
-                 "x":320,
-                 "y":320
+                 "x":0,
+                 "y":192
                 }],
          "opacity":1,
          "type":"objectgroup",

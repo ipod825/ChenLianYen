@@ -35,7 +35,7 @@ MapPrototype = {
 			obj=null;
 		target={"obj":obj,"pos":p};
 		if(obj)
-			alert(obj);
+			alert(obj.posOnMap);
 		return target;
 	},
 
