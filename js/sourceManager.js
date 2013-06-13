@@ -11,7 +11,7 @@ function SourceManager(width, height) {
 
 	this.audioExtension=null;
 
-	this.downloadProgress;
+	this.downloadProgress=null;
 
 	this.sounds={};
 	this.images={};
@@ -138,8 +138,7 @@ loadMapObject: function(id, prop){
 	mapObj.addImage(prop.name,this.images[prop.name]);
 	if(mapObj.suffix){
 		n=mapObj.name+"_"+mapObj.suffix;
-		img=this.loadImage(mapObj, n);
-		mapObj.addImage(n,img);
+		this.loadImage(mapObj, n);
 	}
 	mapObj.resetImage();
 	if(prop.type=="Item")
@@ -202,7 +201,7 @@ ajax : function(name, callback) {
 
 // Showing the process % of download
 tick : function() {
-	this.downloadProgress.text = "Downloading " + Math.round((this.numElementsLoaded / this.numElementsToLoad) * 100) + " %";
+	//this.downloadProgress.text = "Downloading " + Math.round((this.numElementsLoaded / this.numElementsToLoad) * 100) + " %";
 	this.stage.update();
 },
 
@@ -215,13 +214,17 @@ handleElementLoad : function() {
 
 	if (this.numElementsLoaded === this.numElementsToLoad) {
 		//remove progress bar
-		this.stage.removeChild(this.downloadProgress);
-		Ticker.removeAllListeners();
+		if(this.downloadProgress){
+			this.stage.removeChild(this.downloadProgress);
+			Ticker.removeAllListeners();
+		}
 		this.numElementsLoaded = 0;
 		this.numElementsToLoad = 0;
 		if(this.onready)
 			this.onready();//set by setOnready
+
 		this.onready=null;
+		this.downloadProgress=null;
 	}
 },
 

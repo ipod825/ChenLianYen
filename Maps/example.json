@@ -386,21 +386,6 @@
          "spacing":0,
          "tileheight":32,
          "tilewidth":32
-        }, 
-        {
-         "firstgid":1107,
-         "image":"..\/Images\/player_SWD_01.png",
-         "imageheight":400,
-         "imagewidth":400,
-         "margin":0,
-         "name":"player_SWD_01",
-         "properties":
-            {
-
-            },
-         "spacing":0,
-         "tileheight":32,
-         "tilewidth":32
         }],
  "tilewidth":32,
  "version":1,
