@@ -5,10 +5,12 @@
  *     are defined in class and initialize when included
  *     For using this class, simply use utility.<function_name>(<parameters>)
  */
-var Utility = function()
+function Utility()
 {
     // This class is meant to be used like static class, so no members in
     // instances, all members are in prototype
+	// Initilize the member in prototype
+	this.logger.setLogLevel("all");
 };
 
 /*
@@ -75,8 +77,6 @@ Utility.prototype =
 
 };
 
-// Initilize the member in prototype
-Utility.prototype.logger.setLogLevel("all");
 
 // New a instance here, please don't new another instance in other places
 var utility = new Utility();

@@ -9,7 +9,7 @@
  *     questManager - the reference to the quest manager
  *     status - (optional) the status of the player
  */
-var Player = function(type, name, battleManager, status, questManager)
+function Player(type, name, battleManager, status, questManager)
 {
 	// For debugging
 	this.logger.verbose(this.tag, "Player: +++START+++ type = " + type + 

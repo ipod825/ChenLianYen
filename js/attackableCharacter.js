@@ -12,7 +12,7 @@
  *     battleManager - The reference of battle manager to manager battles
  *     statue - (optional) the status to the attackable character
  */
-var AttackableCharacter = function(type, name, battleManager, status)
+function AttackableCharacter(type, name, battleManager, status)
 {
 	// For debugging
 	this.logger.verbose(this.tag, "AttackableCharacter: +++START+++ type = " + type +

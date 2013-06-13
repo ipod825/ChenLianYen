@@ -23,7 +23,7 @@
  *     var item = new Item("itemHealthPotion", 2);
  *     var item = new Item("itemHealthPotion");
  */
-var Item = function(type, name, number, description) {
+function Item(type, name, number, description) {
 //var Item = function(type, number, description) {
 	// For debugging
 	this.logger.setLogLevel("all");

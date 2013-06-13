@@ -9,7 +9,7 @@
  *     battle - the battle manager reference
  *     status - (optional) the status of the monster
  */
-var Monster = function(type, name, battleManager, status)
+function Monster(type, name, battleManager, status)
 {
     // For debugging
     this.logger.verbose(this.tag, "Monster: +++START+++ type = " + type +

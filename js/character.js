@@ -20,7 +20,7 @@ DIRUNIT=[{x:-1,y:0},{x:0,y:-1},{x:1,y:0},{x:0,y:1}];
  * Parameters:
  *     type - the identifier of the player
  */
-var Character = function(type, name){
+function Character(type, name){
 	// For debugging
 	this.logger.verbose(this.tag, "Character: +++START+++ type = " + type + ", name = " + name);
 
