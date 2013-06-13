@@ -1,7 +1,9 @@
 //TYPE definition
 //PLAYER = 1;
 //PLAYER = "Player";
-PLAYER = "player";
+PLAYER = "Player";
+MONSTER = "Monster";
+NPC = "Npc";
 
 DIR_LEFT	= KEYCODE_LEFT;
 DIR_UP 		= KEYCODE_UP;

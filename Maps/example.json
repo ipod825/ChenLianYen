@@ -23,7 +23,7 @@
                     {
                      "dir":"right"
                     },
-                 "type":"player",
+                 "type":"Player",
                  "visible":true,
                  "width":0,
                  "x":224,
@@ -37,7 +37,7 @@
                     {
                      "dir":"down"
                     },
-                 "type":"monster",
+                 "type":"Monster",
                  "visible":true,
                  "width":0,
                  "x":320,
@@ -51,7 +51,7 @@
                     {
                      "dir":"left"
                     },
-                 "type":"monster",
+                 "type":"Monster",
                  "visible":true,
                  "width":0,
                  "x":416,
@@ -77,7 +77,7 @@
                      "description":"test",
                      "number":"1"
                     },
-                 "type":"item",
+                 "type":"Item",
                  "visible":true,
                  "width":0,
                  "x":320,
