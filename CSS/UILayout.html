@@ -14,12 +14,10 @@
 
 
 <div id="HUD">
-	<!--
-	<div id="bar_hp">
-		<div id="hp"></div>
+	<div id="QuestHUD">
+		<span class="questText">Say something about our quest</span>
+		<span class="questStatus"><span class="questCurrent">1</span>/<span class="questGoal">10</span></span>
 	</div>
-	-->
-	<div id="QuestHUD"></div>
 	<div id="StatusHUD">
 		<div id="HealthBar" class="meter red"><span style="width: 100%"></span></div>
 		<div id="ExpBar" class="meter orange"><span style="width: 50%"></span></div>
@@ -28,33 +26,54 @@
 	<div id="header">
 		<div id="sound" class="sound-play"></div>
 		<div id="gold"> : <span>0</span></div>
-		<div id="option" onclick="toggleVisibility('#options')"></div>
+		<div id="option" onclick="toggleVisibility('#Options')"></div>
 	</div>
 
-	<div id="options" class="window" >
-		<h1>Options</h1>
-		<fieldset><legend>Languages</legend>
-			<label><input type="radio" name="lang" value="en" checked> English</label><br />
-			<label><input type="radio" name="lang" value="fr"> Français</label>
-		</fieldset>
-		<h1>Help</h1>
-		<ul>
-			<li>Enter or Space : Speak, Action</li>
-			<li>Arrows : Move</li>
-			<li>A : Attack (if sword equipped)</li>
-		</ul>
-	</div>
 
 	<div id="BottomBar">
 		<button id="btHideUI" onclick="$('#uiDiv').children().hide()">HideUI</button>
 		<button id="btPause">Pause</button>	
 		<button id="btQuest">Quest</button>
 		<button id="btStatus">Status</button>
-		<button id="btInventory">Inventory</button>
+		<button id="btInventory" onclick="toggleVisibility('#Inventory')">Inventory</button>
 	</div>
 </div>
 
 <div id="Dialogue" class="dialogue">
 	<p class="dialogueText"></p>
 	<button>Proceed</button>
+</div>
+
+<div id="Options" class="window" >
+	<h1>Options</h1>
+	<fieldset><legend>Languages</legend>
+		<label><input type="radio" name="lang" value="en" checked> English</label><br />
+		<label><input type="radio" name="lang" value="fr"> Français</label>
+	</fieldset>
+	<h1>Help</h1>
+	<ul>
+		<li>Enter or Space : Speak, Action</li>
+		<li>Arrows : Move</li>
+		<li>A : Attack (if sword equipped)</li>
+	</ul>
+</div>
+
+<div id="Inventory" class="window" >
+	<h1>Inventory</h1>
+	<div class="gridview">
+		<div id="item01" class="item"></div>
+		<div id="item01" class="item"></div>
+		<div id="item01" class="item"></div>
+		<div id="item01" class="item"></div>
+		<div id="item01" class="item"></div>
+		<div id="item01" class="item"></div>
+		<div id="item01" class="item"></div>
+		<div id="item01" class="item"></div>
+		<div id="item01" class="item"></div>
+		<div id="item01" class="item"></div>
+		<div id="item01" class="item"></div>
+		<div id="item01" class="item"></div>
+		<div id="item01" class="item"></div>
+		<div id="item01" class="item"></div>
+	</div>
 </div>
