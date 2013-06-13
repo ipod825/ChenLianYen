@@ -9,27 +9,23 @@
  *     questManager - the reference to the quest manager
  *     status - (optional) the status of the player
  */
-var Player = function(battleManager, questManager, status)
+var Player = function(type, name, battleManager, status, questManager)
 {
+	// For debugging
+	this.logger.verbose(this.tag, "Player: +++START+++ type = " + type + 
+	                    " , name = " + name + " , battleManager = " + 
+	                    battleManager + " , status = " + status + 
+	                    " ,  questManager = " + questManager);
+
+	// Calling parent constructor
+	// TODO update constructor
+	AttackableCharacter.call(this, type, name, battleManager, status);
+
 	// Check input parameters
-	if(!battleManager)
-	{
-		this.logger.error(this.tag, "Player: battleManager undefined");
-	}
 	if(!questManager)
 	{
 		this.logger.error(this.tag, "Player: questManager undefined");
 	}
-	if(!status)
-	{
-		this.logger.debug(this.tag, "Player: status undefined");
-	}
-
-	// Calling parent constructor
-	// TODO update constructor
-	Player.prototype.apply(this, battleManager, status);
-	//AttackableCharacter.apply(this, battleManager, status);
-	//AttackableCharacter.call(this, battleManager, status);
 };
 
 /*
@@ -41,10 +37,10 @@ var Player = function(battleManager, questManager, status)
 var PlayerPrototype = 
 {
 	// for debugging
-	logger : new ConsoleLogger(),
 	tag : "[Player]: ",
+	logger : new ConsoleLogger(),
 
-    /*
+	/*
 	 * Function: talkToNpc
 	 *     This function let player talks to npc
 	 */
@@ -59,11 +55,11 @@ var PlayerPrototype =
 		npc.onCommand();
 	},
 
-    /*
+	/*
 	 * Function: pickItem
 	 *     This function is used for player to pickItem
 	 */
-    pickItem : function(item)
+	pickItem : function(item)
 	{
 		if(!item)
 		{
@@ -91,3 +87,5 @@ for(var obj in PlayerPrototype)
 {
 	Player.prototype[obj] = PlayerPrototype[obj];
 }
+// Initialize members in prototype
+Player.prototype.logger.setLogLevel("all");
