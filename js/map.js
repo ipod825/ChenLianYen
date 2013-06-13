@@ -53,9 +53,9 @@ MapPrototype = {
 			p = this.tiles.toTPoint(pos);
 
 		if(p.equal(obj.posOnMap))
-			return true;
+			return FREE;
 		obj=this.tiles.get(p.x, p.y);
-		return ( obj==FREE );
+		return obj;
 	},
 
 
@@ -68,6 +68,13 @@ MapPrototype = {
 		if(child.posOnMap)
 			this.setPosOnTile(child, child.getPos());
 		Container.prototype.addChild.call(this,child);
+	},
+
+	removeChild : function(child){
+		if(child.posOnMap)
+			this.tiles.set(obj.posOnMap.x, obj.posOnMap.y, FREE);
+		Container.prototype.removeChild.call(this,child);
+		Ticker.removeChild
 	},
 
 	/*
@@ -190,10 +197,11 @@ MapPrototype = {
 					id=PLAYER;
 				else
 					id=this.name+prop.type+j;
-				prop.dir=prop.properties.dir;
-				var character = this.sourceManager.loadMapObject(id,prop);
-				this.addChild(character);
-				Ticker.addListener(character);
+				for(p in prop.properties)
+					prop[p]=prop.properties[p];
+				var mapObj = this.sourceManager.loadMapObject(id,prop);
+				this.addChild(mapObj);
+				Ticker.addListener(mapObj);
 			}
 		}
 	},

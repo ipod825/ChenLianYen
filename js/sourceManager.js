@@ -136,6 +136,11 @@ loadMapObject: function(id, prop){
 	}
 	mapObj.setProp(prop);
 	mapObj.addImage(prop.name,this.images[prop.name]);
+	if(mapObj.suffix){
+		n=mapObj.name+"_"+mapObj.suffix;
+		img=this.loadImage(mapObj, n);
+		mapObj.addImage(n,img);
+	}
 	mapObj.resetImage();
 	if(prop.type=="Item")
 		mapObj.gotoAndPlay("idle");

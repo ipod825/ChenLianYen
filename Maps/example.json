@@ -109,8 +109,8 @@
                  "type":"Item",
                  "visible":true,
                  "width":0,
-                 "x":0,
-                 "y":192
+                 "x":320,
+                 "y":288
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -379,6 +379,21 @@
          "imagewidth":128,
          "margin":0,
          "name":"ghost",
+         "properties":
+            {
+
+            },
+         "spacing":0,
+         "tileheight":32,
+         "tilewidth":32
+        }, 
+        {
+         "firstgid":1107,
+         "image":"..\/Images\/player_SWD_01.png",
+         "imageheight":400,
+         "imagewidth":400,
+         "margin":0,
+         "name":"player_SWD_01",
          "properties":
             {
 

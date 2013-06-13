@@ -1,9 +1,6 @@
 //TYPE definition
 //PLAYER = 1;
 //PLAYER = "Player";
-PLAYER = "Player";
-MONSTER = "Monster";
-NPC = "Npc";
 
 DIR_LEFT	= KEYCODE_LEFT;
 DIR_UP 		= KEYCODE_UP;
@@ -227,8 +224,17 @@ var CharacterProtoType = {
 
 		// Test if the new position can be passed
 		var newP = new Point(this.x + this.vX, this.y + this.vY);
-		if(!this.parent.isPassable(this, newP))
+		obj=this.parent.isPassable(this, newP);
+		if(obj==BLOCK)
 			return;
+		else if(obj.type==ITEM){
+			this.pickItem(obj);
+			this.resetImage(obj.name);
+			this.parent.removeChild(obj);
+		}
+		else if(obj.type==MONSTER){
+			return;
+		}
 
 		if(this.type === PLAYER){
 			//Keep the player moving at center if possible, otherwise, move it as usual

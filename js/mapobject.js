@@ -1,3 +1,8 @@
+PLAYER = "Player";
+MONSTER = "Monster";
+NPC = "Npc";
+ITEM = "Item";
+
 function MapObject(){
 	this.type=null;
 	this.name=null;
@@ -7,7 +12,7 @@ function MapObject(){
 	this.numFrameX;
 	this.numFrameY;
 	this.images={};
-	this.suffix="none";
+	this.suffix=null;
 	this.animation={};
 }
 
@@ -37,7 +42,11 @@ MapObjectPrototype={
 		if(!suffix)
 			suffix="";
 		else
-			suffix="_"+suffix; if(this.suffix==suffix) return; else this.suffix==suffix;
+			suffix="_"+suffix; 
+
+		if(this.suffix && this.suffix==suffix) 
+			return; 
+		else this.suffix==suffix;
 
 		img=this.images[this.name+suffix];
 		frameWidth=img.width/this.numFrameX;
