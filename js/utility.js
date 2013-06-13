@@ -7,6 +7,8 @@
  */
 var Utility = function()
 {
+    // This class is meant to be used like static class, so no members in
+    // instances, all members are in prototype
 };
 
 /*

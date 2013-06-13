@@ -1,9 +1,9 @@
 
 /* 
  * Class: AttackableCharacter
- * This is the class which represents all the characters that can be an
- * attacker or an attackee. This class is inherited by Player and Monster,
- * which means that NPC is not attackable
+ *     This is the class which represents all the characters that can be an
+ *     attacker or an attackee. This class is inherited by Player and Monster,
+ *     which means that NPC is not attackable
  *
  * Parameters:
  *     type - the identifier character
@@ -100,6 +100,5 @@ for(var obj in AttackableCharacterPrototype)
 {
 	AttackableCharacter.prototype[obj] = AttackableCharacterPrototype[obj];
 }
-// Initialization of prototype
-// For debugging
+// Initialization of members in prototype
 AttackableCharacter.prototype.logger.setLogLevel("all");

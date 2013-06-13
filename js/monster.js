@@ -23,9 +23,12 @@ var Monster = function(type, name, battleManager, status)
 
 /*
  * Object: MonsterPrototype
+ *     This is predefined prototype in order to hold all the members after
+ *     assigning the prototype to a consturctor (inheritance)
  */
 var MonsterPrototype = 
 {
+    // For logging
     tag : "[Monster]: ",
     logger : new ConsoleLogger()
 };
