@@ -16,20 +16,6 @@
          "name":"Characters",
          "objects":[
                 {
-                 "gid":998,
-                 "height":0,
-                 "name":"player",
-                 "properties":
-                    {
-                     "dir":"right"
-                    },
-                 "type":"Player",
-                 "visible":true,
-                 "width":0,
-                 "x":224,
-                 "y":288
-                }, 
-                {
                  "gid":1011,
                  "height":0,
                  "name":"bear",
@@ -56,6 +42,21 @@
                  "width":0,
                  "x":416,
                  "y":352
+                }, 
+                {
+                 "gid":1047,
+                 "height":0,
+                 "name":"player",
+                 "properties":
+                    {
+                     "dir":"right",
+                     "suffix":"SWD_01"
+                    },
+                 "type":"Player",
+                 "visible":true,
+                 "width":0,
+                 "x":224,
+                 "y":288
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -71,7 +72,7 @@
                 {
                  "gid":1010,
                  "height":0,
-                 "name":"sword",
+                 "name":"SWD_01",
                  "properties":
                     {
                      "description":"test",
@@ -240,11 +241,11 @@
         }, 
         {
          "firstgid":961,
-         "image":"..\/Images\/sword.png",
+         "image":"..\/Images\/SWD_01.png",
          "imageheight":32,
          "imagewidth":32,
          "margin":0,
-         "name":"sword",
+         "name":"SWD_01",
          "properties":
             {
 
@@ -285,11 +286,11 @@
         }, 
         {
          "firstgid":1010,
-         "image":"..\/Images\/sword.png",
+         "image":"..\/Images\/SWD_01.png",
          "imageheight":32,
          "imagewidth":32,
          "margin":0,
-         "name":"sword",
+         "name":"SWD_01",
          "properties":
             {
 
@@ -305,6 +306,21 @@
          "imagewidth":128,
          "margin":0,
          "name":"bear",
+         "properties":
+            {
+
+            },
+         "spacing":0,
+         "tileheight":32,
+         "tilewidth":32
+        }, 
+        {
+         "firstgid":1035,
+         "image":"..\/Images\/player.png",
+         "imageheight":192,
+         "imagewidth":128,
+         "margin":0,
+         "name":"player",
          "properties":
             {
 
