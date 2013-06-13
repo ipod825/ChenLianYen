@@ -48,9 +48,10 @@ MapPrototype = {
 	 */
 	isPassable : function(obj, pos){
 		if(obj.dir==DIR_DOWN)
-			p = this.relPointOnTile(new Point(pos.x,pos.y+16));
+			p = this.tiles.toTPoint(new Point(pos.x,pos.y+16));
 		else
-			p = this.relPointOnTile(pos);
+			p = this.tiles.toTPoint(pos);
+
 		if(p.equal(obj.posOnMap))
 			return true;
 		obj=this.tiles.get(p.x, p.y);
@@ -124,7 +125,7 @@ MapPrototype = {
 	 * 	newP : The new position of the obj
 	 */
 	setPosOnTile : function(obj,newP){
-		newP=this.relPointOnTile(newP);
+		newP=this.tiles.toTPoint(newP);
 		if(obj.posOnMap.x !== newP.x || obj.posOnMap.y != newP.y){
 			try{
 				this.tiles.set(obj.posOnMap.x,obj.posOnMap.y,FREE);
@@ -247,7 +248,7 @@ MapPrototype = {
 	},
 
 	relPointOnTile : function(p){
-		return this.tiles.toTPoint(this.localToLocal(p.x,p.y,this));
+		return this.tiles.toTPoint(new Point(p.x-this.x,p.y-this.y));;
 	},
 }
 
