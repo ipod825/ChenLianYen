@@ -12,20 +12,15 @@
  *     battleManager - The reference of battle manager to manager battles
  *     statue - (optional) the status to the attackable character
  */
-var AttackableCharacter = function(type, name, stage, battleManager, status)
+var AttackableCharacter = function(type, name, battleManager, status)
 {
 	// For debugging
-	this.logger.setLogLevel("all");
+	this.logger.verbose(this.tag, "AttackableCharacter: +++START+++ type = " + type +
+	                    " , name = " + name + " , battleManager = " + battleManager + 
+	                    " , status = " + status);
 
-	// Check input type and pass to parent constructor
-	if(stage instanceof Stage)
-	{ this.prototype.call(this, type, name, stage); }
-	else
-	{ 
-		status = battleManager;
-		battleManager = stage;
-		this.prototype.call(this, type, name, undefined); 
-	}
+	// Call parent Consturctor
+	Character.call(this, type, name); 
 
 	// Initialize status and battleManager
 	if(status)
@@ -33,11 +28,11 @@ var AttackableCharacter = function(type, name, stage, battleManager, status)
 	else
 	{ this.status = new Status(); }        // New a status with default value
 
-	this.battleManager = null;             // The battle Manager reference
 	if(battleManager) 
 	{ this.battleManager = battleManager; }
 	else
 	{
+		this.battleManager = null;         // The battle Manager reference
 		this.logger.error(this.tag, "AttackableCharacter: battleManager undefined");
 	}
 };
@@ -45,8 +40,8 @@ var AttackableCharacter = function(type, name, stage, battleManager, status)
 // Predefined attackable character prototype
 AttackableCharacterPrototype = 
 {
-	this.logger : new ConsoleLogger(),
-	this.tag : "[AttackableCharacter]: ",
+	logger : new ConsoleLogger(),
+	tag : "[AttackableCharacter]: ",
 
 	updateStatus : function(attrName, offset)
 	{
@@ -97,6 +92,7 @@ AttackableCharacterPrototype =
 
 };
 
+
 // AttackableCharacter inherits Character
 AttackableCharacter.prototype = new Character();
 // Assign the prototype to the predefined one
@@ -104,3 +100,6 @@ for(var obj in AttackableCharacterPrototype)
 {
 	AttackableCharacter.prototype[obj] = AttackableCharacterPrototype[obj];
 }
+// Initialization of prototype
+// For debugging
+AttackableCharacter.prototype.logger.setLogLevel("all");

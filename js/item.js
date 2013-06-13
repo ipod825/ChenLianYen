@@ -24,6 +24,7 @@
  *     var item = new Item("itemHealthPotion");
  */
 var Item = function(type, name, number, description) {
+//var Item = function(type, number, description) {
 	// For debugging
 	this.logger.setLogLevel("all");
 	this.logger.verbose(this.tag, "Item: +++START+++ type = " + type + 
@@ -46,17 +47,17 @@ var Item = function(type, name, number, description) {
 	}
 
 	if(!type)
-	{ this.logger.error(this.tag, "[constructor]: parameter 'type' undefined"); }
+	{ this.logger.error(this.tag, "Item: parameter 'type' undefined"); }
 	else
 	{ this.type = type; }
 
 	if(!number)
-	{ this.logger.debug(this.tag, "[constructor]: parameter 'number' undefined"); }
+	{ this.logger.debug(this.tag, "Item: parameter 'number' undefined"); }
 	else
 	{ this.number = number; }
 
 	if(!description)
-	{ this.logger.warning(this.tag, "[constructor]: parameter 'description' undefined"); }
+	{ this.logger.warning(this.tag, "Item: parameter 'description' undefined"); }
 	else
 	{ this.description = description; }
 

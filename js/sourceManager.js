@@ -132,6 +132,7 @@ loadItem: function(id, prop){
 },
 
 loadCharacter : function(id, prop){
+    console.log("sourceManager: loadCharacter: id = " + id + " , prop = " + prop);
 	var character;
 	if(this.characters[id])
 		character =	this.characters[id];

@@ -1,6 +1,7 @@
 //TYPE definition
 //PLAYER = 1;
-PLAYER = "Player";
+//PLAYER = "Player";
+PLAYER = "player";
 
 DIR_LEFT	= KEYCODE_LEFT;
 DIR_UP 		= KEYCODE_UP;
@@ -20,9 +21,11 @@ DIRUNIT=[{x:-1,y:0},{x:0,y:-1},{x:1,y:0},{x:0,y:1}];
  *     type - the identifier of the player
  */
 var Character = function(type, name){
-	// For debuggging
-	this.logger.setLogLevel("all");
+	// For debugging
 	this.logger.verbose(this.tag, "Character: +++START+++ type = " + type + ", name = " + name);
+
+	// Call parent constructor
+	MapObject.call(type, name);
 
 	// Check input parameters
 	if(!type)
@@ -274,4 +277,6 @@ Character.prototype = new MapObject();
 for (var obj in CharacterProtoType) { 
 	Character.prototype[obj] = CharacterProtoType[obj]; 
 } 
-
+// Initialize prototype members
+// For debuggging
+Character.prototype.logger.setLogLevel("all");
