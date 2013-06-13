@@ -23,16 +23,12 @@
  *     var item = new Item("itemHealthPotion", 2);
  *     var item = new Item("itemHealthPotion");
  */
-function Item(type, name, number, description) {
-//var Item = function(type, number, description) {
+function Item() {
 	// For debugging
 	this.logger.setLogLevel("all");
-	this.logger.verbose(this.tag, "Item: +++START+++ type = " + type + 
-	                    ", number = " + number + 
-	                    ", description = " + description);
+	this.logger.verbose(this.tag, "Item: +++START+++");
+	MapObject.call(this);
 
-	this.type = "";        // Default type is empty string
-	this.name = name;
 	this.number = 1;       // Default item has only one instance
 	this.description = ""; // Default description is empty string
 	// Effect of using 
@@ -45,26 +41,9 @@ function Item(type, name, number, description) {
 		description = number;
 		number = null;
 	}
-
-	if(!type)
-	{ this.logger.error(this.tag, "Item: parameter 'type' undefined"); }
-	else
-	{ this.type = type; }
-
-	if(!number)
-	{ this.logger.debug(this.tag, "Item: parameter 'number' undefined"); }
-	else
-	{ this.number = number; }
-
-	if(!description)
-	{ this.logger.warning(this.tag, "Item: parameter 'description' undefined"); }
-	else
-	{ this.description = description; }
-
 	this.animations={ idle: [0,  0,  false], };
 	this.numFrameX = 1;
 	this.numFrameY = 1;
-	this.suffix = "none";
 };
 
 // Item Prototype

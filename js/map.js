@@ -145,7 +145,8 @@ MapPrototype = {
 	 * 	img: the img object to be recorded
 	 */
 	addImage: function(imgName, img){
-		this.images[imgName]=img;
+		if(!this.images[imgName])
+			this.images[imgName]=img;
 	},
 
 	/* Init the map tiles when the map json file is ready
@@ -179,37 +180,27 @@ MapPrototype = {
 	initGraphics: function(){
 		this.initBackground();
 
-		objs=this.layers["Items"].objects;
-		for(var i=0; i<objs.length; ++i){
-			prop=objs[i];
-			var id=this.name+prop.type+i;
-			prop.x=this.tiles.toTRoundIndex(prop.x);
-			prop.y=this.tiles.toTRoundIndex(prop.y);
-			prop.dir=prop.properties.dir;
-			var item = this.sourceManager.loadItem(id,prop);
-			this.addChild(item);
-			//Ticker.addListener(character);
-		}
-		
-		objs=this.layers["Characters"].objects;
-		for(var i=0; i<objs.length; ++i){
-			prop=objs[i];
-			var id;
-			if(prop.type==PLAYER)
-				id=PLAYER;
-			else
-				id=this.name+prop.type+i;
-			prop.x=this.tiles.toTRoundIndex(prop.x);
-			prop.y=this.tiles.toTRoundIndex(prop.y);
-			prop.dir=prop.properties.dir;
-			var character = this.sourceManager.loadCharacter(id,prop);
-			this.addChild(character);
-			Ticker.addListener(character);
+		mapObjectLayers = ["Items", "Characters"];
+		for(var i in mapObjectLayers){
+			layer = this.layers[mapObjectLayers[i]];
+			for(var j in layer.objects){
+				prop = layer.objects[j];
+				var id;
+				if(prop.type==PLAYER)
+					id=PLAYER;
+				else
+					id=this.name+prop.type+j;
+				prop.dir=prop.properties.dir;
+				var character = this.sourceManager.loadMapObject(id,prop);
+				this.addChild(character);
+				Ticker.addListener(character);
+			}
 		}
 	},
 
 	initBackground : function(){
 		imgs=objToArray(this.images);
+		//imgs=[this.images["example"]];
 		var spriteSheet = new SpriteSheet({
 			// The large image used to define frames
 			images: imgs,

@@ -9,17 +9,16 @@
  *     questManager - the reference to the quest manager
  *     status - (optional) the status of the player
  */
-function Player(type, name, battleManager, status, questManager)
+function Player(battleManager, status, questManager)
 {
 	// For debugging
-	this.logger.verbose(this.tag, "Player: +++START+++ type = " + type + 
-	                    " , name = " + name + " , battleManager = " + 
+	this.logger.verbose(this.tag, "Player: +++START+++ battleManager = " + 
 	                    battleManager + " , status = " + status + 
 	                    " ,  questManager = " + questManager);
 
 	// Calling parent constructor
 	// TODO update constructor
-	AttackableCharacter.call(this, type, name, battleManager, status);
+	AttackableCharacter.call(this, battleManager, status);
 
 	// Check input parameters
 	if(!questManager)

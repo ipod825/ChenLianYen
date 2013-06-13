@@ -1,3 +1,14 @@
+function toTIndex (index){
+	return Math.floor(index/TILE_SIZE);
+}
+
+function toTPoint(p,y){
+	if(y)
+		return new Point(toTIndex(p), toTIndex(y));
+	else
+		return new Point(toTIndex(p.x), toTIndex(p.y));
+}
+
 function objToArray(obj){
 	result=[];
 	for(var i in obj){

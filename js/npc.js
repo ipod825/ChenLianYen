@@ -4,10 +4,10 @@
  *     Npcs can give quests and talk to player as player interact
  *     with them
  */
-function Npc(type, stage, questManager)
+function Npc(questManager)
 {
     // Call parent consturctor
-    this.prototype.apply(this, type, null);
+    this.prototype.apply(this);
 
     // Assign quest manager
     if(!questManager)

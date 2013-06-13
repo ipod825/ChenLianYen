@@ -1,7 +1,9 @@
-function MapObject(type, name){
-	this.type=type;
-	this.name=name;
+function MapObject(){
+	this.type=null;
+	this.name=null;
+	this.prop=null;
 	this.posOnMap = new Point(-1,-1);
+	// Display related variables
 	this.numFrameX;
 	this.numFrameY;
 	this.images={};
@@ -11,11 +13,19 @@ function MapObject(type, name){
 
 MapObjectPrototype={
 
+	//All dirived class can use this function to initial attributes with information recored in the map
+	//    //Attributes that does not belong to the class will not be assigned
+	//Attributes belongs to only the derived class will still be assigned
 	setProp : function(prop){
 		this.prop=prop;
 		initP = this.tileCenter(new Point(prop.x,prop.y));
 		this.x=initP.x;
 		this.y=initP.y;
+		this.posOnMap=toTPoint(this.x, this.y);
+		for (var p in prop) { 
+			if(p in this)
+				this[p] = prop[p]; 
+		} 
 	},
 
 	addImage: function(imgName, img){

@@ -18,6 +18,7 @@ function SourceManager(width, height) {
 	this.maps={};
 	this.characters={};
 	this.items={};
+	this.mapObjs={};
 
 	this.onready=null;
 	this.checkSoundExtension();
@@ -131,31 +132,30 @@ loadItem: function(id, prop){
 	return item;
 },
 
-loadCharacter : function(id, prop){
-	// For debugging
-	//console.log("sourceManager: loadCharacter: id = " + id + " , prop.type = " + 
-	//            prop.type + " , prop.name = " + prop.name);
-	//console.log("sourceManager: loadCharacter: this.characters = ");
-	//for (var c in this.characters)
-	//{
-	//	console.log("[" + c + "] = " + this.characters[c]);
-	//}
+loadMapObject: function(id, prop){
+	var mapObjs;
+	if(prop.type=="Item")
+		mapObjs=this.items;
+	else
+		mapObjs=this.characters;
 
-	var character;
-	if(this.characters[id])
-		character =	this.characters[id];
+	var mapObj;
+	if(mapObjs[id])
+		mapObj =	mapObjs[id];
 	else{
 		//Note that the string prop.type must be the same with the class name for this trick to work
 		constructorPtr = window[prop.type];
-		character = new constructorPtr(prop.type, prop.name);
-
-		this.characters[id]=character;
+		mapObj = new constructorPtr(prop.type, prop.name);
+		mapObjs[id]=mapObj;
 	}
-	character.setProp(prop);
-	character.addImage(prop.name,this.images[prop.name]);
-	character.resetImage();
-	character.setSpeedAndAnimation(0,0);
-	return character;
+	mapObj.setProp(prop);
+	mapObj.addImage(prop.name,this.images[prop.name]);
+	mapObj.resetImage();
+	if(prop.type=="Item")
+		mapObj.gotoAndPlay("idle");
+	else
+		mapObj.setSpeedAndAnimation(0,0);
+	return mapObj;
 },
 
 loadMap : function(name){
@@ -170,6 +170,11 @@ loadMap : function(name){
 		var prop= JSON.parse(ret);
 		map.setProp(prop);
 		for(var i=0; i<prop.tilesets.length; ++i){
+			//To ensure the order of images is the same as the tilesets order
+			pattern=/(.+\/)?(.+)\.png/;
+			name=prop.tilesets[i].image.replace(pattern,'$2');
+			map.addImage(name, null);
+
 			self.loadImage(map, prop.tilesets[i].image);
 		}
 		self.handleElementLoad(name);

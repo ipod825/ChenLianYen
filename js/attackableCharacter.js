@@ -12,15 +12,14 @@
  *     battleManager - The reference of battle manager to manager battles
  *     statue - (optional) the status to the attackable character
  */
-function AttackableCharacter(type, name, battleManager, status)
+function AttackableCharacter(battleManager, status)
 {
 	// For debugging
-	this.logger.verbose(this.tag, "AttackableCharacter: +++START+++ type = " + type +
-	                    " , name = " + name + " , battleManager = " + battleManager + 
+	this.logger.verbose(this.tag, "AttackableCharacter: +++START+++ battleManager = " + battleManager + 
 	                    " , status = " + status);
 
 	// Call parent Consturctor
-	Character.call(this, type, name); 
+	Character.call(this); 
 
 	// Initialize status and battleManager
 	if(status)

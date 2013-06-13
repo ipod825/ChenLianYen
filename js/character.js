@@ -22,30 +22,15 @@ DIRUNIT=[{x:-1,y:0},{x:0,y:-1},{x:1,y:0},{x:0,y:1}];
  * Parameters:
  *     type - the identifier of the player
  */
-function Character(type, name){
+function Character(){
 	// For debugging
-	this.logger.verbose(this.tag, "Character: +++START+++ type = " + type + ", name = " + name);
+	this.logger.verbose(this.tag, "Character: +++START+++ ");
 
 	// Call parent constructor
-	MapObject.call(type, name);
+	MapObject.call(this);
 
-	// Check input parameters
-	if(!type)
-	{ this.logger.error(this.tag, "Character: type undefined"); }
-	if(!name)
-	{ this.logger.error(this.tag, "Character: name undefined"); }
-
-	// Identity related variables
-	this.name = name;       // Name of Character
-	this.type = type;       // Identifier
-
-	// Display related variables
-	this.images = [];      // The image displayed on map
-	this.image;
-	this.property = null;      
 
 	// Animation related variables
-	this.displayObject = null;
 	this.dirChange = false; // Flag set when direction changes
 	this.dir = DIR_RIGHT;   // The direction of character
 	this.moving = false;    // Whether the character is moving
@@ -55,7 +40,6 @@ function Character(type, name){
 	this.step = 3;          // Velocity of moving for every frame
 	this.numFrameX = 4;
 	this.numFrameY = 4;
-	this.suffix = "none";
 
 	// Memeber objects and reference
 	this.bag = [];                 // Items hold by character
@@ -199,30 +183,10 @@ var CharacterProtoType = {
 		}
 	},
 
-	setProp : function(characterProperty){
-		// Check input status
-		if(!characterProperty)
-		{
-			this.logger.error(this.tag, "setProp: input characterProperty undefined");
-			return;
-		}
-		this.property = characterProperty;
+	setProp : function(prop){
+		MapObject.prototype.setProp.call(this, prop);
 
-		// Move the map given the position of the chracter
-		initP = this.tileCenter(new Point(this.property.x,this.property.y));
-		this.x = initP.x;
-		this.y = initP.y;
-
-		// Set status with given record
-		if(this.property.frequency){
-			this.frequency = this.property.frequency;
-		}
-		if(this.property.step)
-		{
-			this.step = this.property.step;
-		}
-		switch(this.property.dir)
-		{
+		switch(prop.dir) {
 			case "down":
 				this.dir = DIR_DOWN;
 				break;

@@ -9,15 +9,14 @@
  *     battle - the battle manager reference
  *     status - (optional) the status of the monster
  */
-function Monster(type, name, battleManager, status)
+function Monster(battleManager, status)
 {
     // For debugging
-    this.logger.verbose(this.tag, "Monster: +++START+++ type = " + type +
-                        " , name = " + name, + " , battleManager = " + 
+    this.logger.verbose(this.tag, "Monster: +++START+++ battleManager = " + 
                         battleManager + " , status = " + status);
 
     // Calling parent constructor
-    AttackableCharacter.call(this, type, name, battleManager, status);
+    AttackableCharacter.call(this, battleManager, status);
 };
 
 
