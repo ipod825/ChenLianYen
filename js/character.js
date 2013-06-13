@@ -50,7 +50,7 @@ var Character = function(type, name){
 	this.targetMet = true; 	// Default targetMet is true 
 	this.pathToTarget;
 	this.frequency = 1;     // Animation frequency
-	this.step = 2;          // Velocity of moving for every frame
+	this.step = 3;          // Velocity of moving for every frame
 	this.numFrameX = 4;
 	this.numFrameY = 4;
 	this.suffix = "none";
@@ -212,7 +212,13 @@ var CharacterProtoType = {
 		this.y = initP.y;
 
 		// Set status with given record
-		this.frequency = this.property.frequency;
+		if(this.property.frequency){
+			this.frequency = this.property.frequency;
+		}
+		if(this.property.step)
+		{
+			this.step = this.property.step;
+		}
 		switch(this.property.dir)
 		{
 			case "down":

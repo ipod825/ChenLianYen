@@ -4,6 +4,7 @@
 	"dir": "right",
 	"image": [ "player.png", "player_SWD_01.png", "player_SWD_02.png"],
 	"frequency": 1,
+	"step": 3,
 	"commands": [
 		"SHOW_TEXT: {'text': '%NEED_SWORD%'}"
 		]
