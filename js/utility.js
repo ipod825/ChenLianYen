@@ -9,6 +9,7 @@ Utility.prototype =
 
     isPlayer : function(type)
     {
+        this.logger.verbose(this.tag, "isPlayer: +++START+++ type = " + type);
         if(type && type.substr(0, 6) === "player")
         {
             return true;
@@ -16,17 +17,19 @@ Utility.prototype =
         return false;
     },
 
-    isMonster : function(character)
+    isMonster : function(type)
     {
-        if(type && type.substr(0, 6) === "monster")
+        this.logger.verbose(this.tag, "isMonster: +++START+++ type = " + type);
+        if(type && type.substr(0, 7) === "monster")
         {
             return true;
         }
         return false;
     },
 
-    isNpc : function(character)
+    isNpc : function(type)
     {
+        this.logger.verbose(this.tag, "isNpc: +++START+++ type = " + type);
         if(type && type.substr(0, 3) === "npc")
         {
             return true;

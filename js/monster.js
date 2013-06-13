@@ -5,49 +5,40 @@
  * 
  * Parameters:
  *     type - the identifier
- *     stage - the stage reference
+ *     name - the name of the moster, used to load image
  *     battle - the battle manager reference
  *     status - (optional) the status of the monster
  */
-var Monster = function(type, stage, battle, status)
+var Monster = function(type, name, battleManager, status)
 {
-	// Check input parameters
-	if(!type)
-	{
-		this.logger.error(this.tag, "Monster: type undefined");
-	}
-	if(!stage)
-	{
-		this.logger.error(this.tag, "Monster: stage undefined");
-	}
-	if(!battle)
-	{
-		this.logger.error(this.tag, "Monster: battle undefined");
-	}
-	if(!status)
-	{
-		this.logger.debug(this.tag, "Monster: status undefined");
-	}
+    // For debugging
+    this.logger.verbose(this.tag, "Monster: +++START+++ type = " + type +
+                        " , name = " + name, + " , battleManager = " + 
+                        battleManager + " , status = " + status);
 
-	// Calling parent constructor
-	// TODO update constructor
-	Monster.prototype.apply(this, battle);
+    // Calling parent constructor
+    AttackableCharacter.call(this, type, name, battleManager, status);
 };
+
 
 /*
  * Object: MonsterPrototype
  */
 var MonsterPrototype = 
 {
-	logger : new ConsoleLogger(),
-	tag : "[Monster]: "
+    tag : "[Monster]: ",
+    logger : new ConsoleLogger()
 };
+
 
 // Monster inherits AttackableCharacter
 Monster.prototype = new AttackableCharacter();
 // Assign predefined prototype to prototype
 for(var obj in MonsterPrototype)
 {
-	Monster.prototype[obj] = MonsterPrototype[obj];
+    Monster.prototype[obj] = MonsterPrototype[obj];
 }
+// Initialize the member in prototype
+Monster.prototype.logger.setLogLevel("all");
+
 
