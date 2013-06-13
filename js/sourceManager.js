@@ -132,11 +132,40 @@ loadItem: function(id, prop){
 },
 
 loadCharacter : function(id, prop){
+	// For debugging
+	//console.log("sourceManager: loadCharacter: id = " + id + " , prop.type = " + 
+	//            prop.type + " , prop.name = " + prop.name);
+	//console.log("sourceManager: loadCharacter: this.characters = ");
+	//for (var c in this.characters)
+	//{
+	//	console.log("[" + c + "] = " + this.characters[c]);
+	//}
+
 	var character;
 	if(this.characters[id])
 		character =	this.characters[id];
 	else{
-		character = new Character(prop.type, prop.name);
+		if(utility.isPlayer(prop.type))
+		{
+			character = new Player(prop.type, prop.name);
+		}
+		else if(utility.isMonster(prop.type))
+		{
+			character = new Monster(prop.type, prop.name);
+		}
+		else if(utility.isNpc(prop.type))
+		{
+			// TODO check if this works
+			console.log("loadCharacter: judged as npc");
+			character = new Npc(prop.type, prop.name);
+		}
+		else
+		{
+			// Invalid type
+			console.log("loadCharacter: judged as other");
+			character = new Character(prop.type, prop.name);
+		}
+
 		this.characters[id]=character;
 	}
 	character.setProp(prop);
