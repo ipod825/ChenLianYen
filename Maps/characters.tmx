@@ -21,85 +21,100 @@
     <property name="dir" value="down"/>
    </properties>
   </object>
-  <object name="bear" type="Monster" gid="9" x="-192" y="32">
-   <properties>
-    <property name="dir" value="left"/>
-   </properties>
-  </object>
-  <object name="bear" type="Monster" gid="13" x="-160" y="32">
-   <properties>
-    <property name="dir" value="right"/>
-   </properties>
-  </object>
-  <object name="bear" type="Monster" gid="21" x="-128" y="32">
-   <properties>
-    <property name="dir" value="up"/>
-   </properties>
-  </object>
   <object name="ghost" type="Monster" gid="25" x="-224" y="64">
    <properties>
     <property name="dir" value="down"/>
    </properties>
   </object>
-  <object name="ghost" type="Monster" gid="33" x="-192" y="64">
-   <properties>
-    <property name="dir" value="left"/>
-   </properties>
-  </object>
-  <object name="ghost" type="Monster" gid="37" x="-160" y="64">
-   <properties>
-    <property name="dir" value="right"/>
-   </properties>
-  </object>
-  <object name="ghost" type="Monster" gid="45" x="-128" y="64">
-   <properties>
-    <property name="dir" value="up"/>
-   </properties>
-  </object>
   <object gid="49" x="-224" y="96"/>
-  <object gid="57" x="-192" y="96"/>
-  <object gid="61" x="-160" y="96"/>
-  <object gid="69" x="-128" y="96"/>
   <object name="player" type="Player" gid="73" x="-224" y="128">
    <properties>
     <property name="dir" value="down"/>
    </properties>
   </object>
-  <object name="player" type="Player" gid="81" x="-192" y="128">
+  <object x="-224" y="32"/>
+  <object x="-224" y="64"/>
+  <object x="-192" y="96"/>
+  <object name="bear" type="Monster" gid="1" x="-160" y="64">
+   <properties>
+    <property name="dir" value="down"/>
+   </properties>
+  </object>
+  <object name="bear" type="Monster" gid="9" x="-128" y="64">
    <properties>
     <property name="dir" value="left"/>
    </properties>
   </object>
-  <object name="player" type="Player" gid="85" x="-160" y="128">
+  <object name="bear" type="Monster" gid="13" x="-96" y="64">
    <properties>
     <property name="dir" value="right"/>
    </properties>
   </object>
-  <object name="player" type="Player" gid="93" x="-128" y="128">
+  <object name="bear" type="Monster" gid="21" x="-64" y="64">
    <properties>
     <property name="dir" value="up"/>
    </properties>
   </object>
-  <object gid="0" x="-32" y="32"/>
-  <object gid="0" x="-96" y="32"/>
-  <object gid="0" x="-96" y="32"/>
-  <object gid="0" x="-224" y="32"/>
-  <object gid="0" x="-224" y="64"/>
-  <object gid="0" x="0" y="224"/>
-  <object gid="0" x="-128" y="64"/>
-  <object gid="0" x="-128" y="32"/>
-  <object gid="0" x="-192" y="96"/>
-  <object gid="0" x="-160" y="96"/>
-  <object gid="0" x="-160" y="96"/>
-  <object gid="0" x="-160" y="96"/>
-  <object gid="0" x="-128" y="96"/>
-  <object gid="0" x="-128" y="96"/>
-  <object gid="0" x="-128" y="96"/>
-  <object name="sword" type="Item" gid="97" x="-64" y="32">
+  <object name="ghost" type="Monster" gid="25" x="-160" y="0">
    <properties>
-    <property name="description" value="test"/>
-    <property name="number" value="1"/>
+    <property name="dir" value="down"/>
    </properties>
   </object>
+  <object name="ghost" type="Monster" gid="33" x="-128" y="0">
+   <properties>
+    <property name="dir" value="left"/>
+   </properties>
+  </object>
+  <object name="ghost" type="Monster" gid="37" x="-96" y="0">
+   <properties>
+    <property name="dir" value="right"/>
+   </properties>
+  </object>
+  <object name="ghost" type="Monster" gid="45" x="-64" y="0">
+   <properties>
+    <property name="dir" value="up"/>
+   </properties>
+  </object>
+  <object name="mushroom" type="Monster" gid="49" x="-160" y="32">
+   <properties>
+    <property name="dir" value="down"/>
+   </properties>
+  </object>
+  <object name="mushroom" type="Monster" gid="57" x="-128" y="32">
+   <properties>
+    <property name="dir" value="left"/>
+   </properties>
+  </object>
+  <object name="mushroom" type="Monster" gid="61" x="-96" y="32">
+   <properties>
+    <property name="dir" value="right"/>
+   </properties>
+  </object>
+  <object name="mushroom" type="Monster" gid="69" x="-64" y="32">
+   <properties>
+    <property name="dir" value="up"/>
+   </properties>
+  </object>
+  <object name="player" type="Player" gid="73" x="-160" y="-32">
+   <properties>
+    <property name="dir" value="down"/>
+   </properties>
+  </object>
+  <object name="player" type="Player" gid="81" x="-128" y="-32">
+   <properties>
+    <property name="dir" value="left"/>
+   </properties>
+  </object>
+  <object name="player" type="Player" gid="85" x="-96" y="-32">
+   <properties>
+    <property name="dir" value="right"/>
+   </properties>
+  </object>
+  <object name="player" type="Player" gid="93" x="-64" y="-32">
+   <properties>
+    <property name="dir" value="up"/>
+   </properties>
+  </object>
+  <object name="sword_01" type="Item" gid="97" x="0" y="-32"/>
  </objectgroup>
 </map>
