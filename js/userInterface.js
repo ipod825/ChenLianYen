@@ -69,7 +69,6 @@ function UserInterface(uiDivId, uifile, UIController){
 	this.uiDiv=$(uiDivId);
 	this.list = [];
 	this.initialization(uiDivId, uifile, UIController);
-
 }
 UserInterface.prototype = {
 	show : function(uiName){
@@ -116,8 +115,8 @@ function UIComponent(){};
 UIComponent.prototype = {
 	dom : null,
 	initialize : function(_obj, _UIC){},
-	show : function(){dom.show();},
-	hide : function(){dom.hide();},
+	show : function(){this.dom.show();},
+	hide : function(){this.dom.hide();},
 };
 
 
@@ -129,18 +128,18 @@ Inventory.prototype = Object.create(UIComponent.prototype);
 Inventory.prototype.constructor = Inventory;
 jQuery.extend(Inventory.prototype, {
 	initialize : function(_obj, _UIC){
-		dom = _obj;
+		this.dom = _obj;
 		
 		_UIC.subscribe("INVENTORY_UPDATE", this.inventoryUpdate);
 		
-		dom.find("#btUseItem").click(function(){
+		this.dom.find("#btUseItem").click(function(){
 			var id = $(this).siblings("itemid").attr("id");
 			_UIC.publish("USE_ITEM", {itemid: id});
 			
 			$(this).parent().hide();
 		});
 		
-		dom.find("#btDropItem").click(function(){
+		this.dom.find("#btDropItem").click(function(){
 			var id = $(this).siblings("itemid").attr("id");
 			_UIC.publish("DROP_ITEM", {itemid: id});
 			
@@ -181,7 +180,7 @@ HeadUpDisplay.prototype = Object.create(UIComponent.prototype);
 HeadUpDisplay.prototype.constructor = HeadUpDisplay;
 jQuery.extend(HeadUpDisplay.prototype, {
 	initialize : function(_obj, _UIC){
-		dom = _obj;
+		this.dom = _obj;
 		
 		_UIC.subscribe("HP_UPDATE", this.HPUpdate);
 		_UIC.subscribe("EXP_UPDATE", this.EXPUpdate);
@@ -199,16 +198,16 @@ jQuery.extend(HeadUpDisplay.prototype, {
 		/* args = {EXP : value}*/
 		if(topic != "EXP_UPDATE") return;
 
-		dom.find("#EXPBar > span").css("width", args.EXP + "%");
+		this.dom.find("#EXPBar > span").css("width", args.EXP + "%");
     },
 
     QuestUpdate : function(topic, args){
 		/* args = {Desc : string, Current : value, Goal : value}*/
 		if(topic != "QUEST_UPDATE") return;
 		
-		dom.find("#QuestHUD > .questText").text(args.Desc);
-		dom.find("#QuestHUD > .questStatus > .questCurrent").text(args.Current);
-		dom.find("#QuestHUD > .questStatus > .questGoal").text(args.Goal);
+		this.dom.find("#QuestHUD > .questText").text(args.Desc);
+		this.dom.find("#QuestHUD > .questStatus > .questCurrent").text(args.Current);
+		this.dom.find("#QuestHUD > .questStatus > .questGoal").text(args.Goal);
     }, 
 });
 
@@ -221,7 +220,7 @@ Dialogue.prototype = Object.create(UIComponent.prototype);
 Dialogue.prototype.constructor = Dialogue;
 jQuery.extend(Dialogue.prototype, {
 	initialize : function(_obj, _UIC){
-		dom = _obj;
+		this.dom = _obj;
 		
 	},
 });
@@ -235,7 +234,7 @@ Options.prototype = Object.create(UIComponent.prototype);
 Options.prototype.constructor = Dialogue;
 jQuery.extend(Options.prototype, {
 	initialize : function(_obj, _UIC){
-		dom = _obj;
+		this.dom = _obj;
 		
 	},
 });
@@ -249,7 +248,7 @@ QuestWindow.prototype = Object.create(UIComponent.prototype);
 QuestWindow.prototype.constructor = QuestWindow;
 jQuery.extend(QuestWindow.prototype, {
 	initialize : function(_obj, _UIC){
-		dom = _obj;
+		this.dom = _obj;
 		
 	},
 });
@@ -263,7 +262,6 @@ StatusWindow.prototype = Object.create(UIComponent.prototype);
 StatusWindow.prototype.constructor = StatusWindow;
 jQuery.extend(StatusWindow.prototype, {
 	initialize : function(_obj, _UIC){
-		dom = _obj;
-		
+		this.dom = _obj;
 	},
 });
