@@ -10,7 +10,7 @@ Battle.prototype =
     logger : new ConsoleLogger(),
 
     // Damage calculate funtion
-    performAttack(attacker, attackee)
+    performAttack : function(attacker, attackee)
     {
         var attackerStatus = attacker.getStatus();
         var attackeeStatus = attackee.getStatus();
