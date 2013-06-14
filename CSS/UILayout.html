@@ -32,7 +32,7 @@
 
 	<div id="BottomBar">
 		<button id="btHideUI" onclick="$('#uiDiv').children().hide()">HideUI</button>
-		<button id="btPause">Pause</button>	
+		<button id="btPause" onclick="toggleVisibility('#Options')">Pause</button>	
 		<button id="btQuest">Quest</button>
 		<button id="btStatus">Status</button>
 		<button id="btInventory" onclick="toggleVisibility('#Inventory')">Inventory</button>
@@ -60,7 +60,7 @@
 
 <div id="Inventory" class="window" >
 	<h1>Inventory</h1>
-	<div class="gridview">
+	<div id="Grid" class="gridview">
 		<div id="item01" class="item"></div>
 		<div id="item01" class="item"></div>
 		<div id="item01" class="item"></div>
@@ -76,4 +76,12 @@
 		<div id="item01" class="item"></div>
 		<div id="item01" class="item"></div>
 	</div>
+	<div id="itemOptions" class="itemOptions">
+		<itemid id="" />
+		<div id="btUseItem" class="itemOption">Use</div>
+		<div id="btDropItem" class="itemOption">Drop</div>
+	</div>
 </div>
+
+<div id="QuestWindow" class="window"></div>
+<div id="StatusWindow" class="window"></div>

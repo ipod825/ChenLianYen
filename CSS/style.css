@@ -382,11 +382,35 @@ button{
 	border: 1px solid #111;
 	-webkit-border-radius: 8px;
 	pointer-events: auto;
+	cursor: pointer;
 }
 
 #Inventory .item:hover{
-	background-color: red;
+	background: rgba(255, 210, 210, 0.5);
+}
+
+#Inventory .itemOptions{
+	position: absolute;
+	width:75px;
+	height: 30px;
+	top: 0px;
+	left: 0px;
+	padding: 5px;
+	background: rgba(0, 0, 0, 0.5);
+	border-radius: 10px;
+	color: #000;
+}
+
+#Inventory .itemOptions .itemOption{
+	pointer-events: auto;
 	cursor: pointer;
+	display: block;
+	width: 100%;
+	text-align:center;
+}
+
+#Inventory .itemOptions .itemOption:hover{
+	background: rgba(255, 210, 210, 0.5);
 }
 
 .window {
