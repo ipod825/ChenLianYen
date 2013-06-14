@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 // Battle Class
 var Battle = function()
 {
@@ -33,14 +32,3 @@ Battle.prototype =
 
 // Initialize the member in prototype
 Battle.prototype.logger.setLogLevel("all");
-=======
-function BattleManager(){
-	
-}
-
-BattleManager.prototype={
-	calculateDamage : function(attacker, attacke){
-	
-	},
-}
->>>>>>> 872a5a64741abcba3814600700746f159b4dd700
