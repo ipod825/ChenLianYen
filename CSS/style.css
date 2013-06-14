@@ -42,6 +42,7 @@ div#Dialogue {
 }
 
 div .dialogue {
+	display: none;
 	width: 240;
 	height: 160;
 	position: absolute;

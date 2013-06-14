@@ -63,7 +63,8 @@ loadMap: function (mapName) {
 },
 
 loadUI: function(uiDiv,uifile) {
-	this.UserInterface= new UserInterface(uiDiv,uifile);
+	this.UIController = new UIController();
+	this.UserInterface = new UserInterface(uiDiv, uifile, this.UIController);
 },
 //loadUI: function() {
 //	var self = this;

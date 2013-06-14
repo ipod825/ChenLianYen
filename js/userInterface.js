@@ -9,7 +9,7 @@ function toggleVisibility(id){
 }
 
 function UIController(){
-	this.topics = {},
+	this.topics = {};
 	this.subUid = -1;
 }
 
@@ -79,13 +79,13 @@ UserInterface.prototype = {
 	},
 	initialization : function(uiDivId, uifile, UIController){
 		self=this;
-		uiDiv.load(uifile, function(){
+		self.uiDiv.load(uifile, function(){
 			self.uiDiv.children("div").each(function(index, element){
 				//hide each ui by default
 				var uiName = $(this).attr("id");
 				switch(uiName){
 				case "HUD":
-					self.list[uiName] = new HUD($(this), UIController);
+					self.list[uiName] = new HeadUpDisplay($(this), UIController);
 					break;
 				case "Dialogue":
 					self.list[uiName] = new Dialogue($(this), UIController);
@@ -121,46 +121,13 @@ UIComponent.prototype = {
 };
 
 
-function HUD(dom, UIC){
-	this.initialize(dom, UIC);
-}
-HUD.prototype = Object.create(UIComponent.prototype, {
-	initialize : function(_obj, _UIC){
-		dom = _obj;
-		
-		_UIC.subscribe("HP_UPDATE", this.HPUpdate);
-		_UIC.subscribe("EXP_UPDATE", this.EXPUpdate);
-		_UIC.subscribe("QUEST_UPDATE", this.QuestUpdate);
-	},
-	
-	HPUpdate : function(topic, args){
-      /* args = {HP : value}*/
-      if(topic != "HP_UPDATE") return;
-		
-      dom.find("#HealthBar > span").css("width", args.HP + "%");	
-	},
-
-    EXPUpdate : function(topic, args){
-		/* args = {EXP : value}*/
-		if(topic != "EXP_UPDATE") return;
-
-		dom.find("#EXPBar > span").css("width", args.EXP + "%");
-    },
-
-    QuestUpdate : function(topic, args){
-		/* args = {Desc : string, Current : value, Goal : value}*/
-		if(topic != "QUEST_UPDATE") return;
-		
-		dom.find("#QuestHUD > .questText").text(args.Desc);
-		dom.find("#QuestHUD > .questStatus > .questCurrent").text(args.Current);
-		dom.find("#QuestHUD > .questStatus > .questGoal").text(args.Goal);
-    }, 
-});
 
 function Inventory(dom, UIC){
 	this.initialize(dom, UIC);
 }
-Inventory.prototype = Object.create(UIComponent.prototype, {
+Inventory.prototype = Object.create(UIComponent.prototype);
+Inventory.prototype.constructor = Inventory;
+jQuery.extend(Inventory.prototype, {
 	initialize : function(_obj, _UIC){
 		dom = _obj;
 		
@@ -204,32 +171,83 @@ Inventory.prototype = Object.create(UIComponent.prototype, {
 	}
 });
 
+
+
+
+function HeadUpDisplay(dom, UIC){
+	this.initialize(dom, UIC);
+}
+HeadUpDisplay.prototype = Object.create(UIComponent.prototype);
+HeadUpDisplay.prototype.constructor = HeadUpDisplay;
+jQuery.extend(HeadUpDisplay.prototype, {
+	initialize : function(_obj, _UIC){
+		dom = _obj;
+		
+		_UIC.subscribe("HP_UPDATE", this.HPUpdate);
+		_UIC.subscribe("EXP_UPDATE", this.EXPUpdate);
+		_UIC.subscribe("QUEST_UPDATE", this.QuestUpdate);
+	},
+	
+	HPUpdate : function(topic, args){
+      /* args = {HP : value}*/
+      if(topic != "HP_UPDATE") return;
+		
+      dom.find("#HealthBar > span").css("width", args.HP + "%");	
+	},
+
+    EXPUpdate : function(topic, args){
+		/* args = {EXP : value}*/
+		if(topic != "EXP_UPDATE") return;
+
+		dom.find("#EXPBar > span").css("width", args.EXP + "%");
+    },
+
+    QuestUpdate : function(topic, args){
+		/* args = {Desc : string, Current : value, Goal : value}*/
+		if(topic != "QUEST_UPDATE") return;
+		
+		dom.find("#QuestHUD > .questText").text(args.Desc);
+		dom.find("#QuestHUD > .questStatus > .questCurrent").text(args.Current);
+		dom.find("#QuestHUD > .questStatus > .questGoal").text(args.Goal);
+    }, 
+});
+
+
+
 function Dialogue(dom, UIC){
 	this.initialize(dom, UIC);
 }
-Dialogue.prototype = Object.create(UIComponent.prototype, {
+Dialogue.prototype = Object.create(UIComponent.prototype);
+Dialogue.prototype.constructor = Dialogue;
+jQuery.extend(Dialogue.prototype, {
 	initialize : function(_obj, _UIC){
 		dom = _obj;
 		
 	},
 });
+
 
 
 function Options(dom, UIC){
 	this.initialize(dom, UIC);
 }
-Options.prototype = Object.create(UIComponent.prototype, {
+Options.prototype = Object.create(UIComponent.prototype);
+Options.prototype.constructor = Dialogue;
+jQuery.extend(Options.prototype, {
 	initialize : function(_obj, _UIC){
 		dom = _obj;
 		
 	},
 });
+
 
 
 function QuestWindow(dom, UIC){
 	this.initialize(dom, UIC);
 }
-QuestWindow.prototype = Object.create(UIComponent.prototype, {
+QuestWindow.prototype = Object.create(UIComponent.prototype);
+QuestWindow.prototype.constructor = QuestWindow;
+jQuery.extend(QuestWindow.prototype, {
 	initialize : function(_obj, _UIC){
 		dom = _obj;
 		
@@ -237,10 +255,13 @@ QuestWindow.prototype = Object.create(UIComponent.prototype, {
 });
 
 
+
 function StatusWindow(dom, UIC){
 	this.initialize(dom, UIC);
 }
-StatusWindow.prototype = Object.create(UIComponent.prototype, {
+StatusWindow.prototype = Object.create(UIComponent.prototype);
+StatusWindow.prototype.constructor = StatusWindow;
+jQuery.extend(StatusWindow.prototype, {
 	initialize : function(_obj, _UIC){
 		dom = _obj;
 		
