@@ -31,7 +31,6 @@ function Character(){
 	this.dirChange = false; // Flag set when direction changes
 	this.dir = DIR_RIGHT;   // The direction of character
 	this.moving = false;    // Whether the character is moving
-	this.targetMet = true; 	// Default targetMet is true 
 	this.pathToTarget;
 	this.frequency = 1;     // Animation frequency
 	this.step = 3;          // Velocity of moving for every frame
@@ -138,7 +137,6 @@ var CharacterProtoType = {
 		}
 		// Target valid
 		this.target = target;
-		this.targetMet=false;
 		this.pathToTarget = this.parent.findPath(this.posOnMap, this.target.pos);
 	},
 
@@ -148,7 +146,6 @@ var CharacterProtoType = {
 		// For performance concern, we reset its speed and animation only if the character 
 		// change direction or it starts to move
 		target = null;
-		targetMet = false;
 		if(this.dir != dir || !this.moving){
 			this.dir = dir;
 			this.moving = true;
@@ -159,13 +156,18 @@ var CharacterProtoType = {
 		}
 	},
 
-	decideDirection : function(){
-		if(this.posOnMap.x ==  this.pathToTarget[0].x && this.posOnMap.y == this.pathToTarget[0].y){
+	moveTowardTarget: function(){
+		if(this.target.posChanged()){
+			this.target.updatePos();
+			this.setTarget(this.target);
+		}
+		if(this.pathToTarget.length==0)
+			return;
+		if(this.posOnMap.equal(this.pathToTarget[0])){
 			this.pathToTarget.shift();
 			if(this.pathToTarget.length==0){
-				this.targetMet=true;
+				//this.target = null;
 				this.setSpeedAndAnimation(0,0);
-				this.logger.log("targetMet");
 				return;
 			}
 			this.logger.log("Current:"+this.posOnMap+"tmpTarget:"+new Point(this.pathToTarget[0].x,this.pathToTarget[0].y)+"finalTaarget:"+this.pathToTarget[this.pathToTarget.length-1]);
@@ -178,6 +180,14 @@ var CharacterProtoType = {
 				newDir=(diffx>0)?DIR_RIGHT:DIR_LEFT;
 			this.setDirection(newDir);
 		}
+	},
+
+	freeMove : function(){
+	
+	},
+
+	searchTarget : function(){
+	
 	},
 
 	setProp : function(prop){
@@ -206,9 +216,12 @@ var CharacterProtoType = {
 	 *     The main tick function, which is executed every loop
 	 */
 	tick : function(){
-		if(!this.moving && this.targetMet){ /* no need to move */ }
-		else
-		{
+		if(!this.target){	//player doesn't need to do this
+			this.searchTarget();
+		}
+
+		if(!this.moving && !this.target){ /* no need to move */ }
+		else {
 			this.move();
 		}
 	},
@@ -218,9 +231,10 @@ var CharacterProtoType = {
 	 * The move function which trigger animation based on direction
 	 */
 	move : function(){
-		if(!this.targetMet){
-			this.decideDirection();
-		}
+		if(this.target)
+			this.moveTowardTarget();
+		else
+			this.freeMove();
 
 		// Test if the new position can be passed
 		var newP = new Point(this.x + this.vX, this.y + this.vY);

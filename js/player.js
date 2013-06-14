@@ -9,21 +9,23 @@
  *     questManager - the reference to the quest manager
  *     status - (optional) the status of the player
  */
-function Player(battleManager, status, questManager)
+function Player(status, battleManager, _questManager)
 {
 	// For debugging
-	this.logger.verbose(this.tag, "Player: +++START+++ battleManager = " + 
-	                    battleManager + " , status = " + status + 
-	                    " ,  questManager = " + questManager);
+	this.logger.verbose(this.tag, "Player: +++START+++ status = " + status );
 
 	// Calling parent constructor
-	// TODO update constructor
-	AttackableCharacter.call(this, battleManager, status);
-
-	// Check input parameters
-	if(!questManager)
+	AttackableCharacter.call(this, status, battleManager);
+   
+	// Initialize quest manager
+	var questManager = null;
+	if(!_questManager)
 	{
-		this.logger.error(this.tag, "Player: questManager undefined");
+		this.logger.error(this.tag, "Player: _questManager undefined");
+	}
+	else
+	{
+		questManager = _questManager;
 	}
 };
 

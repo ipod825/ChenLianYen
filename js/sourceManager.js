@@ -143,7 +143,7 @@ loadMapObject: function(id, prop){
 	mapObj.resetImage();
 	if(prop.type=="Item")
 		mapObj.gotoAndPlay("idle");
-	else
+	else if(prop.type==PLAYER)
 		mapObj.setSpeedAndAnimation(0,0);
 	return mapObj;
 },

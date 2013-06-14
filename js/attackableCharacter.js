@@ -12,27 +12,28 @@
  *     battleManager - The reference of battle manager to manager battles
  *     statue - (optional) the status to the attackable character
  */
-function AttackableCharacter(battleManager, status)
+function AttackableCharacter(_status, _battleManager)
 {
     // For debugging
-    this.logger.verbose(this.tag, "AttackableCharacter: +++START+++ battleManager = " + battleManager + 
-                        " , status = " + status);
+    this.logger.verbose(this.tag, "AttackableCharacter: +++START+++ _battleManager = " + _battleManager + 
+                        " , _status = " + _status);
 
     // Call parent Consturctor
     Character.call(this); 
 
     // Initialize status and battleManager
-    if(status)
-    { this.status = new Status(status); }  // New status with given status
+    var status = null;
+    if(_status)
+    { status = new Status(status); }  // New status with given status
     else
-    { this.status = new Status(); }        // New a status with default value
+    { status = new Status(); }        // New a status with default value
 
-    if(battleManager) 
-    { this.battleManager = battleManager; }
+    var battleManager = null;
+    if(_battleManager) 
+    { battleManager = _battleManager; }
     else
     {
-        this.battleManager = null;         // The battle Manager reference
-        this.logger.error(this.tag, "AttackableCharacter: battleManager undefined");
+        this.logger.error(this.tag, "AttackableCharacter: _battleManager undefined");
     }
 };
 
