@@ -42,14 +42,14 @@ function Character(){
 	this.target = null;            // The targeting position or object
 	//this.stage = this.getStage();  // reference of stage for dropping item
 	this.animations={
-		walkdown:   {frames:[0,  0,  1,  1,  1,  2,  2,  3,  3,  3], 
-					 next: "walkdown", frequency:this.frequency},
-		walkleft:   {frames:[4,  4,  5,  5,  5,  6,  6,  7,  7,  7], 
-					 next: "walkleft", frequency:this.frequency},
-		walkright:  {frames:[8,  8,  9,  9,  9,  10, 10, 11, 11, 11], 
-					 next: "walkright", frequency:this.frequency},
-		walkup:     {frames:[12, 12, 13, 13, 13, 14, 14, 15, 15, 15], 
-					 next: "walkup", frequency:this.frequency},
+		down:   {frames:[0,  0,  1,  1,  1,  2,  2,  3,  3,  3], 
+					 next: "down", frequency:this.frequency},
+		left:   {frames:[4,  4,  5,  5,  5,  6,  6,  7,  7,  7], 
+					 next: "left", frequency:this.frequency},
+		right:  {frames:[8,  8,  9,  9,  9,  10, 10, 11, 11, 11], 
+					 next: "right", frequency:this.frequency},
+		up:     {frames:[12, 12, 13, 13, 13, 14, 14, 15, 15, 15], 
+					 next: "up", frequency:this.frequency},
 		idledown:    [0,  0,  false],
 		idleleft:    [4,  4,  false],
 		idleright:   [8,  8,  false],
@@ -113,7 +113,7 @@ var CharacterProtoType = {
 		this.vX=vX;
 		this.vY=vY;
 		this.moving = (this.vX!=0 || this.vY!=0);
-		prefix = this.moving? "walk" : "idle";
+		prefix = this.moving? "" : "idle";
 		this.gotoAndPlay(prefix + DIRSTR[this.dir-DIR_LEFT]);
 	},
 
