@@ -1,57 +1,57 @@
 var Quest1 = new Quest('1','kill monster','monster',[
-                                                     {
-                                                     targetName : "monster001",
-                                                     count : 0,
-                                                     max : 5
-                                                     },
-                                                     
-                                                     {
-                                                     targetName : "monster002",
-                                                     count : 0,
-                                                     max : 4
-                                                     }
-                                                     ]);
+		{
+			targetName : "monster001",
+	count : 0,
+	max : 5
+		},
+
+		{
+			targetName : "monster002",
+	count : 0,
+	max : 4
+		}
+		]);
 var Quest2 = new Quest('2','talktonpc','npc',[
-                                                 {
-                                                 targetName : "npc001",
-                                                 count : 0,
-                                                 max : 1
-                                                 },
-                                          
-                                              ]);
+		{
+			targetName : "npc001",
+	count : 0,
+	max : 1
+		},
+
+		]);
 
 
 function Quest(ID, _name, _goal, _goaltype,_questConditions){
-        var QuestId = ID,
-            name = _name,
-            goal = _goal,
-            goaltype = _goaltype
-            questConditions = _questConditions;
-    
-        this.Initialize =function(questConditions)
-        {
-            //this.id = Quest.QuestId;
-            
-            for(var cond in questConditions)
-            {
-                var qq = new Questcondition(cond.targetName, cond.max);
-                
-                this.questConditionsArray[cond.targetName]=qq;
-            }
-        }
-        this.update = function(object)
-        {
-            for(var cond in questConditions)
-            {
-                if (cond.targetName == object.targetName)
-                {
-                    questConditionsArray[cond.targetName].update(object);
-                }
-                    
-            }
-        };
+	var QuestId = ID,
+		name = _name,
+		goal = _goal,
+		goaltype = _goaltype
+			questConditions = _questConditions;
 
-    
+	this.Initialize =function(questConditions)
+	{
+		//this.id = Quest.QuestId;
+
+		for(var cond in questConditions)
+		{
+			var qq = new Questcondition(cond.targetName, cond.max);
+
+			this.questConditionsArray[cond.targetName]=qq;
+		}
+	}
+	this.update = function(object)
+	{
+		for(var cond in questConditions)
+		{
+			if (cond.targetName == object.targetName)
+			{
+				questConditionsArray[cond.targetName].update(object);
+			}
+
+		}
+	};
+
+
 
 }
 
@@ -59,41 +59,41 @@ function Quest(ID, _name, _goal, _goaltype,_questConditions){
 
 function Questcondition(_targetName,_max)
 {
-    this.targetName = _targetName;
-    this.max = _max;
-    var count = 0;
-    this.update = function(object)
-    {
-         count++;
-    }
+	this.targetName = _targetName;
+	this.max = _max;
+	var count = 0;
+	this.update = function(object)
+	{
+		count++;
+	}
 
-    
-    
+
+
 
 };
 
 function Questmanager()
 {
-    var questList = new Array()
-    //questList[]
-    this.addQuest = function(Quest)
-    {
-        var newQuest = Quest;
-        questList[Quest.QuestId]= newQuest ;
-    };
-    
-    
-    this.updateQuest = function(object)
-    {
-        if(object.type == 'npc')
-        {
-            quest2.update(object)
-        }
-        
-    };
-    
-    
-    
+	var questList = new Array()
+		//questList[]
+		this.addQuest = function(Quest)
+		{
+			var newQuest = Quest;
+			questList[Quest.QuestId]= newQuest ;
+		};
+
+
+	this.updateQuest = function(object)
+	{
+		if(object.type == 'npc')
+		{
+			quest2.update(object)
+		}
+
+	};
+
+
+
 };
 
 

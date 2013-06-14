@@ -16,20 +16,6 @@
          "name":"Characters",
          "objects":[
                 {
-                 "gid":1011,
-                 "height":0,
-                 "name":"bear",
-                 "properties":
-                    {
-                     "dir":"down"
-                    },
-                 "type":"Monster",
-                 "visible":true,
-                 "width":0,
-                 "x":320,
-                 "y":416
-                }, 
-                {
                  "gid":1019,
                  "height":0,
                  "name":"bear",
@@ -57,34 +43,6 @@
                  "width":0,
                  "x":224,
                  "y":288
-                }, 
-                {
-                 "gid":1079,
-                 "height":0,
-                 "name":"bear",
-                 "properties":
-                    {
-                     "dir":"up"
-                    },
-                 "type":"Monster",
-                 "visible":true,
-                 "width":0,
-                 "x":192,
-                 "y":416
-                }, 
-                {
-                 "gid":1103,
-                 "height":0,
-                 "name":"ghost",
-                 "properties":
-                    {
-                     "dir":"up"
-                    },
-                 "type":"Monster",
-                 "visible":true,
-                 "width":0,
-                 "x":288,
-                 "y":384
                 }],
          "opacity":1,
          "type":"objectgroup",

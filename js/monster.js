@@ -9,14 +9,14 @@
  *     battle - the battle manager reference
  *     status - (optional) the status of the monster
  */
-function Monster(battleManager, status)
+function Monster(status)
 {
     // For debugging
-    this.logger.verbose(this.tag, "Monster: +++START+++ battleManager = " + 
-                        battleManager + " , status = " + status);
+    this.logger.verbose(this.tag, "Monster: +++START+++ status = " + status);
 
     // Calling parent constructor
-    AttackableCharacter.call(this, battleManager, status);
+    AttackableCharacter.call(this, status);
+    this.moving = true;
 };
 
 
@@ -29,7 +29,25 @@ var MonsterPrototype =
 {
     // For logging
     tag : "[Monster]: ",
-    logger : new ConsoleLogger()
+    logger : new ConsoleLogger(),
+
+	searchTarget : function(){
+		dirIndex = this.dir - DIR_LEFT;
+		p = new Point(0,0);
+		searchPath = [];
+		for(var i =0; i<2; ++i){
+			p.x+=DIRUNIT[dirIndex].x;
+			p.y+=DIRUNIT[dirIndex].y;
+			searchPath.push(new Point(p.x, p.y));
+		}
+		target = this.parent.detetObj(PLAYER, this.posOnMap, searchPath);
+		this.setTarget(target);
+	},
+
+    freeMove : function(){
+    	if(Math.random()>0.8)
+			this.setDirection(DIR_LEFT+Math.floor(Math.random()*4));
+    },
 };
 
 

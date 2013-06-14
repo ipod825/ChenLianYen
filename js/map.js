@@ -1,6 +1,27 @@
 FREE=0;
 BLOCK=1;
 
+function Target(obj, pos){
+	this.obj=obj;
+	this.pos=pos;
+}
+
+Target.prototype = {
+	reaalPos : function(){
+		return this.obj.posOnMap;
+	},
+
+	posChanged : function(){
+		if(!this.obj)
+			return false;
+		return !(this.obj.posOnMap.equal(this.pos));
+	},
+
+	updatePos :function(){
+		this.pos=this.obj.posOnMap;
+	},
+}
+
 function Map(name, sourceManager){
 	this.name = name;
 	this.sourceManager = sourceManager;
@@ -24,6 +45,19 @@ MapPrototype = {
 
 	/* APIS*/
 
+	detetObj : function(type, pos, posOffset){
+		for(var i=0; i<posOffset.length; ++i){
+			checkp = pos.plus(posOffset[i]);
+			obj=this.tiles.get(checkp.x, checkp.y);
+			if(obj<=BLOCK)
+				continue;
+			if(obj.type==type){
+				return new Target(obj, checkp);
+			}
+		}
+		return null;
+	},
+
 	/* Get the object on the pos 
 	 * Paramters:
 	 * 	pos: The position in pixel unit
@@ -33,10 +67,7 @@ MapPrototype = {
 		obj=this.tiles.get(p.x,p.y);
 		if(obj<=BLOCK)
 			obj=null;
-		target={"obj":obj,"pos":p};
-		if(obj)
-			alert(obj.posOnMap);
-		return target;
+		return new Target(obj,p);
 	},
 
 	/*
