@@ -7,7 +7,7 @@ function Rpg(canvasId) {
 	this.input = new Input(this);
 	this.currentMap;
 
-	//this.questManager = new QuestManager();
+	this.questManager = new QuestManager();
 	this.battleManager = new BattleManager();
 	
 	this.UserInterface;

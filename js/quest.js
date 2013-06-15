@@ -88,7 +88,7 @@ function Questcondition(_targetName,_max)
     {
         this.count+=1;
     }
-};
+}
 
 function QuestManager()
 {
@@ -108,7 +108,7 @@ function QuestManager()
 //        alert(questList[1].questConditionsArray);
 //    }
     
-    this.updateQuest = function(object
+    this.updateQuest = function(object)
     {
         if(utility.isMonster(object.type) == true)
         {
@@ -124,7 +124,7 @@ function QuestManager()
     
     
     //uigetdateArray storage questname,targetName,count.max
-    this.uigetdate =function()
+    this.uigetdate = function()
     {
         for (i=1; i<=2; i++)
         {
@@ -135,12 +135,11 @@ function QuestManager()
                 this.uigetdateArray.push(questList[i].questConditionsArray[cond].count);
                 this.uigetdateArray.push(questList[i].questConditionsArray[cond].max);
             
+            }
         }
-    }
-    
-    
-    
-};
+    };
+}
+
 
 
 
