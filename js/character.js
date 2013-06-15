@@ -257,14 +257,16 @@ var CharacterProtoType = {
 		// Test if the new position can be passed
 		var newP = new Point(this.x + this.vX, this.y + this.vY);
 		obj=this.parent.isPassable(this, newP);
-		if(obj==BLOCK)
+		if(obj == BLOCK)
 			return;
-		else if(obj.type==ITEM){
+		else if(obj.type == ITEM){
 			this.pickItem(obj);
 			this.resetImage(obj.name);
 			this.parent.removeChild(obj);
 		}
-		else if(obj.type==MONSTER){
+		else if(obj.type == MONSTER){
+			this.logger.verbose("monster encountered");
+			this.attack(obj);
 			return;
 		}
 
