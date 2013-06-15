@@ -34,7 +34,7 @@ function Map(name, sourceManager){
 	this.tiles=null;
 	this.layers={};
 	this.characters=[];
-	this.logger.setLogLevel("verbose");
+	this.logger.setLogLevel("none");
 
 }
 

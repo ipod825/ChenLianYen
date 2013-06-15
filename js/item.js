@@ -25,7 +25,7 @@
  */
 function Item() {
 	// For debugging
-	this.logger.setLogLevel("all");
+	this.logger.setLogLevel("none");
 	this.logger.verbose(this.tag, "Item: +++START+++");
 	MapObject.call(this);
 

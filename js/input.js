@@ -8,7 +8,7 @@ KEYCODE_ATTACK = KEYCODE_A;
 function Input(rpg){
 	this.rpg = rpg;
 	this.logger=new ConsoleLogger();
-	this.logger.setLogLevel("verbose");
+	this.logger.setLogLevel("none");
 }
 
 Input.prototype={

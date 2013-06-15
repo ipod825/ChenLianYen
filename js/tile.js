@@ -36,13 +36,13 @@ Tile.prototype={
 	},
 
 	get : function(x,y){
-		if(x<0 || y<0 || x>=this.width || y>=this.height)
+		if(x<0 || y<0 || x>=this.width || y>=this.height || isNaN(x) || isNaN(y))
 			return BLOCK;
 		return this.grid[x][y];
 	},
 
 	set : function(x,y,value){
-		if(x<0 || y<0 || x>this.width || y>this.height)
+		if(x<0 || y<0 || x>this.width || y>this.height || isNaN(x) || isNaN(y))
 			return;
 		this.grid[x][y]=value;
 	},

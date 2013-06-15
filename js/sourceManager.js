@@ -1,7 +1,8 @@
 /* Init:
  *
  * */
-function SourceManager(width, height) {
+function SourceManager(rpg, width, height) {
+	this.rpg = rpg;
 	this.stage=null;
 	this.canvasWidth=width;
 	this.canvasHeight=height;
@@ -96,7 +97,7 @@ loadAudio : function(name) {
 	this.sounds[name]=audio;
 },
 
-loadImage : function(obj, name){
+loadImage : function(obj, name, callback){
 	pattern=/(.+\/)?(.+)\.png/;
 	name=name.replace(pattern,'$2');
 	if(this.images[name]){
@@ -109,6 +110,9 @@ loadImage : function(obj, name){
 	img.src = url;
 	img.onload = function(obj){
 		obj.addImage(name, this.images[name]);
+		if(callback){
+			callback(name, this.images[name]);
+		}
 		this.handleElementLoad();
 	}.bind(this, obj);
 	img.onerror = this.handleElementError;
@@ -131,14 +135,14 @@ loadMapObject: function(id, prop){
 		//To avoid switch case, identify the constructor as a function point by prop.type
 		//Note that "prop.type" must be the same with the class name for this trick to work
 		constructorPtr = window[prop.type];
-		mapObj = new constructorPtr(prop.type, prop.name);
+		mapObj = new constructorPtr(this.rpg);
 		mapObjs[id]=mapObj;
 	}
 	mapObj.setProp(prop);
 	mapObj.addImage(prop.name,this.images[prop.name]);
 	if(mapObj.suffix){
 		n=mapObj.name+"_"+mapObj.suffix;
-		this.loadImage(mapObj, n);
+		this.loadImage(mapObj, n, mapObj.addAttackAnimation.bind(mapObj));
 	}
 	mapObj.resetImage();
 	if(prop.type=="Item")

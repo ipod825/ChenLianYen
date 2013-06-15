@@ -19,13 +19,12 @@ DIRUNIT=[{x:-1,y:0},{x:0,y:-1},{x:1,y:0},{x:0,y:1}];
  * Parameters:
  *     type - the identifier of the player
  */
-function Character(){
+var Character = function(_rpg){
 	// For debugging
 	this.logger.verbose(this.tag, "Character: +++START+++ ");
 
 	// Call parent constructor
-	MapObject.call(this);
-
+	MapObject.call(this, _rpg);
 
 	// Animation related variables
 	this.dirChange = false; // Flag set when direction changes
@@ -38,7 +37,7 @@ function Character(){
 	this.numFrameY = 4;
 
 	// Memeber objects and reference
-	this.bag = [];                 // Items hold by character
+	this.bag = {};                 // Items hold by character
 	this.target = null;            // The targeting position or object
 	//this.stage = this.getStage();  // reference of stage for dropping item
 	this.animations={
@@ -50,6 +49,21 @@ function Character(){
 					 next: "right", frequency:this.frequency},
 		up:     {frames:[12, 12, 13, 13, 13, 14, 14, 15, 15, 15], 
 					 next: "up", frequency:this.frequency},
+		idledown:    [0,  0,  false],
+		idleleft:    [4,  4,  false],
+		idleright:   [8,  8,  false],
+		idleup:      [12, 12, false]
+	}
+
+	this.banimations={
+		down:   {frames:[0,  0,  1,  1,  1,  2,  2,  3,  3,  3], 
+					 next: "idledown", frequency:this.frequency},
+		left:   {frames:[4,  4,  5,  5,  5,  6,  6,  7,  7,  7], 
+					 next: "idleleft", frequency:this.frequency},
+		right:  {frames:[8,  8,  9,  9,  9,  10, 10, 11, 11, 11], 
+					 next: "idleright", frequency:this.frequency},
+		up:     {frames:[12, 12, 13, 13, 13, 14, 14, 15, 15, 15], 
+					 next: "idleup", frequency:this.frequency},
 		idledown:    [0,  0,  false],
 		idleleft:    [4,  4,  false],
 		idleright:   [8,  8,  false],
@@ -71,12 +85,21 @@ var CharacterProtoType = {
 	 * Parameters: 
 	 *     item - The item to add into bag
 	 */
-	addItem : function(item)
+	addItem : function(_item)
 	{
-		if(!item)
-		{ this.logger.error(this.tag, "addItem: input item undefined"); }
+		this.logger.verbose(this.tag, "addItem: +++START+++ _item.type = "
+		                    + _item.type + ", _item.number = " + _item.number);
+		if(_item && _item.type)
+		{ 
+			if(this.bag[_item.type])
+			{
+				this.bag[_item.type].number += _item.number;
+			}
+		}
 		else
-		{ this.bag.push(item); }
+		{ 
+			this.logger.error(this.tag, "addItem: input _item undefined"); 
+		}
 	},
 
 	/*
@@ -87,16 +110,26 @@ var CharacterProtoType = {
 	 * Parameters:
 	 *     item - the item to drop chosen by client
 	 */
-	dropItem : function(item){
-		this.logger.verbose(this.tag, "dropItem: +++START+++ item.type = "
-		                    + item.type + ", item.number = " + item.number);
-		var removeIndex = this.bag.indexOf(item);
-		this.bag.splice(removeIndex, 1);
-		var stage = this.getStage();
-		if(!stage)
-		{ this.logger.error(this.tag, "dropItem: getStage() return undefined"); }
+	dropItem : function(_item){
+		this.logger.verbose(this.tag, "dropItem: +++START+++ _item.type = "
+		                    + _item.type + ", _item.number = " + _item.number);
+		if(_item && _item.type)
+		{
+			var stage = this.parent;
+			if(stage)
+			{ 
+				stage.addChild(_item); 
+				this.bag[_item.type] = null;
+			}
+			else
+			{ 
+				this.logger.error(this.tag, "dropItem: getStage() return undefined"); 
+			}
+		}
 		else
-		{ this.getStage().addChild(item); }
+		{
+			this.logger.error(this.tag, "dropItem: _item or _item.type undefined");
+		}
 	},
 
 	/*
@@ -239,14 +272,16 @@ var CharacterProtoType = {
 		// Test if the new position can be passed
 		var newP = new Point(this.x + this.vX, this.y + this.vY);
 		obj=this.parent.isPassable(this, newP);
-		if(obj==BLOCK)
+		if(obj == BLOCK)
 			return;
-		else if(obj.type==ITEM){
+		else if(obj.type == ITEM){
 			this.pickItem(obj);
-			this.resetImage(obj.name);
+			//this.resetImage(obj.name);
 			this.parent.removeChild(obj);
 		}
-		else if(obj.type==MONSTER){
+		else if(obj.type == MONSTER){
+			this.logger.verbose("monster encountered");
+			this.attack(obj);
 			return;
 		}
 
@@ -271,4 +306,4 @@ for (var obj in CharacterProtoType) {
 } 
 // Initialize prototype members
 // For debuggging
-Character.prototype.logger.setLogLevel("all");
+Character.prototype.logger.setLogLevel("debug");
