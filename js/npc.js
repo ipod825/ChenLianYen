@@ -4,17 +4,15 @@
  *     Npcs can give quests and talk to player as player interact
  *     with them
  */
-function Npc(questManager)
+function Npc(_rpg)
 {
-    // Call parent consturctor
-    this.prototype.apply(this);
+	// Call parent consturctor
+	Character.call(this, _rpg);
 
-    // Assign quest manager
-    if(!questManager)
-    {
-        this.logger.error(this.tag, "Npc: questManager undefined");
-    }
-    this.questManager = questManager;
+	// Initialize members
+	// TODO
+	// this.texts
+	// this.quest
 };
 
 /*
@@ -25,18 +23,63 @@ function Npc(questManager)
  */
 var NpcPrototype = 
 {
-    logger: new ConsoleLogger(),
-    tag: "[Npc]: ",
+	tag: "[Npc]: ",
+	logger: new ConsoleLogger(),
 
-    showDialogue(): function()
-    {
-        // TODO
-    },
+	// Trigger the npc to do things
+	interact: function()
+	{
+		if(this.texts)
+		{
+			this.showDialogue();
+		}
+		if(this.quest)
+		{
+			this.addQuest();
+		}
+	},
 
-    addQuest(): function()
-    {
-        // TODO
-    }
+	// Show the texts which npc will say
+	showDialogue: function()
+	{
+		var uiController = this.rpg.getUIController();
+		if(uiController)
+		{
+			if(this.texts)
+			{
+				uiController.showDialogue(this.texts);
+			}
+			else
+			{
+				this.logger.error(this.tag, "showDialogue: this.texts undefined");
+			}
+		}
+		else
+		{
+			this.logger.error(this.tag, "showDialogue: uiController undefined");
+		}
+	},
+
+	// Add new quest to the quest manager
+	addQuest: function()
+	{
+		var questManager = this.rpg.getQuestManager();
+		if(questManager)
+		{
+			if(this.quest)
+			{
+				questManager.addQuest(this.quest);
+			}
+			else
+			{
+				this.logger.error(this.tag, "addQuest: this.quest undefined");
+			}
+		}
+		else
+		{
+			this.logger.error(this.tag, "addQuest: questManager undefined");
+		}
+	}
 };
 
 // NPC inherits Character
@@ -44,6 +87,6 @@ Npc.prototype = new Character();
 // Assign all member in predefined prototype into prototype
 for(var obj in NpcPrototype)
 {
-    Npc.prototype[obj] = NpcPrototype[obj];
+	Npc.prototype[obj] = NpcPrototype[obj];
 }
  
