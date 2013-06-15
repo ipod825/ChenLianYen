@@ -12,6 +12,7 @@ function MapObject(){
 	this.numFrameX;
 	this.numFrameY;
 	this.images={};
+	this.spriteSheets={};
 	this.suffix=null;
 	this.animation={};
 }
@@ -36,6 +37,18 @@ MapObjectPrototype={
 
 	addImage: function(imgName, img){
 		this.images[imgName]=img;
+		frameWidth=img.width/this.numFrameX;
+		frameHeight=img.height/this.numFrameY;
+		var spriteSheet = new SpriteSheet({
+			// The large image used to define frames
+			images: [img], //image to use
+			// Frame size definition
+			frames: { width: frameWidth, height: frameHeight, regX: 0, regY: 0},
+			//frames: { width: 100, height: 100, regX: 50, regY: 50},
+			// The definition of every animation it takes and the transition relation
+			animations: this.animations
+		});
+		this.spriteSheets[imgName] = spriteSheet;
 	},
 
 	resetImage: function(suffix){
@@ -48,22 +61,15 @@ MapObjectPrototype={
 			return; 
 		else this.suffix==suffix;
 
-		img=this.images[this.name+suffix];
-		frameWidth=img.width/this.numFrameX;
-		frameHeight=img.height/this.numFrameY;
-		this.regX=frameWidth/2;
-		this.regY=frameHeight/2;
-		var spriteSheet = new SpriteSheet({
-			// The large image used to define frames
-			images: [img], //image to use
-			// Frame size definition
-			frames: { width: frameWidth, height: frameHeight, regX: 0, regY: 0},
-			//frames: { width: 100, height: 100, regX: 50, regY: 50},
-			// The definition of every animation it takes and the transition relation
-			animations: this.animations
-		});
+		name = this.name+suffix;
 		// Set sprite sheet to bitmap animation
-		this.initialize(spriteSheet);
+		spriteSheet = this.spriteSheets[name];
+
+		//need to be rewrited
+		this.regX=spriteSheet._frameWidth/2;
+		this.regY=spriteSheet._frameHeight/2;
+		this.spriteSheet = spriteSheet;
+		//this.initialize(spriteSheet);
 	},
 
 	tileCenter : function(p){

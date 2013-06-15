@@ -36,10 +36,14 @@ Tile.prototype={
 	},
 
 	get : function(x,y){
+		if(x<0 || y<0 || x>=this.width || y>=this.height)
+			return BLOCK;
 		return this.grid[x][y];
 	},
 
 	set : function(x,y,value){
+		if(x<0 || y<0 || x>this.width || y>this.height)
+			return;
 		this.grid[x][y]=value;
 	},
 

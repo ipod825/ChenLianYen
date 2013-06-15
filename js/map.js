@@ -165,10 +165,7 @@ MapPrototype = {
 	setPosOnTile : function(obj,newP){
 		newP=this.tiles.toTPoint(newP);
 		if(obj.posOnMap.x !== newP.x || obj.posOnMap.y != newP.y){
-			try{
-				this.tiles.set(obj.posOnMap.x,obj.posOnMap.y,FREE);
-			}
-			catch(e){}
+			this.tiles.set(obj.posOnMap.x,obj.posOnMap.y,FREE);
 			this.tiles.set(newP.x,newP.y,obj);
 			obj.posOnMap=newP;
 		}

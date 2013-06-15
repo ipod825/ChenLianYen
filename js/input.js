@@ -3,6 +3,8 @@ KEYCODE_UP = 38;
 KEYCODE_LEFT = 37;
 KEYCODE_RIGHT = 39;
 KEYCODE_DOWN= 40;
+KEYCODE_A = 65;
+KEYCODE_ATTACK = KEYCODE_A;
 function Input(rpg){
 	this.rpg = rpg;
 	this.logger=new ConsoleLogger();
@@ -26,6 +28,9 @@ handleKeyDown : function (e) {
 		case KEYCODE_LEFT:
 		case KEYCODE_RIGHT:
 			this.rpg.player.setDirection(e.keyCode);
+			break;
+		case KEYCODE_ATTACK:
+			this.rpg.player.attack();
 			break;
 		default:
 			//alert(e.keyCode);
