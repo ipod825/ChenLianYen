@@ -131,7 +131,7 @@ loadMapObject: function(id, prop){
 		//To avoid switch case, identify the constructor as a function point by prop.type
 		//Note that "prop.type" must be the same with the class name for this trick to work
 		constructorPtr = window[prop.type];
-		mapObj = new constructorPtr(prop.type, prop.name);
+		mapObj = new constructorPtr();
 		mapObjs[id]=mapObj;
 	}
 	mapObj.setProp(prop);

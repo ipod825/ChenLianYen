@@ -64,7 +64,7 @@ var PlayerPrototype =
 			else
 			{
 				// Picked item not in bag
-				this.bag.[_item.type] = _item;
+				this.bag[_item.type] = _item;
 			}
 		}
 		else
