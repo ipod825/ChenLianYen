@@ -9,24 +9,14 @@
  *     questManager - the reference to the quest manager
  *     status - (optional) the status of the player
  */
-function Player(status, battleManager, _questManager)
+function Player(_rpg, _status)
 {
 	// For debugging
-	this.logger.verbose(this.tag, "Player: +++START+++ status = " + status );
+	this.logger.verbose(this.tag, "Player: +++START+++ _rpg = " + 
+                        _rpg + " , _status = " + _status );
 
 	// Calling parent constructor
-	AttackableCharacter.call(this, status, battleManager);
-   
-	// Initialize quest manager
-	var questManager = null;
-	if(!_questManager)
-	{
-		this.logger.error(this.tag, "Player: _questManager undefined");
-	}
-	else
-	{
-		questManager = _questManager;
-	}
+	AttackableCharacter.call(this, _rpg, _status);
 };
 
 /*
@@ -47,36 +37,40 @@ var PlayerPrototype =
 	 */
 	talkToNpc : function(npc)
 	{
-		if(!npc)
+		if(npc)
+		{
+			npc.interact();
+		}
+		else
 		{
 			this.logger.error(this.tag, "talkToNpc: npc undefined");
-			return;
 		}
-		// TODO check npc function name
-		npc.onCommand();
 	},
 
 	/*
 	 * Function: pickItem
 	 *     This function is used for player to pickItem
 	 */
-	pickItem : function(item)
+	pickItem : function(_item)
 	{
-		if(!item)
+		if(_item)
 		{
-			this.logger.error(this.tag, "pickItem: item undefined");
-			return;
-		}
-		// TODO write find item function
-		itemIndex = this.bag.indexOf(item);
-		if(itemIndex !== -1)
-		{
-			// item in the bag
-			this.bag[itemIndex].number += item.number;
+			var pickedItemInBag = this.bag[_item.type];
+			if(pickedItemInBag)
+			{
+				// Picked item already in bag
+				pickedItemInBag.number += _item.number;
+			}
+			else
+			{
+				// Picked item not in bag
+				this.bag.[_item.type] = _item;
+			}
 		}
 		else
 		{
-			this.bag.push(item);
+			this.logger.error(this.tag, "pickItem: _item undefined");
+			return;
 		}
 	}
 };

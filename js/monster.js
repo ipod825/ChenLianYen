@@ -9,14 +9,15 @@
  *     battle - the battle manager reference
  *     status - (optional) the status of the monster
  */
-function Monster(status)
+function Monster(_rpg, _status)
 {
-    // For debugging
-    this.logger.verbose(this.tag, "Monster: +++START+++ status = " + status);
+	// For debugging
+	this.logger.verbose(this.tag, "Monster: +++START+++ _rpg = " +
+	                    _rpg + " , _status = " + _status);
 
-    // Calling parent constructor
-    AttackableCharacter.call(this, status);
-    this.moving = true;
+	// Calling parent constructor
+	AttackableCharacter.call(this, _rpg, _status);
+	this.moving = true;
 };
 
 
@@ -27,9 +28,9 @@ function Monster(status)
  */
 var MonsterPrototype = 
 {
-    // For logging
-    tag : "[Monster]: ",
-    logger : new ConsoleLogger(),
+	// For logging
+	tag : "[Monster]: ",
+	logger : new ConsoleLogger(),
 
 	searchTarget : function(){
 		dirIndex = this.dir - DIR_LEFT;
@@ -44,10 +45,10 @@ var MonsterPrototype =
 		this.setTarget(target);
 	},
 
-    freeMove : function(){
-    	if(Math.random()>0.8)
+	freeMove : function(){
+		if(Math.random()>0.8)
 			this.setDirection(DIR_LEFT+Math.floor(Math.random()*4));
-    },
+	},
 };
 
 
@@ -56,9 +57,8 @@ Monster.prototype = new AttackableCharacter();
 // Assign predefined prototype to prototype
 for(var obj in MonsterPrototype)
 {
-    Monster.prototype[obj] = MonsterPrototype[obj];
+	Monster.prototype[obj] = MonsterPrototype[obj];
 }
 // Initialize the member in prototype
-Monster.prototype.logger.setLogLevel("all");
-
+Monster.prototype.logger.setLogLevel("none");
 

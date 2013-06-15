@@ -19,13 +19,12 @@ DIRUNIT=[{x:-1,y:0},{x:0,y:-1},{x:1,y:0},{x:0,y:1}];
  * Parameters:
  *     type - the identifier of the player
  */
-function Character(){
+var Character = function(_rpg){
 	// For debugging
 	this.logger.verbose(this.tag, "Character: +++START+++ ");
 
 	// Call parent constructor
-	MapObject.call(this);
-
+	MapObject.call(this, _rpg);
 
 	// Animation related variables
 	this.dirChange = false; // Flag set when direction changes
@@ -38,7 +37,7 @@ function Character(){
 	this.numFrameY = 4;
 
 	// Memeber objects and reference
-	this.bag = [];                 // Items hold by character
+	this.bag = {};                 // Items hold by character
 	this.target = null;            // The targeting position or object
 	//this.stage = this.getStage();  // reference of stage for dropping item
 	this.animations={
@@ -71,12 +70,21 @@ var CharacterProtoType = {
 	 * Parameters: 
 	 *     item - The item to add into bag
 	 */
-	addItem : function(item)
+	addItem : function(_item)
 	{
-		if(!item)
-		{ this.logger.error(this.tag, "addItem: input item undefined"); }
+		this.logger.verbose(this.tag, "addItem: +++START+++ _item.type = "
+		                    + _item.type + ", _item.number = " + _item.number);
+		if(_item && _item.type)
+		{ 
+			if(this.bag[_item.type])
+			{
+				this.bag[_item.type].number += _item.number;
+			}
+		}
 		else
-		{ this.bag.push(item); }
+		{ 
+			this.logger.error(this.tag, "addItem: input _item undefined"); 
+		}
 	},
 
 	/*
@@ -87,16 +95,26 @@ var CharacterProtoType = {
 	 * Parameters:
 	 *     item - the item to drop chosen by client
 	 */
-	dropItem : function(item){
-		this.logger.verbose(this.tag, "dropItem: +++START+++ item.type = "
-		                    + item.type + ", item.number = " + item.number);
-		var removeIndex = this.bag.indexOf(item);
-		this.bag.splice(removeIndex, 1);
-		var stage = this.getStage();
-		if(!stage)
-		{ this.logger.error(this.tag, "dropItem: getStage() return undefined"); }
+	dropItem : function(_item){
+		this.logger.verbose(this.tag, "dropItem: +++START+++ _item.type = "
+		                    + _item.type + ", _item.number = " + _item.number);
+		if(_item && _item.type)
+		{
+			var stage = this.parent;
+			if(stage)
+			{ 
+				stage.addChild(_item); 
+				this.bag[_item.type] = null;
+			}
+			else
+			{ 
+				this.logger.error(this.tag, "dropItem: getStage() return undefined"); 
+			}
+		}
 		else
-		{ this.getStage().addChild(item); }
+		{
+			this.logger.error(this.tag, "dropItem: _item or _item.type undefined");
+		}
 	},
 
 	/*
