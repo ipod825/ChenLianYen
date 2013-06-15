@@ -31,4 +31,4 @@ Battle.prototype =
 };
 
 // Initialize the member in prototype
-Battle.prototype.logger.setLogLevel("all");
+Battle.prototype.logger.setLogLevel("none");

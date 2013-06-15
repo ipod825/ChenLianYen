@@ -119,6 +119,7 @@ AttackableCharacterPrototype =
     attack : function(attackee)
     {
         this.logger.verbose(this.tag, "attack: +++START+++ attackee = " + attackee);
+        this.playAnimation(this.suffix);
 
         // check needed members
         if(!this.battleManager)
@@ -146,4 +147,4 @@ for(var obj in AttackableCharacterPrototype)
     AttackableCharacter.prototype[obj] = AttackableCharacterPrototype[obj];
 }
 // Initialization of members in prototype
-AttackableCharacter.prototype.logger.setLogLevel("all");
+AttackableCharacter.prototype.logger.setLogLevel("none");

@@ -10,7 +10,7 @@ function Utility()
     // This class is meant to be used like static class, so no members in
     // instances, all members are in prototype
 	// Initilize the member in prototype
-	this.logger.setLogLevel("all");
+	this.logger.setLogLevel("none");
 };
 
 /*

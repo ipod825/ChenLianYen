@@ -55,6 +55,21 @@ function Character(){
 		idleright:   [8,  8,  false],
 		idleup:      [12, 12, false]
 	}
+
+	this.banimations={
+		down:   {frames:[0,  0,  1,  1,  1,  2,  2,  3,  3,  3], 
+					 next: "idledown", frequency:this.frequency},
+		left:   {frames:[4,  4,  5,  5,  5,  6,  6,  7,  7,  7], 
+					 next: "idleleft", frequency:this.frequency},
+		right:  {frames:[8,  8,  9,  9,  9,  10, 10, 11, 11, 11], 
+					 next: "idleright", frequency:this.frequency},
+		up:     {frames:[12, 12, 13, 13, 13, 14, 14, 15, 15, 15], 
+					 next: "idleup", frequency:this.frequency},
+		idledown:    [0,  0,  false],
+		idleleft:    [4,  4,  false],
+		idleright:   [8,  8,  false],
+		idleup:      [12, 12, false]
+	}
 };
 
 // The prototype defined as an object
@@ -243,7 +258,7 @@ var CharacterProtoType = {
 			return;
 		else if(obj.type==ITEM){
 			this.pickItem(obj);
-			this.resetImage(obj.name);
+			//this.resetImage(obj.name);
 			this.parent.removeChild(obj);
 		}
 		else if(obj.type==MONSTER){
@@ -271,4 +286,4 @@ for (var obj in CharacterProtoType) {
 } 
 // Initialize prototype members
 // For debuggging
-Character.prototype.logger.setLogLevel("all");
+Character.prototype.logger.setLogLevel("debug");

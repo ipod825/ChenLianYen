@@ -59,6 +59,6 @@ for(var obj in MonsterPrototype)
     Monster.prototype[obj] = MonsterPrototype[obj];
 }
 // Initialize the member in prototype
-Monster.prototype.logger.setLogLevel("all");
+Monster.prototype.logger.setLogLevel("none");
 
 

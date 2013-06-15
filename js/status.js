@@ -88,4 +88,4 @@ Status.prototype = {
 };
 
 // Initialize prototype members
-Status.prototype.logger.setLogLevel("all");
+Status.prototype.logger.setLogLevel("none");

@@ -89,4 +89,4 @@ for(var obj in PlayerPrototype)
 	Player.prototype[obj] = PlayerPrototype[obj];
 }
 // Initialize members in prototype
-Player.prototype.logger.setLogLevel("all");
+Player.prototype.logger.setLogLevel("none");

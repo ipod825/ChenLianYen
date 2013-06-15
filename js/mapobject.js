@@ -14,7 +14,7 @@ function MapObject(){
 	this.images={};
 	this.spriteSheets={};
 	this.suffix=null;
-	this.animation={};
+	this.animations={};
 }
 
 MapObjectPrototype={
@@ -37,37 +37,57 @@ MapObjectPrototype={
 
 	addImage: function(imgName, img){
 		this.images[imgName]=img;
-		frameWidth=img.width/this.numFrameX;
-		frameHeight=img.height/this.numFrameY;
-		var spriteSheet = new SpriteSheet({
-			// The large image used to define frames
-			images: [img], //image to use
-			// Frame size definition
-			frames: { width: frameWidth, height: frameHeight, regX: 0, regY: 0},
-			//frames: { width: 100, height: 100, regX: 50, regY: 50},
-			// The definition of every animation it takes and the transition relation
-			animations: this.animations
-		});
-		this.spriteSheets[imgName] = spriteSheet;
+	},
+
+	addAttackAnimation : function(imgName, img){
+		//for(var i=0;i<4;++i){
+		//	this.addAnimation(imgName+DIRSTR[i], img, i*this.numFrameX, this.numFrameX, this.numFrameX, this.numFrameY);
+		//}
+		i=0;
+		this.addAnimation(imgName+"down", img, i, this.numFrameX, this.numFrameX, this.numFrameY);
+		i+=4;
+		this.addAnimation(imgName+"left", img, i, this.numFrameX, this.numFrameX, this.numFrameY);
+		i+=4;
+		this.addAnimation(imgName+"right", img, i, this.numFrameX, this.numFrameX, this.numFrameY);
+		i+=4;
+		this.addAnimation(imgName+"up", img, i, this.numFrameX, this.numFrameX, this.numFrameY);
+		i+=4;
+	},
+
+	addAnimation : function(name, img, start, length, numFrameX, numFrameY){
+		animation = new Animation(this, img, start, length, numFrameX, numFrameY);
+		this.animations[name]=animation;
+	},
+
+	playAnimation : function(suffix){
+		suffix = (!suffix)?"":"_"+suffix;
+		name = this.name+suffix;
+		dirIndex = this.dir-DIR_LEFT;
+		bitmap = this.animations[name+DIRSTR[dirIndex]];
+
+		pos = new Point(this.x, this.y);
+		this.parent.addChild(bitmap);
+		bitmap.play(pos, true);
 	},
 
 	resetImage: function(suffix){
-		if(!suffix)
-			suffix="";
-		else
-			suffix="_"+suffix; 
+		suffix = (!suffix)?"":"_"+suffix;
 
 		if(this.suffix && this.suffix==suffix) 
 			return; 
 		else this.suffix==suffix;
 
-		name = this.name+suffix;
-		// Set sprite sheet to bitmap animation
-		spriteSheet = this.spriteSheets[name];
+		img = this.images[this.name];
+		frameWidth = img.width/this.numFrameX;
+		frameHeight = img.height/this.numFrameY;
 
-		//need to be rewrited
-		this.regX=spriteSheet._frameWidth/2;
-		this.regY=spriteSheet._frameHeight/2;
+		var spriteSheet = new SpriteSheet({
+			images: [img], //image to use
+			frames: { width: frameWidth, height: frameHeight, regX: 0, regY: 0},
+			animations: this.animations
+		});
+		this.regX=frameWidth/2;
+		this.regY=frameHeight/2;
 		this.spriteSheet = spriteSheet;
 		//this.initialize(spriteSheet);
 	},

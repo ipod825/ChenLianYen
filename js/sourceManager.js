@@ -96,7 +96,7 @@ loadAudio : function(name) {
 	this.sounds[name]=audio;
 },
 
-loadImage : function(obj, name){
+loadImage : function(obj, name, callback){
 	pattern=/(.+\/)?(.+)\.png/;
 	name=name.replace(pattern,'$2');
 	if(this.images[name]){
@@ -109,6 +109,9 @@ loadImage : function(obj, name){
 	img.src = url;
 	img.onload = function(obj){
 		obj.addImage(name, this.images[name]);
+		if(callback){
+			callback(name, this.images[name]);
+		}
 		this.handleElementLoad();
 	}.bind(this, obj);
 	img.onerror = this.handleElementError;
@@ -138,7 +141,7 @@ loadMapObject: function(id, prop){
 	mapObj.addImage(prop.name,this.images[prop.name]);
 	if(mapObj.suffix){
 		n=mapObj.name+"_"+mapObj.suffix;
-		this.loadImage(mapObj, n);
+		this.loadImage(mapObj, n, mapObj.addAttackAnimation.bind(mapObj));
 	}
 	mapObj.resetImage();
 	if(prop.type=="Item")
