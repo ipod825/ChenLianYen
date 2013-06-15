@@ -1,10 +1,14 @@
 function Rpg(canvasId) {
-	canvas=document.getElementById(canvasId);
-	this.sourceManager = new SourceManager(canvas.width,canvas.height);
+	canvas = document.getElementById(canvasId);
+
+	this.sourceManager = new SourceManager(this, canvas.width,canvas.height);
 	this.stage = new Stage(canvas);
 	this.sourceManager.setStage(this.stage); //To show the downloaing progress on the stage;
-	this.input=new Input(this);
+	this.input = new Input(this);
 	this.currentMap;
+
+	this.questManager = new QuestManager();
+	this.battleManager = new BattleManager();
 	
 	this.UserInterface;
 	//this.UserInterface = window.UserInterface;
@@ -17,57 +21,57 @@ function Rpg(canvasId) {
 	document.onkeyup = function (e) { self.input.handleKeyUp(e); };
 }
 
-Rpg.prototype={
+Rpg.prototype = {
 
-/*
- * In this function, all media are ready, we should init the map, characters ... with these medias.
- */
-start: function () {
-	this.currentMap.initGraphics();
-	this.stage.removeAllChildren();
-	this.stage.addChild(this.currentMap);
-	this.currentMap.checkCell();
-	this.player=this.sourceManager.characters[PLAYER];
-	//this.stage.addChild(this.player);
+	/*
+	 * In this function, all media are ready, we should init the map, characters ... with these medias.
+	 */
+	start: function () {
+		this.currentMap.initGraphics();
+		this.stage.removeAllChildren();
+		this.stage.addChild(this.currentMap);
+		this.currentMap.checkCell();
+		this.player=this.sourceManager.characters[PLAYER];
+		//this.stage.addChild(this.player);
 
-	this.UserInterface.show("HUD");
+		this.UserInterface.show("HUD");
 
-	// we want to do some work before we update the canvas, otherwise we could use Ticker.addListener(stage);
-	Ticker.addListener(this);
-	// Targeting 60 FPS
-	Ticker.useRAF = false;
-	Ticker.setFPS(60);
-},
+		// we want to do some work before we update the canvas, otherwise we could use Ticker.addListener(stage);
+		Ticker.addListener(this);
+		// Targeting 60 FPS
+		Ticker.useRAF = false;
+		Ticker.setFPS(60);
+	},
 
-tick: function () {
-	try {
-		this.stage.update();
-	}
-	catch (e) {
-		console.log('Error', e);
-	}
-},
+	tick: function () {
+		try {
+			this.stage.update();
+		}
+		catch (e) {
+			console.log('Error', e);
+		}
+	},
 
-/*
- * Set the target for the player when user click on the canvas
- * Paramters:
- * 	p: The position in pixel unit
- */
-setTarget : function(p){
-	this.player.setTarget(this.currentMap.targetOnPos(p));
-},
+	/*
+	 * Set the target for the player when user click on the canvas
+	 * Paramters:
+	 * 	p: The position in pixel unit
+	 */
+	setTarget : function(p){
+		this.player.setTarget(this.currentMap.targetOnPos(p));
+	},
 
-loadMap: function (mapName) {
-	this.sourceManager.setOnReady(this.start.bind(this));
-	this.currentMap=this.sourceManager.loadMap(mapName);
-},
+	loadMap: function (mapName) {
+		this.sourceManager.setOnReady(this.start.bind(this));
+		this.currentMap = this.sourceManager.loadMap(mapName);
+	},
 
-loadUI: function(uiDiv,uifile) {
-	this.UIController = new UIController();
-	this.UserInterface = new UserInterface(uiDiv, uifile, this.UIController);
-},
-//loadUI: function() {
-//	var self = this;
-//	this.sourceManager.loadUI($("#rpgDiv"), "./CSS/UILayout.html");
-//},
+	loadUI: function(uiDiv,uifile) {
+		this.UIController = new UIController();
+		this.UserInterface = new UserInterface(uiDiv, uifile, this.UIController);
+	},
+	//loadUI: function() {
+	//	var self = this;
+	//	this.sourceManager.loadUI($("#rpgDiv"), "./CSS/UILayout.html");
+	//},
 }

@@ -1,7 +1,8 @@
 /* Init:
  *
  * */
-function SourceManager(width, height) {
+function SourceManager(rpg, width, height) {
+	this.rpg = rpg;
 	this.stage=null;
 	this.canvasWidth=width;
 	this.canvasHeight=height;
@@ -134,7 +135,7 @@ loadMapObject: function(id, prop){
 		//To avoid switch case, identify the constructor as a function point by prop.type
 		//Note that "prop.type" must be the same with the class name for this trick to work
 		constructorPtr = window[prop.type];
-		mapObj = new constructorPtr(prop.type, prop.name);
+		mapObj = new constructorPtr(this.rpg);
 		mapObjs[id]=mapObj;
 	}
 	mapObj.setProp(prop);

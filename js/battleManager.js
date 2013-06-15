@@ -1,12 +1,12 @@
-// Battle Class
-var Battle = function()
+// BattleManager Class
+var BattleManager = function()
 {
 };
 
 // Prototype of battle
-Battle.prototype = 
+BattleManager.prototype = 
 {
-    tag : "[BattlePrototype]: ",
+    tag : "[BattleManager]: ",
     logger : new ConsoleLogger(),
 
     // Damage calculate funtion
@@ -31,4 +31,4 @@ Battle.prototype =
 };
 
 // Initialize the member in prototype
-Battle.prototype.logger.setLogLevel("none");
+BattleManager.prototype.logger.setLogLevel("all");
