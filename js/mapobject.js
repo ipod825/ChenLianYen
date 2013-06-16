@@ -1,11 +1,11 @@
-PLAYER = "Player";
-MONSTER = "Monster";
-NPC = "Npc";
-ITEM = "Item";
+//PLAYER = "Player";
+//MONSTER = "Monster";
+//NPC = "Npc";
+//ITEM = "Item";
 
 function MapObject(_rpg){
-    this.rpg = _rpg;
-    // Attributes
+	this.rpg = _rpg;
+	// Attributes
 	this.type=null;
 	this.name=null;
 	this.prop=null;

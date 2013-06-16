@@ -13,7 +13,7 @@ function Player(_rpg, _status)
 {
 	// For debugging
 	this.logger.verbose(this.tag, "Player: +++START+++ _rpg = " + 
-                        _rpg + " , _status = " + _status );
+	                    _rpg + " , _status = " + _status );
 
 	// Calling parent constructor
 	AttackableCharacter.call(this, _rpg, _status);
@@ -83,4 +83,4 @@ for(var obj in PlayerPrototype)
 	Player.prototype[obj] = PlayerPrototype[obj];
 }
 // Initialize members in prototype
-Player.prototype.logger.setLogLevel("all");
+Player.prototype.logger.setLogLevel("debug");

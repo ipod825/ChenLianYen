@@ -23,10 +23,9 @@
  *     var item = new Item("itemHealthPotion", 2);
  *     var item = new Item("itemHealthPotion");
  */
-function Item() {
+function Item(_rpg) {
 	// For debugging
-	this.logger.setLogLevel("none");
-	this.logger.verbose(this.tag, "Item: +++START+++");
+	this.logger.verbose(this.tag, "Item: +++START+++ _rpg = " + _rpg);
 	MapObject.call(this);
 
 	this.number = 1;       // Default item has only one instance
@@ -41,6 +40,8 @@ function Item() {
 		description = number;
 		number = null;
 	}
+
+	// Animation related Parameter
 	this.animations={ idle: [0,  0,  false], };
 	this.numFrameX = 1;
 	this.numFrameY = 1;
@@ -54,9 +55,11 @@ ItemPrototype = {
 };
 
 
+// Item inherits map object
 Item.prototype = new MapObject(); 
 // Assign the members in the prototype object into the character prototype
 for (var obj in ItemPrototype) { 
 	Item.prototype[obj] = ItemPrototype[obj]; 
 } 
-
+// Initialize members in prototype
+Item.prototype.logger.setLogLevel("debug");

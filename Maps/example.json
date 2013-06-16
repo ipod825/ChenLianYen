@@ -23,7 +23,7 @@
                     {
                      "dir":"left"
                     },
-                 "type":"Monster",
+                 "type":"monsterWolf",
                  "visible":true,
                  "width":0,
                  "x":416,
@@ -38,7 +38,7 @@
                      "dir":"right",
                      "suffix":"SWD_01"
                     },
-                 "type":"Player",
+                 "type":"playerPeter",
                  "visible":true,
                  "width":0,
                  "x":224,
@@ -64,7 +64,7 @@
                      "description":"test",
                      "number":"1"
                     },
-                 "type":"Item",
+                 "type":"itemHealthPotion",
                  "visible":true,
                  "width":0,
                  "x":320,

@@ -8,9 +8,9 @@ function Rpg(canvasId) {
 	this.currentMap;
 	this.player = null;
 
+	// Rpg holds main classes of other modules
 	this.questManager = new QuestManager();
 	this.battleManager = new BattleManager();
-
 	this.UserInterface;
 
 	var self = this;
@@ -22,8 +22,8 @@ function Rpg(canvasId) {
 
 Rpg.prototype = 
 {
-    tag: "[Rpg]: ",
-    logger: new ConsoleLogger(),
+	tag: "[Rpg]: ",
+	logger: new ConsoleLogger(),
 
 	/*
 	 * In this function, all media are ready, we should init the map, characters ... with these medias.
@@ -33,7 +33,8 @@ Rpg.prototype =
 		this.stage.removeAllChildren();
 		this.stage.addChild(this.currentMap);
 		this.currentMap.checkCell();
-		this.player = this.sourceManager.characters[PLAYER];
+		this.player = this.sourceManager.getPlayer();
+		//this.player = this.sourceManager.characters[PLAYER];
 		//this.stage.addChild(this.player);
 
 		this.UserInterface.show("HUD");
@@ -123,4 +124,4 @@ Rpg.prototype =
 }
 
 // Initialize members in prototype
-Rpg.prototype.logger.setLogLevel("all");
+Rpg.prototype.logger.setLogLevel("debug");
