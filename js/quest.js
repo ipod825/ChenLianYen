@@ -162,7 +162,7 @@ function Questcondition(_targetName,_max)
     this.update = function()
     {
         this.count+=1;
-        check
+        
     }
 }
 
