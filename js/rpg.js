@@ -74,4 +74,40 @@ Rpg.prototype = {
 	//	var self = this;
 	//	this.sourceManager.loadUI($("#rpgDiv"), "./CSS/UILayout.html");
 	//},
+
+	getBattleManager: function()
+	{
+		if(this.battleManager)
+		{
+			return this.battleManager;
+		}
+		else
+		{
+			console.log("getBattleManager: this.battleManager undefined");
+		}
+	},
+
+	getQeustManager: function()
+	{
+		if(this.questManager)
+		{
+			return this.questManager;
+		}
+		else
+		{
+			console.log("getQuestManager: this.questManager undefined");
+		}
+	},
+
+	getUIController: function()
+	{
+		if(this.UserInterface)
+		{
+			return this.UserInterface;
+		}
+		else
+		{
+			console.log("getUIController: this.UserInterface undefined");
+		}
+	}
 }
