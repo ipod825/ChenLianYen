@@ -149,4 +149,4 @@ for(var obj in AttackableCharacterPrototype)
 	AttackableCharacter.prototype[obj] = AttackableCharacterPrototype[obj];
 }
 // Initializeation of members in prototype
-AttackableCharacter.prototype.logger.setLogLevel("none");
+AttackableCharacter.prototype.logger.setLogLevel("all");
