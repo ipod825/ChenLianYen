@@ -66,6 +66,7 @@ var PlayerPrototype =
 				// Picked item not in bag
 				this.bag[_item.type] = _item;
 			}
+			this.parent.removeChild(_item);
 		}
 		else
 		{

@@ -279,15 +279,19 @@ var CharacterProtoType = {
 		}
 	},
 
+	decideDir : function(){
+		if(this.target)
+			this.moveTowardTarget();
+		else
+			this.freeMove();
+	},
+
 	/* 
 	 * Function: move
 	 * The move function which trigger animation based on direction
 	 */
 	move : function(){
-		if(this.target)
-			this.moveTowardTarget();
-		else
-			this.freeMove();
+		this.decideDir();
 
 		// Test if the new position can be passed
 		var newP = new Point(this.x + this.vX, this.y + this.vY);
@@ -296,8 +300,6 @@ var CharacterProtoType = {
 			return;
 		else if(obj.type == ITEM){
 			this.pickItem(obj);
-			//this.resetImage(obj.name);
-			this.parent.removeChild(obj);
 		}
 		else if(obj.type == MONSTER){
 			this.logger.verbose("monster encountered");
