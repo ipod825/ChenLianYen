@@ -104,18 +104,34 @@ AttackableCharacterPrototype =
 	{
 		// For debugging
 		this.logger.verbose(this.tag, "attack: +++START+++ attackee = " + attackee);
-        this.playAnimation(this.suffix);
+
+		// Play attack animation
+		this.playAnimation(this.suffix);
+
+		// If attackee is undefined, find attackee in front of caller
+		if(!attackee)
+		{
+			this.logger.verbose(this.tag, "attack: attackee not defined, try to find attackee");
+			var pixelInFront = new Point(this.x + this.vX, this.y + this.vY);
+			var objectInFront = this.parent.isPassable(this, pixelInFront);
+
+			this.logger.verbose(this.tag, "attack: objectInFront.type = " + objectInFront.type);
+			if(!(objectInFront.type == MONSTER))
+			{
+				this.logger.verbose(this.tag, "attack: attackee not found");
+				return;
+			}
+			else
+			{
+				attackee = objectInFront;
+			}
+		}
 
 		// check needed members
 		var battleManager = this.rpg.battleManager;
 		if(!battleManager)
 		{
 			this.logger.error(this.tag, "attack: battleManager not linked");
-			return;
-		}
-		if(!attackee)
-		{
-			this.logger.error(this.tag, "attack: attackee undefined");
 			return;
 		}
 
@@ -132,5 +148,5 @@ for(var obj in AttackableCharacterPrototype)
 {
 	AttackableCharacter.prototype[obj] = AttackableCharacterPrototype[obj];
 }
-// Initialization of members in prototype
+// Initializeation of members in prototype
 AttackableCharacter.prototype.logger.setLogLevel("none");

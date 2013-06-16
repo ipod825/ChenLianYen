@@ -42,7 +42,10 @@ var MonsterPrototype =
 			searchPath.push(new Point(p.x, p.y));
 		}
 		target = this.parent.detetObj(PLAYER, this.posOnMap, searchPath);
-		this.setTarget(target);
+		if(target)
+		{
+			this.setTarget(target);
+		}
 	},
 
 	freeMove : function(){
@@ -60,4 +63,4 @@ for(var obj in MonsterPrototype)
 	Monster.prototype[obj] = MonsterPrototype[obj];
 }
 // Initialize the member in prototype
-Monster.prototype.logger.setLogLevel("none");
+Monster.prototype.logger.setLogLevel("all");

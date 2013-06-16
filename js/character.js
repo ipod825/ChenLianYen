@@ -21,7 +21,7 @@ DIRUNIT=[{x:-1,y:0},{x:0,y:-1},{x:1,y:0},{x:0,y:1}];
  */
 var Character = function(_rpg){
 	// For debugging
-	this.logger.verbose(this.tag, "Character: +++START+++ ");
+	this.logger.verbose(this.tag, "Character: +++START+++ _rpg = " + _rpg);
 
 	// Call parent constructor
 	MapObject.call(this, _rpg);
@@ -203,7 +203,9 @@ var CharacterProtoType = {
 				this.setSpeedAndAnimation(0,0);
 				return;
 			}
-			this.logger.log("Current:"+this.posOnMap+"tmpTarget:"+new Point(this.pathToTarget[0].x,this.pathToTarget[0].y)+"finalTaarget:"+this.pathToTarget[this.pathToTarget.length-1]);
+			//this.logger.verbose(this.tag, "moveTowardTarget: " + this.posOnMap + 
+			//                "tmpTarget:" + new Point(this.pathToTarget[0].x,this.pathToTarget[0].y) + 
+			//                "finalTaarget:" + this.pathToTarget[this.pathToTarget.length-1]);
 			diffx = this.pathToTarget[0].x-this.posOnMap.x;
 			diffy = this.pathToTarget[0].y-this.posOnMap.y;
 			var newDir;
@@ -306,4 +308,4 @@ for (var obj in CharacterProtoType) {
 } 
 // Initialize prototype members
 // For debuggging
-Character.prototype.logger.setLogLevel("debug");
+Character.prototype.logger.setLogLevel("all");
