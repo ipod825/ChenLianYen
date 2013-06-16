@@ -105,7 +105,7 @@ MapPrototype = {
 		if(child.posOnMap)
 			this.tiles.set(obj.posOnMap.x, obj.posOnMap.y, FREE);
 		Container.prototype.removeChild.call(this,child);
-		Ticker.removeChild(child);
+		Ticker.removeListener(child);
 	},
 
 	/*
@@ -221,10 +221,14 @@ MapPrototype = {
 			for(var j in layer.objects){
 				prop = layer.objects[j];
 				var id;
-				if(prop.type==PLAYER)
-					id=PLAYER;
+				if(utility.isPlayer(prop.type))
+				{
+					id = this.name + prop.type + j;
+				}
 				else
-					id=this.name+prop.type+j;
+				{
+					id = this.name + prop.type + j;
+				}
 				for(p in prop.properties)
 					prop[p]=prop.properties[p];
 				var mapObj = this.sourceManager.loadMapObject(id,prop);

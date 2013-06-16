@@ -123,33 +123,81 @@ loadImage : function(obj, name, callback){
 
 loadMapObject: function(id, prop){
 	var mapObjs;
-	if(prop.type=="Item")
+
+	// Initilize the map objects group
+	if(utility.isItem(prop.type))
+	{
 		mapObjs=this.items;
+	}
 	else
+	{
 		mapObjs=this.characters;
+	}
 
 	var mapObj;
+	// If already in map objects
 	if(mapObjs[id])
-		mapObj =	mapObjs[id];
-	else{
+	{
+		mapObj = mapObjs[id];
+	}
+	else
+	{
 		//To avoid switch case, identify the constructor as a function point by prop.type
 		//Note that "prop.type" must be the same with the class name for this trick to work
-		constructorPtr = window[prop.type];
-		mapObj = new constructorPtr(this.rpg);
+		if(utility.isPlayer(prop.type))
+		{
+			mapObj = new Player(this.rpg);
+		}
+		else if(utility.isMonster(prop.type))
+		{
+			mapObj = new Monster(this.rpg);
+		}
+		else if(utility.isNpc(prop.type))
+		{
+			mapObj = new Npc(this.rpg);
+		}
+		else if(utility.isItem(prop.type))
+		{
+			mapObj = new Item(this.rpg);
+		}
+		else
+		{
+			console.log("loadMapObject: unknown type = " + prop.type);
+		}
 		mapObjs[id]=mapObj;
 	}
+
 	mapObj.setProp(prop);
 	mapObj.addImage(prop.name,this.images[prop.name]);
+
 	if(mapObj.suffix){
 		n=mapObj.name+"_"+mapObj.suffix;
 		this.loadImage(mapObj, n, mapObj.addAttackAnimation.bind(mapObj));
 	}
+
 	mapObj.resetImage();
-	if(prop.type=="Item")
+	if(utility.isItem(prop.type))
+	{
 		mapObj.gotoAndPlay("idle");
-	else if(prop.type==PLAYER)
+	}
+	else if(utility.isPlayer(prop.type))
+	{
 		mapObj.setSpeedAndAnimation(0,0);
+	}
 	return mapObj;
+},
+
+getPlayer : function()
+{
+	for(var characterName in this.characters)
+	{
+		if(utility.isPlayer(this.characters[characterName].type))
+		{
+			return this.characters[characterName];
+		}
+	}
+	console.log("getPlayer: player is not found");
+	return null;
 },
 
 loadMap : function(name){

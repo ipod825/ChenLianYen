@@ -116,7 +116,7 @@ AttackableCharacterPrototype =
 			var objectInFront = this.parent.isPassable(this, pixelInFront);
 
 			this.logger.verbose(this.tag, "attack: objectInFront.type = " + objectInFront.type);
-			if(!(objectInFront.type == MONSTER))
+			if(!(utility.isMonster(objectInFront.type)))
 			{
 				this.logger.verbose(this.tag, "attack: attackee not found");
 				return;
@@ -149,4 +149,4 @@ for(var obj in AttackableCharacterPrototype)
 	AttackableCharacter.prototype[obj] = AttackableCharacterPrototype[obj];
 }
 // Initializeation of members in prototype
-AttackableCharacter.prototype.logger.setLogLevel("all");
+AttackableCharacter.prototype.logger.setLogLevel("debug");

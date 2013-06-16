@@ -31,7 +31,7 @@ function Quest(ID, _name, _goal,_questConditions){
             this.QuestId = ID,
             this.name = _name,
             this.goal = _goal,
-           
+            this.check = 1;
             this.questConditions = _questConditions;
             this.questConditionsArray =[];
         this.Initialize =function()
@@ -57,9 +57,24 @@ function Quest(ID, _name, _goal,_questConditions){
                     
                     this.questConditionsArray[cond].update();
                     
+                    
+                }
+                if (this.questConditionsArray[cond].max != this.questConditionsArray[cond].count)
+                {
+                    
+                    check = 0;
+                
                 }
                     
             }
+            
+            if(check == 1)
+            {
+            
+            }
+        
+        
+        
         };
 
     
@@ -87,6 +102,7 @@ function Questcondition(_targetName,_max)
     this.update = function()
     {
         this.count+=1;
+        check
     }
 }
 
@@ -94,7 +110,7 @@ function QuestManager()
 {
     var questList = new Array()
     //questList[]
-    this.uigetdateArray =[];
+    
     this.addQuest = function(Quest)
     {
         //var newQuest = Quest;
@@ -124,19 +140,24 @@ function QuestManager()
     
     
     //uigetdateArray storage questname,targetName,count.max
-    this.uigetdate = function()
+    this.getQuestData = function()
     {
-        for (i=1; i<=2; i++)
+        var uigetdateArray=[];
+        for (var i=1; i<=2; i++)
         {
-        this.uigetdateArray.push(questList[i].name);
-        for(var cond in questList[i].questConditionsArray)
+            for(var cond in questList[i].questConditionsArray)
             {
-                this.uigetdateArray.push(questList[i].questConditionsArray[cond].targetName);
-                this.uigetdateArray.push(questList[i].questConditionsArray[cond].count);
-                this.uigetdateArray.push(questList[i].questConditionsArray[cond].max);
-            
+                var obj = {
+                name : questList[i].name, //Quest name
+                targetName : questList[i].questConditionsArray[cond].targetName,
+                count : questList[i].questConditionsArray[cond].count,
+                max : questList[i].questConditionsArray[cond].max
+                }
+                
             }
         }
+
+        return uigetdateArray;
     };
 }
 

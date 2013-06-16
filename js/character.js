@@ -298,16 +298,16 @@ var CharacterProtoType = {
 		obj=this.parent.isPassable(this, newP);
 		if(obj == BLOCK)
 			return;
-		else if(obj.type == ITEM){
+		else if(utility.isItem(obj.type)){
 			this.pickItem(obj);
 		}
-		else if(obj.type == MONSTER){
+		else if(utility.isMonster(obj.type)){
 			this.logger.verbose("monster encountered");
 			this.attack(obj);
 			return;
 		}
 
-		if(this.type === PLAYER){
+		if(utility.isPlayer(this.type)){
 			//Keep the player moving at center if possible, otherwise, move it as usual
 			if(this.parent.moveOtherObjs(this, this.vX, this.vY))
 				this.setPosition(this.getPos());	//renew the posOnMap
@@ -328,4 +328,4 @@ for (var obj in CharacterProtoType) {
 } 
 // Initialize prototype members
 // For debuggging
-Character.prototype.logger.setLogLevel("all");
+Character.prototype.logger.setLogLevel("debug");

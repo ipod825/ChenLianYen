@@ -20,7 +20,6 @@ function Monster(_rpg, _status)
 	this.moving = true;
 };
 
-
 /*
  * Object: MonsterPrototype
  *     This is predefined prototype in order to hold all the members after
@@ -41,7 +40,7 @@ var MonsterPrototype =
 			p.y+=DIRUNIT[dirIndex].y;
 			searchPath.push(new Point(p.x, p.y));
 		}
-		target = this.parent.detetObj(PLAYER, this.posOnMap, searchPath);
+		target = this.parent.detetObj(this.rpg.getPlayer().type, this.posOnMap, searchPath);
 		if(target)
 		{
 			this.setTarget(target);
@@ -54,7 +53,6 @@ var MonsterPrototype =
 	},
 };
 
-
 // Monster inherits AttackableCharacter
 Monster.prototype = new AttackableCharacter();
 // Assign predefined prototype to prototype
@@ -63,4 +61,4 @@ for(var obj in MonsterPrototype)
 	Monster.prototype[obj] = MonsterPrototype[obj];
 }
 // Initialize the member in prototype
-Monster.prototype.logger.setLogLevel("all");
+Monster.prototype.logger.setLogLevel("debug");
