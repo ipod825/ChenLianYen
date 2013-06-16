@@ -118,7 +118,7 @@ var CharacterProtoType = {
 			this.logger.error(this.tag, "getBag: this.bag undefined");
 			return null;
 		}
-	}
+	},
 
 	/*
 	 * Function: dropItem

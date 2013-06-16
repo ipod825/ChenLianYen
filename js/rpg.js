@@ -6,10 +6,11 @@ function Rpg(canvasId) {
 	this.sourceManager.setStage(this.stage); //To show the downloaing progress on the stage;
 	this.input = new Input(this);
 	this.currentMap;
+	this.player = null;
 
 	this.questManager = new QuestManager();
 	this.battleManager = new BattleManager();
-	
+
 	this.UserInterface;
 
 	var self = this;
@@ -32,7 +33,7 @@ Rpg.prototype =
 		this.stage.removeAllChildren();
 		this.stage.addChild(this.currentMap);
 		this.currentMap.checkCell();
-		this.player=this.sourceManager.characters[PLAYER];
+		this.player = this.sourceManager.characters[PLAYER];
 		//this.stage.addChild(this.player);
 
 		this.UserInterface.show("HUD");
