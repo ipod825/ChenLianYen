@@ -1,111 +1,3 @@
-var Quest1 = new Quest('1','kill monster','monster',[
-                                                     {
-                                                     targetName : "monster001",
-                                                     id:1,
-                                                     count : 0,
-                                                     max : 5
-                                                     },
-                                                     
-                                                     {
-                                                     targetName : "monster002",
-                                                     id:2,
-                                                     count : 0,
-                                                     max : 4
-                                                     }
-                                                     ]);
-var Quest2 = new Quest('2','talktonpc','npc',[
-                                                 {
-                                                 targetName : "npc001",
-                                                 id:3,
-                                                 count : 0,
-                                                 max : 1
-                                                 },
-                                          
-                                              ]);
-Quest1.Initialize();
-Quest2.Initialize();
-
-
-
-function Quest(ID, _name, _goal,_questConditions){
-            this.QuestId = ID,
-            this.name = _name,
-            this.goal = _goal,
-            this.check = 1;
-            this.questConditions = _questConditions;
-            this.questConditionsArray =[];
-        this.Initialize =function()
-        {
-            //this.id = Quest.QuestId;
-            //alert(this.questConditions[0].targetName);
-            for( var cond in this.questConditions)
-            {
-                var qq = new Questcondition(this.questConditions[cond].targetName, this.questConditions[cond].max);
-                
-                this.questConditionsArray.push(qq);
-                
-                            }
-        }
-        this.update = function(object)
-        {
-            for(var cond in this.questConditionsArray)
-            {
-                
-                
-                if (this.questConditionsArray[cond].targetName == object.type)
-                {
-                    
-                    this.questConditionsArray[cond].update();
-                    
-                    
-                }
-                if (this.questConditionsArray[cond].max != this.questConditionsArray[cond].count)
-                {
-                    
-                    check = 0;
-                
-                }
-                    
-            }
-            
-            if(check == 1)
-            {
-            
-            }
-        
-        
-        
-        };
-
-    
-
-}
-
-function update(object)
-{
-  if(utility.isMonster(object.type) == true)
-  {
-      Quest1.update(object);
-      
-  }
-  else if(utility.isNpc(object.type) == true)
-  {
-      Quest2.update(object);
-  }
-}
-
-function Questcondition(_targetName,_max)
-{
-    this.targetName = _targetName;
-    this.max = _max;
-    this.count = 0;
-    this.update = function()
-    {
-        this.count+=1;
-        check
-    }
-}
-
 function QuestManager()
 {
     var questList = new Array()
@@ -142,24 +34,139 @@ function QuestManager()
     //uigetdateArray storage questname,targetName,count.max
     this.getQuestData = function()
     {
-        var uigetdateArray=[];
-        for (var i=1; i<=2; i++)
-        {
-            for(var cond in questList[i].questConditionsArray)
-            {
-                var obj = {
-                name : questList[i].name, //Quest name
-                targetName : questList[i].questConditionsArray[cond].targetName,
-                count : questList[i].questConditionsArray[cond].count,
-                max : questList[i].questConditionsArray[cond].max
-                }
-                
-            }
-        }
-
-        return uigetdateArray;
+        var QuestData=[];
+		
+		for(var id in this.questList){
+			var quest = this.questList[id];
+			
+			var NAME = quest.name;
+			var GOAL = quest.goal;
+			var QUESTCONDITIONS =[];
+			
+			for(var c in quest.questConditions)
+			{
+				var cond = quest.questConditions[c];
+				
+				var TARGET_NAME = cond.targetName;
+				var MAX = cond.max;
+				var COUNT = cond.count;
+				
+				var cond_tuple = {targetName: TARGET_NAME, max: MAX, count: COUNT};
+				
+				QUESTCONDITIONS.push(cond_tuple);
+			}
+			
+			var QuestTuple = {questId: id, name: NAME, goal: GOAL, questConditions: QUESTCONDITIONS};
+			QuestData.push(QuestTuple);
+		}
+        return QuestData;
     };
 }
+
+function Quest(ID, _name, _goal,_questConditions){
+	this.initialize(ID, _name, _goal,_questConditions);
+}
+
+Quest.prototype = {
+    QuestId : null,
+    name : null,
+    goal : null,
+    questConditions : [],
+
+	initialize : function(ID, _name, _goal,_questConditions){
+		this.QuestId = ID;
+		this.name = _name;
+		this.goal = _goal;
+		
+		for(var c in _questConditions){
+			console.log(c + " : " + _questConditions[c]);
+			var cond = _questConditions[c];
+			var qq = new Questcondition(cond.targetName, cond.max);
+			
+			this.questConditions.push(qq);
+		}
+	},
+	
+	update : function(){
+		for(var cond in this.questConditions)
+		{
+			if (this.questConditions[cond].targetName == object.type)
+			{
+				
+				this.questConditions[cond].update();
+				
+				
+			}
+			if (this.questConditions[cond].max != this.questConditions[cond].count)
+			{
+				
+				check = 0;
+			
+			}
+		}
+		
+		if(check == 1)
+		{
+		
+		}	
+	},
+};
+
+var Quest1 = new Quest('1','kill monster','monster',[
+                                                     {
+                                                     targetName : "monster001",
+                                                     id:1,
+                                                     count : 0,
+                                                     max : 5
+                                                     },
+                                                     
+                                                     {
+                                                     targetName : "monster002",
+                                                     id:2,
+                                                     count : 0,
+                                                     max : 4
+                                                     }
+                                                     ]);
+var Quest2 = new Quest('2','talktonpc','npc',[
+                                                 {
+                                                 targetName : "npc001",
+                                                 id:3,
+                                                 count : 0,
+                                                 max : 1
+                                                 },
+                                          
+                                              ]);
+											  
+// You dont need these anymore motherfucker											  
+// Quest1.Initialize();
+// Quest2.Initialize();
+
+function update(object)
+{
+  if(utility.isMonster(object.type) == true)
+  {
+      Quest1.update(object);
+      
+  }
+  else if(utility.isNpc(object.type) == true)
+  {
+      Quest2.update(object);
+  }
+}
+
+function Questcondition(_targetName,_max)
+{
+    this.targetName = _targetName;
+    this.max = _max;
+    this.count = 0;
+    this.update = function()
+    {
+        this.count+=1;
+        check
+    }
+}
+
+
 
 
 

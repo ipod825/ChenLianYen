@@ -81,7 +81,7 @@ UserInterface.prototype = {
 	toogle : function(uiName){
 		if(this.list[uiName] == undefined)
 			return;
-		this.list[uiName].show();
+		this.list[uiName].toggle();
 	},
 
 	initialization : function(uiDivId, uifile, _rpg){
@@ -144,6 +144,12 @@ UIComponent.prototype = {
 	initialize : function(_obj, _rpg){},
 	show : function(){this.dom.show();},
 	hide : function(){this.dom.hide();},
+	toggle : function(){
+		if( !this.dom.is(':visible'))
+			this.dom.show();
+		else
+			this.dom.hide();
+	},
 };
 
 
@@ -154,35 +160,41 @@ function Inventory(dom, _rpg){
 Inventory.prototype = Object.create(UIComponent.prototype);
 Inventory.prototype.constructor = Inventory;
 jQuery.extend(Inventory.prototype, {
+	show : function(){
+		this.inventoryUpdate();
+		this.dom.show();
+	},
+	
 	initialize : function(_obj, _rpg){
+		var self = this;
 		this.rpg = _rpg;
 		this.dom = _obj;
 		
+		var itemOptions = this.dom.find("#itemOptions");
 		this.dom.find("#btUseItem").click(function(){
-			var id = $(this).siblings("itemid").attr("id");
-			_rpg.publish("USE_ITEM", {itemid: id});
+			var itemid = $(this).siblings("itemid").attr("id");
+			self.rpg.getPlayer().useItem(itemid);
 			
-			$(this).parent().hide();
+			itemOptions.hide();
+			self.inventoryUpdate();
 		});
 		
 		this.dom.find("#btDropItem").click(function(){
 			var id = $(this).siblings("itemid").attr("id");
-			_rpg.publish("DROP_ITEM", {itemid: id});
+			self.rpg.getPlayer().dropItem(itemid);
 			
-			$(this).parent().hide();
+			itemOptions.hide();
+			self.inventoryUpdate();
 		});
 	},
 	
-	inventoryUpdate : function(topic, args){
-	/* args = {list : Array[{id, img, number}, ]}*/
-	if(topic != "INVENTORY_UPDATE") return;
+	inventoryUpdate : function(){
+		var bag = this.rpg.getPlayer().getBag();
 		
-		var grid = $("#Inventory > #Grid").get(0);
-		grid.html("");
-		for(var i in args.list){
-			var item = args.list[i];
+		for(var i in bag){
+			var item = bag[i];
 			
-			var str = '<div id="'+item.id+'" class="item"><img class="itemImg" src="'+item.img+'" /><span class="itemCount">'+item.number+'</span></div>';
+			var str = '<div id="'+item.type+'" class="item"><img class="itemImg" src="'+item.images[item.type]+'" /><span class="itemCount">'+item.number+'</span></div>';
 			var newItem = $(str).click(function(){
 				var options = dom.find("#itemOptions").get(0);
 				options.hide();
@@ -193,7 +205,7 @@ jQuery.extend(Inventory.prototype, {
 			});
 			grid.append(newItem);
 		}
-	}
+	},
 });
 
 
@@ -224,14 +236,6 @@ jQuery.extend(HeadUpDisplay.prototype, {
 		this.dom.find("#EXPBar > span").css("width", _EXP + "%");
     },
 
-    QuestUpdate : function(topic, args){
-		/* args = {Desc : string, Current : value, Goal : value}*/
-		if(topic != "QUEST_UPDATE") return;
-		
-		this.dom.find("#QuestHUD > .questText").text(args.Desc);
-		this.dom.find("#QuestHUD > .questStatus > .questCurrent").text(args.Current);
-		this.dom.find("#QuestHUD > .questStatus > .questGoal").text(args.Goal);
-    }, 
 });
 
 
@@ -246,6 +250,14 @@ jQuery.extend(Dialogue.prototype, {
 		this.rpg = _rpg;
 		this.dom = _obj;
 		
+		this.dom.find("#Dialogue button#btDialogueProceed").click(function(){ 
+			$(this).hide();
+		});
+	},
+	
+	showDialogue : function(_text){
+		this.dom.find("#Dialogue p#dialogueText").text(_text);
+		this.show();
 	},
 });
 
@@ -275,8 +287,23 @@ jQuery.extend(QuestWindow.prototype, {
 	initialize : function(_obj, _rpg){
 		this.rpg = _rpg;
 		this.dom = _obj;
-		
 	},
+	
+	show : function(){
+		var questList = this.rpg.getQuestManager().getQuestData();
+		
+		for(var i in questList){
+			var quest = questList[i];
+			
+
+			var str = '<div id="'+item.type+'" class="item"><img class="itemImg" src="'+item.images[item.type]+'" /><span class="itemCount">'+item.number+'</span></div>';
+		
+		}
+		
+		dom.show();
+	} 
+	
+	
 });
 
 

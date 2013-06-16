@@ -38,8 +38,8 @@ div#rpgDiv {
 div#Dialogue {
 }
 
-div .dialogue {
-	display: none;
+div #Dialogue {
+	/*display: none;*/
 	width: 240px;
 	height: 160px;
 	position: absolute;
@@ -53,7 +53,7 @@ div .dialogue {
 	background: rgba(0, 0, 0, 0.5);
 }
 
-div.dialogue .dialogueText {
+.dialogueText {
 	color: white;
 	width: 200;
 	height: 150;
@@ -62,7 +62,7 @@ div.dialogue .dialogueText {
 	vertical-align: middle;
 }
 
-div.dialogue button {
+.dialogueText button {
 	position: absolute;
 	right: 0;
 	bottom: 0;
@@ -76,9 +76,7 @@ div#MainScreen {
 	margin-right: auto;
 	top:50%;
 	margin-top: -200;
-	z-index: 1;
-	border: 2px dashed red;
-	background-color: black;
+	z-index: 10;
 	display: table;
 }
 
@@ -415,10 +413,39 @@ button{
 
 #QuestWindow{
 	display: none;
+	height: 400px;
+	width: 350px;
+	position: absolute;
+	z-index: 10;
+	top: 50%;
+	left: 50%;
+	margin-top: -200px;
+	margin-left: -175px;	
+}
+
+#QuestWindow .QuestItem{
+	background: rgba(0, 0, 0, 0.5);
+	height: 40px;
+	width: 300px;
+	position: relative;
+	padding: 3px;
+	margin-top: auto;
+	margin-left: auto;	
+	margin-top: 3px;
+	margin-bottom: 3px;
+	border-radius: 15px;
 }
 
 #StatusWindow{
 	display: none;
+	height: 250px;
+	width: 350px;
+	position: absolute;
+	z-index: 10;
+	top: 50%;
+	left: 50%;
+	margin-top: -125px;
+	margin-left: -175px;
 }
 
 .window {

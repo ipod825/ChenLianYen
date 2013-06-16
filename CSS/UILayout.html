@@ -1,7 +1,7 @@
-<!--
-<div id="MainScreen">
+
+<div id="MainScreen" class="window">
 	<div >
-		<img src="./Images/player.png"/>
+		<img src=""/>
 	</div>
 	<div>
 		<button id="btGAMESTART">GAME START</button><br/>
@@ -10,7 +10,6 @@
 		<button id="btHIDE" onclick="$('#MainScreen').hide()">HIDE</button><br/>
 	</div>
 </div>
--->
 
 
 <div id="HUD">
@@ -26,22 +25,22 @@
 	<div id="header">
 		<div id="sound" class="sound-play"></div>
 		<div id="gold"> : <span>0</span></div>
-		<div id="option" onclick="toggleVisibility('#Options')"></div>
+		<div id="option" onclick="rpg.getUIController().toogle('Options')"></div>
 	</div>
 
 
 	<div id="BottomBar">
 		<!--button id="btHideUI" onclick="$('#uiDiv').children().hide()">HideUI</button-->
-		<button id="btPause" onclick="toggleVisibility('#Options')">Pause</button>	
-		<button id="btQuest">Quest</button>
-		<button id="btStatus">Status</button>
-		<button id="btInventory" onclick="toggleVisibility('#Inventory')">Inventory</button>
+		<button id="btPause" onclick="rpg.getUIController().toogle('Options')">Pause</button>	
+		<button id="btQuest" onclick="rpg.getUIController().toogle('QuestWindow')">Quest</button>
+		<button id="btStatus" onclick="rpg.getUIController().toogle('StatusWindow')">Status</button>
+		<button id="btInventory" onclick="rpg.getUIController().toogle('Inventory')">Inventory</button>
 	</div>
 </div>
 
-<div id="Dialogue" class="dialogue">
+<div id="Dialogue" class="window">
 	<p class="dialogueText"></p>
-	<button>Proceed</button>
+	<button id="btDialogueProceed">Proceed</button>
 </div>
 
 <div id="Options" class="window" >
@@ -83,5 +82,22 @@
 	</div>
 </div>
 
-<div id="QuestWindow" class="window"></div>
-<div id="StatusWindow" class="window"></div>
+<div id="QuestWindow" class="window">
+	<h1>Quests</h1>
+	<div class="QuestItem"></div>
+	<div class="QuestItem"></div>
+	<div class="QuestItem"></div>
+	<div class="QuestItem"></div>
+</div>
+
+<div id="StatusWindow" class="window">
+	<h1>Status</h1>
+	<ul>
+		<li>Level: <span id="stLevel"></span></li>
+		<li>HP: <span id="stHP"></span>/<span id="stHPMax"></span></li>
+		<li>Attack: <span id="stAttack"></span></li>
+		<li>Defence: <span id="stDefence"></span></li>
+		<li>EXP: <span id="stEXP"></span>/<span id="stEXPMax"></span></li>
+		<li>Gold: <span id="stMoney"></span></li>
+	</ul>
+</div>
