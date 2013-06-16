@@ -102,6 +102,24 @@ var CharacterProtoType = {
 		}
 	},
 
+	getBag : function()
+	{
+		if(this.bag)
+		{
+			var bagArray = [];
+			for(var item in this.bag)
+			{
+				bagArray.push(item);
+			}
+			return bagArray;
+		}
+		else
+		{
+			this.logger.error(this.tag, "getBag: this.bag undefined");
+			return null;
+		}
+	}
+
 	/*
 	 * Function: dropItem
 	 *     This function let player dropp the item choose by client. Usually
