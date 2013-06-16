@@ -6,6 +6,7 @@ function Rpg(canvasId) {
 	this.sourceManager.setStage(this.stage); //To show the downloaing progress on the stage;
 	this.input = new Input(this);
 	this.currentMap;
+    
 
 	this.questManager = new QuestManager();
 	this.battleManager = new BattleManager();
