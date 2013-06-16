@@ -6,14 +6,16 @@ function Rpg(canvasId) {
 	this.sourceManager.setStage(this.stage); //To show the downloaing progress on the stage;
 	this.input = new Input(this);
 	this.currentMap;
+<<<<<<< HEAD
     
+=======
+	this.player = null;
+>>>>>>> 680a07d1b6e22e56e72a7de8ededf57cb385c09f
 
+	// Rpg holds main classes of other modules
 	this.questManager = new QuestManager();
 	this.battleManager = new BattleManager();
-	
 	this.UserInterface;
-	//this.UserInterface = window.UserInterface;
-	//this.UIController = window.UIController;
 
 	var self = this;
 	canvas.onclick= function (e){ self.input.handleClick(e); }
@@ -22,7 +24,10 @@ function Rpg(canvasId) {
 	document.onkeyup = function (e) { self.input.handleKeyUp(e); };
 }
 
-Rpg.prototype = {
+Rpg.prototype = 
+{
+	tag: "[Rpg]: ",
+	logger: new ConsoleLogger(),
 
 	/*
 	 * In this function, all media are ready, we should init the map, characters ... with these medias.
@@ -32,7 +37,8 @@ Rpg.prototype = {
 		this.stage.removeAllChildren();
 		this.stage.addChild(this.currentMap);
 		this.currentMap.checkCell();
-		this.player=this.sourceManager.characters[PLAYER];
+		this.player = this.sourceManager.getPlayer();
+		//this.player = this.sourceManager.characters[PLAYER];
 		//this.stage.addChild(this.player);
 
 		this.UserInterface.show("HUD");
@@ -68,11 +74,58 @@ Rpg.prototype = {
 	},
 
 	loadUI: function(uiDiv,uifile) {
-		this.UIController = new UIController();
-		this.UserInterface = new UserInterface(uiDiv, uifile, this.UIController);
+		this.UserInterface = new UserInterface(uiDiv, uifile, this);
 	},
-	//loadUI: function() {
-	//	var self = this;
-	//	this.sourceManager.loadUI($("#rpgDiv"), "./CSS/UILayout.html");
-	//},
+
+	getBattleManager: function()
+	{
+		if(this.battleManager)
+		{
+			return this.battleManager;
+		}
+		else
+		{
+			console.log("getBattleManager: this.battleManager undefined");
+		}
+	},
+
+	getQeustManager: function()
+	{
+		if(this.questManager)
+		{
+			return this.questManager;
+		}
+		else
+		{
+			this.logger.error(this.tag, "getQuestManager: this.questManager undefined");
+		}
+	},
+
+	getUIController: function()
+	{
+		if(this.UserInterface)
+		{
+			return this.UserInterface;
+		}
+		else
+		{
+			this.logger.error(this.tag, "getUIController: this.UserInterface undefined");
+		}
+	},
+
+	getPlayer: function()
+	{
+		if(this.player)
+		{
+			return this.player;
+		}
+		else
+		{
+			this.logger.error(this.tag, "getPlayer: this.player undefined");
+		}
+	}
+
 }
+
+// Initialize members in prototype
+Rpg.prototype.logger.setLogLevel("debug");

@@ -21,7 +21,7 @@ DIRUNIT=[{x:-1,y:0},{x:0,y:-1},{x:1,y:0},{x:0,y:1}];
  */
 var Character = function(_rpg){
 	// For debugging
-	this.logger.verbose(this.tag, "Character: +++START+++ ");
+	this.logger.verbose(this.tag, "Character: +++START+++ _rpg = " + _rpg);
 
 	// Call parent constructor
 	MapObject.call(this, _rpg);
@@ -99,6 +99,24 @@ var CharacterProtoType = {
 		else
 		{ 
 			this.logger.error(this.tag, "addItem: input _item undefined"); 
+		}
+	},
+
+	getBag : function()
+	{
+		if(this.bag)
+		{
+			var bagArray = [];
+			for(var item in this.bag)
+			{
+				bagArray.push(item);
+			}
+			return bagArray;
+		}
+		else
+		{
+			this.logger.error(this.tag, "getBag: this.bag undefined");
+			return null;
 		}
 	},
 
@@ -203,7 +221,9 @@ var CharacterProtoType = {
 				this.setSpeedAndAnimation(0,0);
 				return;
 			}
-			this.logger.log("Current:"+this.posOnMap+"tmpTarget:"+new Point(this.pathToTarget[0].x,this.pathToTarget[0].y)+"finalTaarget:"+this.pathToTarget[this.pathToTarget.length-1]);
+			//this.logger.verbose(this.tag, "moveTowardTarget: " + this.posOnMap + 
+			//                "tmpTarget:" + new Point(this.pathToTarget[0].x,this.pathToTarget[0].y) + 
+			//                "finalTaarget:" + this.pathToTarget[this.pathToTarget.length-1]);
 			diffx = this.pathToTarget[0].x-this.posOnMap.x;
 			diffy = this.pathToTarget[0].y-this.posOnMap.y;
 			var newDir;
@@ -274,18 +294,18 @@ var CharacterProtoType = {
 		obj=this.parent.isPassable(this, newP);
 		if(obj == BLOCK)
 			return;
-		else if(obj.type == ITEM){
+		else if(utility.isItem(obj.type)){
 			this.pickItem(obj);
 			//this.resetImage(obj.name);
 			this.parent.removeChild(obj);
 		}
-		else if(obj.type == MONSTER){
+		else if(utility.isMonster(obj.type)){
 			this.logger.verbose("monster encountered");
 			this.attack(obj);
 			return;
 		}
 
-		if(this.type === PLAYER){
+		if(utility.isPlayer(this.type)){
 			//Keep the player moving at center if possible, otherwise, move it as usual
 			if(this.parent.moveOtherObjs(this, this.vX, this.vY))
 				this.setPosition(this.getPos());	//renew the posOnMap

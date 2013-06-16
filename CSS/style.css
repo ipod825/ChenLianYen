@@ -36,23 +36,21 @@ div#rpgDiv {
 */
 
 div#Dialogue {
-	width: 80%;
-	height: 20%;
-	background-color: #555;
 }
 
 div .dialogue {
 	display: none;
-	width: 240;
-	height: 160;
+	width: 240px;
+	height: 160px;
 	position: absolute;
-	margin-left: auto;
-	margin-right: auto;
+	left: 50%;
+	margin-left: -120px;
 	vertical-align: middle;
 	top: 50%;
+	margin-top: -80px;
 	z-index: 2;
 	border-style: dashed;
-	background:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAAECAYAAACp8Z5+AAAAJUlEQVQIHWNkYGD4D8QM////ZwTRTCACGTACZcB8RkZGMANDBQBkXQgDCT7iIgAAAABJRU5ErkJggg==);
+	background: rgba(0, 0, 0, 0.5);
 }
 
 div.dialogue .dialogueText {
@@ -225,10 +223,11 @@ div#HUD div#ExpBar{
 
 div#HUD div#QuestHUD{
 	position: absolute;
-	right : 140px;
+	right : 155px;
 	top: 0px;
 	width: 30%;
 	height: 40px;
+	display: none;
 	background: rgba(0, 0, 0, 0.5);
 	-webkit-border-bottom-right-radius: 15px;
 	-webkit-border-bottom-left-radius: 15px;
@@ -253,7 +252,7 @@ div#BottomBar {
 	right:0px;
 	width: 100%;
 	height: 35px;
-	background-color: #555;
+	background: rgba(0, 0, 0, 0.5);
 }
 
 div#BottomBar > button{
@@ -412,6 +411,14 @@ button{
 
 #Inventory .itemOptions .itemOption:hover{
 	background: rgba(255, 210, 210, 0.5);
+}
+
+#QuestWindow{
+	display: none;
+}
+
+#StatusWindow{
+	display: none;
 }
 
 .window {
