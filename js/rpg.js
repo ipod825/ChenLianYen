@@ -19,7 +19,10 @@ function Rpg(canvasId) {
 	document.onkeyup = function (e) { self.input.handleKeyUp(e); };
 }
 
-Rpg.prototype = {
+Rpg.prototype = 
+{
+    tag: "[Rpg]: ",
+    logger: new ConsoleLogger(),
 
 	/*
 	 * In this function, all media are ready, we should init the map, characters ... with these medias.
@@ -88,7 +91,7 @@ Rpg.prototype = {
 		}
 		else
 		{
-			console.log("getQuestManager: this.questManager undefined");
+			this.logger.error(this.tag, "getQuestManager: this.questManager undefined");
 		}
 	},
 
@@ -100,7 +103,23 @@ Rpg.prototype = {
 		}
 		else
 		{
-			console.log("getUIController: this.UserInterface undefined");
+			this.logger.error(this.tag, "getUIController: this.UserInterface undefined");
+		}
+	},
+
+	getPlayer: function()
+	{
+		if(this.player)
+		{
+			return this.player;
+		}
+		else
+		{
+			this.logger.error(this.tag, "getPlayer: this.player undefined");
 		}
 	}
+
 }
+
+// Initialize members in prototype
+Rpg.prototype.logger.setLogLevel("all");
