@@ -105,7 +105,7 @@ MapPrototype = {
 		if(child.posOnMap)
 			this.tiles.set(obj.posOnMap.x, obj.posOnMap.y, FREE);
 		Container.prototype.removeChild.call(this,child);
-		Ticker.removeChild
+		Ticker.removeListener(child);
 	},
 
 	/*
