@@ -1,74 +1,73 @@
-function toggleVisibility(id){
-	//var e = $(this).find(id)[0];
-	var e = $(id)[0];
-	if(e.style.display == 'block')
-		e.style.display = 'none';
-	else{
-		e.style.display = 'block';
-	}
-}
+// function toggleVisibility(id){
+	// var e = $(id)[0];
+	// if(e.style.display == 'block')
+		// e.style.display = 'none';
+	// else{
+		// e.style.display = 'block';
+	// }
+// }
 
-function UIController(){
-	this.topics = {};
-	this.subUid = -1;
-}
+// function UIController(){
+	// this.topics = {};
+	// this.subUid = -1;
+// }
 
-UIController.prototype={
+// UIController.prototype={
 	
-	publish : function(topic, args) {
+	// publish : function(topic, args) {
 		
-		if( !this.topics[topic]){
-			return false;
-		}
+		// if( !this.topics[topic]){
+			// return false;
+		// }
 		
-		var subscribers = this.topics[topic];
-		len = subscribers ? subscribers.length : 0;
+		// var subscribers = this.topics[topic];
+		// len = subscribers ? subscribers.length : 0;
 			
-		while(len--) {
-			subscribers[len].func(topic, args);
-		}
+		// while(len--) {
+			// subscribers[len].func(topic, args);
+		// }
 		
-		return this;
-	},
+		// return this;
+	// },
 	
-	//Subscribe to events of intrest
-	subscribe : function(topic, func){
-		if(!this.topics[topic]){
-			this.topics[topic] = [];
-		}
+	// subscribe : function(topic, func){
+		// if(!this.topics[topic]){
+			// this.topics[topic] = [];
+		// }
 		
-		var token = (++this.subUid).toString();
-		this.topics[topic].push({
-			token: token,
-			func: func
-		});
+		// var token = (++this.subUid).toString();
+		// this.topics[topic].push({
+			// token: token,
+			// func: func
+		// });
 		
-		return token;
-	},
+		// return token;
+	// },
 	
-	unsubscribe : function( token ){
-		for( var m in this.topics)
-		{
-			if(this.topics[m]){
-				for(var i = 0, j = this.topics[m].length; i < j; i++)
-				{
-					if(this.topics[m][i].token == token)
-					{
-						this.topics[m].splice(i, 1);
-						return token;
-					}
-				}
-			}
+	// unsubscribe : function( token ){
+		// for( var m in this.topics)
+		// {
+			// if(this.topics[m]){
+				// for(var i = 0, j = this.topics[m].length; i < j; i++)
+				// {
+					// if(this.topics[m][i].token == token)
+					// {
+						// this.topics[m].splice(i, 1);
+						// return token;
+					// }
+				// }
+			// }
 		
-		}
-		return this;
-	},
-}
+		// }
+		// return this;
+	// },
+// }
 
-function UserInterface(uiDivId, uifile, UIController){
+function UserInterface(uiDivId, uifile, _rpg){
+	this.rpg = _rpg;
 	this.uiDiv=$(uiDivId);
 	this.list = [];
-	this.initialization(uiDivId, uifile, UIController);
+	this.initialization(uiDivId, uifile, _rpg);
 }
 UserInterface.prototype = {
 	show : function(uiName){
@@ -76,7 +75,16 @@ UserInterface.prototype = {
 			return;
 		this.list[uiName].show();
 	},
-	initialization : function(uiDivId, uifile, UIController){
+	get : function(uiName){
+		return self.list[uiName];
+	},	
+	toogle : function(uiName){
+		if(this.list[uiName] == undefined)
+			return;
+		this.list[uiName].show();
+	},
+
+	initialization : function(uiDivId, uifile, _rpg){
 		self=this;
 		self.uiDiv.load(uifile, function(){
 			self.uiDiv.children("div").each(function(index, element){
@@ -84,22 +92,22 @@ UserInterface.prototype = {
 				var uiName = $(this).attr("id");
 				switch(uiName){
 				case "HUD":
-					self.list[uiName] = new HeadUpDisplay($(this), UIController);
+					self.list[uiName] = new HeadUpDisplay($(this), this.rpg);
 					break;
 				case "Dialogue":
-					self.list[uiName] = new Dialogue($(this), UIController);
+					self.list[uiName] = new Dialogue($(this), this.rpg);
 					break;
 				case "Options":
-					self.list[uiName] = new Options($(this), UIController);
+					self.list[uiName] = new Options($(this), this.rpg);
 					break;
 				case "Inventory":
-					self.list[uiName] = new Inventory($(this), UIController);
+					self.list[uiName] = new Inventory($(this), this.rpg);
 					break;
 				case "QuestWindow":
-					self.list[uiName] = new QuestWindow($(this), UIController);
+					self.list[uiName] = new QuestWindow($(this), this.rpg);
 					break;
 				case "StatusWindow":
-					self.list[uiName] = new StatusWindow($(this), UIController);
+					self.list[uiName] = new StatusWindow($(this), this.rpg);
 					break;
 				default:
 					self.list[uiName] = $(this);	
@@ -108,40 +116,58 @@ UserInterface.prototype = {
 			});
 		});	
 	},
+	
+	showDialogue : function(texts){
+		self.list["Dialogue"].showDialogue(texts);
+	},
+	
+	updateHUD : function(type, _value){
+		switch(type)
+		{
+		case "HP":
+			self.list["HUD"].HPUpdate(_value);
+			break;
+		case "EXP":
+			self.list["HUD"].EXPUpdate(_value);
+			break;
+		default:
+			//nothing
+		}
+	},
 }
 
 
 function UIComponent(){};
 UIComponent.prototype = {
+	rpg : null,
 	dom : null,
-	initialize : function(_obj, _UIC){},
+	initialize : function(_obj, _rpg){},
 	show : function(){this.dom.show();},
 	hide : function(){this.dom.hide();},
 };
 
 
 
-function Inventory(dom, UIC){
-	this.initialize(dom, UIC);
+function Inventory(dom, _rpg){
+	this.initialize(dom, _rpg);
 }
 Inventory.prototype = Object.create(UIComponent.prototype);
 Inventory.prototype.constructor = Inventory;
 jQuery.extend(Inventory.prototype, {
-	initialize : function(_obj, _UIC){
+	initialize : function(_obj, _rpg){
+		this.rpg = _rpg;
 		this.dom = _obj;
-		
-		_UIC.subscribe("INVENTORY_UPDATE", this.inventoryUpdate);
 		
 		this.dom.find("#btUseItem").click(function(){
 			var id = $(this).siblings("itemid").attr("id");
-			_UIC.publish("USE_ITEM", {itemid: id});
+			_rpg.publish("USE_ITEM", {itemid: id});
 			
 			$(this).parent().hide();
 		});
 		
 		this.dom.find("#btDropItem").click(function(){
 			var id = $(this).siblings("itemid").attr("id");
-			_UIC.publish("DROP_ITEM", {itemid: id});
+			_rpg.publish("DROP_ITEM", {itemid: id});
 			
 			$(this).parent().hide();
 		});
@@ -179,26 +205,23 @@ function HeadUpDisplay(dom, UIC){
 HeadUpDisplay.prototype = Object.create(UIComponent.prototype);
 HeadUpDisplay.prototype.constructor = HeadUpDisplay;
 jQuery.extend(HeadUpDisplay.prototype, {
-	initialize : function(_obj, _UIC){
+	initialize : function(_obj, _rpg){
+		this.rpg = _rpg;
 		this.dom = _obj;
-		
-		_UIC.subscribe("HP_UPDATE", this.HPUpdate);
-		_UIC.subscribe("EXP_UPDATE", this.EXPUpdate);
-		_UIC.subscribe("QUEST_UPDATE", this.QuestUpdate);
 	},
 	
-	HPUpdate : function(topic, args){
+	HPUpdate : function(_HP){
       /* args = {HP : value}*/
       if(topic != "HP_UPDATE") return;
 		
-      dom.find("#HealthBar > span").css("width", args.HP + "%");	
+      dom.find("#HealthBar > span").css("width", _HP + "%");	
 	},
 
-    EXPUpdate : function(topic, args){
+    EXPUpdate : function(_EXP){
 		/* args = {EXP : value}*/
 		if(topic != "EXP_UPDATE") return;
 
-		this.dom.find("#EXPBar > span").css("width", args.EXP + "%");
+		this.dom.find("#EXPBar > span").css("width", _EXP + "%");
     },
 
     QuestUpdate : function(topic, args){
@@ -219,7 +242,8 @@ function Dialogue(dom, UIC){
 Dialogue.prototype = Object.create(UIComponent.prototype);
 Dialogue.prototype.constructor = Dialogue;
 jQuery.extend(Dialogue.prototype, {
-	initialize : function(_obj, _UIC){
+	initialize : function(_obj, _rpg){
+		this.rpg = _rpg;
 		this.dom = _obj;
 		
 	},
@@ -233,7 +257,8 @@ function Options(dom, UIC){
 Options.prototype = Object.create(UIComponent.prototype);
 Options.prototype.constructor = Dialogue;
 jQuery.extend(Options.prototype, {
-	initialize : function(_obj, _UIC){
+	initialize : function(_obj, _rpg){
+		this.rpg = _rpg;
 		this.dom = _obj;
 		
 	},
@@ -247,7 +272,8 @@ function QuestWindow(dom, UIC){
 QuestWindow.prototype = Object.create(UIComponent.prototype);
 QuestWindow.prototype.constructor = QuestWindow;
 jQuery.extend(QuestWindow.prototype, {
-	initialize : function(_obj, _UIC){
+	initialize : function(_obj, _rpg){
+		this.rpg = _rpg;
 		this.dom = _obj;
 		
 	},
@@ -261,7 +287,8 @@ function StatusWindow(dom, UIC){
 StatusWindow.prototype = Object.create(UIComponent.prototype);
 StatusWindow.prototype.constructor = StatusWindow;
 jQuery.extend(StatusWindow.prototype, {
-	initialize : function(_obj, _UIC){
+	initialize : function(_obj, _rpg){
+		this.rpg = _rpg;
 		this.dom = _obj;
 	},
 });

@@ -11,8 +11,6 @@ function Rpg(canvasId) {
 	this.battleManager = new BattleManager();
 	
 	this.UserInterface;
-	//this.UserInterface = window.UserInterface;
-	//this.UIController = window.UIController;
 
 	var self = this;
 	canvas.onclick= function (e){ self.input.handleClick(e); }
@@ -67,11 +65,6 @@ Rpg.prototype = {
 	},
 
 	loadUI: function(uiDiv,uifile) {
-		this.UIController = new UIController();
-		this.UserInterface = new UserInterface(uiDiv, uifile, this.UIController);
+		this.UserInterface = new UserInterface(uiDiv, uifile, this);
 	},
-	//loadUI: function() {
-	//	var self = this;
-	//	this.sourceManager.loadUI($("#rpgDiv"), "./CSS/UILayout.html");
-	//},
 }
