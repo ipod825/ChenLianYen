@@ -67,4 +67,40 @@ Rpg.prototype = {
 	loadUI: function(uiDiv,uifile) {
 		this.UserInterface = new UserInterface(uiDiv, uifile, this);
 	},
+
+	getBattleManager: function()
+	{
+		if(this.battleManager)
+		{
+			return this.battleManager;
+		}
+		else
+		{
+			console.log("getBattleManager: this.battleManager undefined");
+		}
+	},
+
+	getQeustManager: function()
+	{
+		if(this.questManager)
+		{
+			return this.questManager;
+		}
+		else
+		{
+			console.log("getQuestManager: this.questManager undefined");
+		}
+	},
+
+	getUIController: function()
+	{
+		if(this.UserInterface)
+		{
+			return this.UserInterface;
+		}
+		else
+		{
+			console.log("getUIController: this.UserInterface undefined");
+		}
+	}
 }
