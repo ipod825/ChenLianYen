@@ -111,6 +111,26 @@ AttackableCharacterPrototype =
 		this.updateState();
 	},
 
+	updateHUD : function(_attrName)
+	{
+		var uiController = this.rpg.getUIController();
+		if(uiController)
+			{
+			if(_attrName = "exp")
+			{
+				uiController.updateHUD("EXP", this.status.exp);
+			}
+			else if(_attrName = "hp")
+			{
+				uiController.updateHUD("HP", this.status.hp);
+			}
+		}
+		else
+		{
+			this.logger.error(this.tag, "updateHUD: uiController undefined");
+		}
+	},
+
 	updateStatus : function(_attrName, _offset) 
 	{
 		this.logger.debug(this.tag, "updateStatus: +++START+++ _attrName = " +
@@ -118,6 +138,10 @@ AttackableCharacterPrototype =
 
 		// Delegate the update work to status
 		this.status.updateAttribute(_attrName, _offset);
+		if(utility.isPlayer(this.type))
+		{
+			this.updateHUD(_attrName);
+		}
 
 		// Status change may result to state change
 		this.updateState();
