@@ -92,22 +92,22 @@ UserInterface.prototype = {
 				var uiName = $(this).attr("id");
 				switch(uiName){
 				case "HUD":
-					self.list[uiName] = new HeadUpDisplay($(this), this.rpg);
+					self.list[uiName] = new HeadUpDisplay($(this), self.rpg);
 					break;
 				case "Dialogue":
-					self.list[uiName] = new Dialogue($(this), this.rpg);
+					self.list[uiName] = new Dialogue($(this), self.rpg);
 					break;
 				case "Options":
-					self.list[uiName] = new Options($(this), this.rpg);
+					self.list[uiName] = new Options($(this), self.rpg);
 					break;
 				case "Inventory":
-					self.list[uiName] = new Inventory($(this), this.rpg);
+					self.list[uiName] = new Inventory($(this), self.rpg);
 					break;
 				case "QuestWindow":
-					self.list[uiName] = new QuestWindow($(this), this.rpg);
+					self.list[uiName] = new QuestWindow($(this), self.rpg);
 					break;
 				case "StatusWindow":
-					self.list[uiName] = new StatusWindow($(this), this.rpg);
+					self.list[uiName] = new StatusWindow($(this), self.rpg);
 					break;
 				default:
 					self.list[uiName] = $(this);	
@@ -142,13 +142,13 @@ UIComponent.prototype = {
 	rpg : null,
 	dom : null,
 	initialize : function(_obj, _rpg){},
-	show : function(){this.dom.show();},
+	show : function(){ this.dom.show();},
 	hide : function(){this.dom.hide();},
 	toggle : function(){
 		if( !this.dom.is(':visible'))
-			this.dom.show();
+			this.show();
 		else
-			this.dom.hide();
+			this.hide();
 	},
 };
 
@@ -224,14 +224,12 @@ jQuery.extend(HeadUpDisplay.prototype, {
 	
 	HPUpdate : function(_HP){
       /* args = {HP : value}*/
-      if(topic != "HP_UPDATE") return;
 		
       dom.find("#HealthBar > span").css("width", _HP + "%");	
 	},
 
     EXPUpdate : function(_EXP){
 		/* args = {EXP : value}*/
-		if(topic != "EXP_UPDATE") return;
 
 		this.dom.find("#EXPBar > span").css("width", _EXP + "%");
     },
@@ -310,7 +308,7 @@ jQuery.extend(QuestWindow.prototype, {
 			str += '</span></div>';
 		}
 		
-		dom.show();
+		this.dom.show();
 	},
 });
 
@@ -329,7 +327,7 @@ jQuery.extend(StatusWindow.prototype, {
 	
 	show : function(){
 		var status = this.rpg.getPlayer().getStatus();
-		
+        		
 		this.dom.find("#stLevel").text(status.level);
 		this.dom.find("#stHP").text(status.hp);
 		this.dom.find("#stHPMax").text(status.hpMax);
@@ -339,6 +337,6 @@ jQuery.extend(StatusWindow.prototype, {
 		this.dom.find("#stEXPMax").text(status.expMax);
 		this.dom.find("#stMoney").text(status.money);
 		
-		dom.show();
+		this.dom.show();
 	},
 });
