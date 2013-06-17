@@ -375,7 +375,7 @@ jQuery.extend(StatusWindow.prototype, {
 		this.dom.find("#stHP").text(status.hp);
 		this.dom.find("#stHPMax").text(status.hpMax);
 		this.dom.find("#stAttack").text(status.attack);
-		this.dom.find("#stDefence").text(status.defence);
+		this.dom.find("#stDefence").text(status.defense);
 		this.dom.find("#stEXP").text(status.exp);
 		this.dom.find("#stEXPMax").text(status.expMax);
 		this.dom.find("#stMoney").text(status.money);
