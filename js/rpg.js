@@ -37,7 +37,7 @@ Rpg.prototype =
 		//this.player = this.sourceManager.characters[PLAYER];
 		//this.stage.addChild(this.player);
 
-		this.UserInterface.show("HUD");
+		this.UserInterface.show("MainScreen");
 
 		// we want to do some work before we update the canvas, otherwise we could use Ticker.addListener(stage);
 		Ticker.addListener(this);

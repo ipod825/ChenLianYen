@@ -91,6 +91,9 @@ UserInterface.prototype = {
 				//hide each ui by default
 				var uiName = $(this).attr("id");
 				switch(uiName){
+				case "MainScreen":
+					self.list[uiName] = new MainScreen($(this), self.rpg);
+					break;					
 				case "HUD":
 					self.list[uiName] = new HeadUpDisplay($(this), self.rpg);
 					break;
@@ -152,7 +155,23 @@ UIComponent.prototype = {
 	},
 };
 
-
+function MainScreen(dom, UIC){
+	this.initialize(dom, UIC);
+}
+MainScreen.prototype = Object.create(UIComponent.prototype);
+MainScreen.prototype.constructor = Dialogue;
+jQuery.extend(MainScreen.prototype, {
+	initialize : function(_obj, _rpg){
+		var self = this;
+		this.rpg = _rpg;
+		this.dom = _obj;
+		
+		this.dom.find("#btGAMESTART").click(function(){
+			self.dom.hide();
+			self.rpg.getUIController().show("HUD");
+		});
+	},
+});
 
 function Inventory(dom, _rpg){
 	this.initialize(dom, _rpg);
