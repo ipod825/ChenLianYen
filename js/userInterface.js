@@ -296,14 +296,22 @@ jQuery.extend(QuestWindow.prototype, {
 			var quest = questList[i];
 			
 
-			var str = '<div id="'+item.type+'" class="item"><img class="itemImg" src="'+item.images[item.type]+'" /><span class="itemCount">'+item.number+'</span></div>';
-		
+			var str = 	'<div class="QuestItem">';
+			str += '<span class="questText">' +  quest.name + '</span>';
+			str += '<span class="questStatus">';
+			for(var c in quest.questConditions)
+			{
+				var cond = quest.questConditions[c];
+				
+				str += '<span class="questTarget">' + cond.targetName + '</span>';
+				str += '<span class="questCurrent">' + cond.count + '</span>';
+				str += '/<span class="questGoal">' + cond.max + '</span>';
+			}
+			str += '</span></div>';
 		}
 		
 		dom.show();
-	} 
-	
-	
+	},
 });
 
 
@@ -317,5 +325,20 @@ jQuery.extend(StatusWindow.prototype, {
 	initialize : function(_obj, _rpg){
 		this.rpg = _rpg;
 		this.dom = _obj;
+	},
+	
+	show : function(){
+		var status = this.rpg.getPlayer().getStatus();
+		
+		this.dom.find("#stLevel").text(status.level);
+		this.dom.find("#stHP").text(status.hp);
+		this.dom.find("#stHPMax").text(status.hpMax);
+		this.dom.find("#stAttack").text(status.attack);
+		this.dom.find("#stDefence").text(status.defence);
+		this.dom.find("#stEXP").text(status.exp);
+		this.dom.find("#stEXPMax").text(status.expMax);
+		this.dom.find("#stMoney").text(status.money);
+		
+		dom.show();
 	},
 });
