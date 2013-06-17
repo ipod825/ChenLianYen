@@ -13,7 +13,7 @@ BattleManager.prototype =
 	performAttack : function(attacker, attackee)
 	{
 		// For debugging
-		this.logger.verbose(this.tag, "performAttack: attacker = " + attacker +
+		this.logger.debug(this.tag, "performAttack: attacker = " + attacker +
 							"attackee = " + attackee);
 
 		// Get both status of attacker and attackee
@@ -40,6 +40,7 @@ BattleManager.prototype =
 		var attakeeState = attackee.getState();
 		if(attakeeState === CHARACTER_STATE_DEAD)
 		{
+            this.logger.info(this.tag, attackee.type + " DIE!");
 			attackee.giveTrophy(attacker);
 			attackee.die();
 		}
@@ -47,4 +48,4 @@ BattleManager.prototype =
 };
 
 // Initialize the member in prototype
-BattleManager.prototype.logger.setLogLevel("all");
+BattleManager.prototype.logger.setLogLevel("debug");

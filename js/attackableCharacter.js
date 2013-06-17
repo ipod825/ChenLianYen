@@ -61,12 +61,15 @@ AttackableCharacterPrototype =
 		this.updateState();
 	},
 
-	updateStatus : function(attrName, offset)
-	{
+	updateStatus : function(attrName, offset) {
 		this.logger.verbose(this.tag, "updateStatus: +++START+++ attrName = " +
 							attrName + " , offset = " + offset);
 		this.status.updateAttribute(attrName, offset);
 		this.updateState();
+	},
+
+	die : function(){
+		this.parent.removeChild(this);
 	},
 
 	// ITEM RELATED FUNCTIONS
@@ -164,9 +167,9 @@ AttackableCharacterPrototype =
 	updateState : function()
 	{
 		// Exp status check
-		if(this.status.exp <= 0)
+		if(this.status.exp < 0)
 		{
-			this.logger.error(this.tag, "updateState: this.status.exp <= 0");
+			this.logger.error(this.tag, "updateState: this.status.exp < 0");
 		}
 		else if(this.status.exp >= this.status.expMax)
 		{
@@ -194,7 +197,6 @@ AttackableCharacterPrototype =
 	{
 		return this.state;
 	}
-
 };
 
 

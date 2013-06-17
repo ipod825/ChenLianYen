@@ -17,8 +17,8 @@ ConsoleLogger.prototype = {
     LOG_LEVEL_NONE    : 6,
     LOG_LEVEL_ERROR   : 5,
     LOG_LEVEL_WARNING : 4,
-    LOG_LEVEL_DEBUG   : 3,
-    LOG_LEVEL_INFO    : 2,
+    LOG_LEVEL_INFO    : 3,
+    LOG_LEVEL_DEBUG   : 2,
     LOG_LEVEL_VERBOSE : 1,
     LOG_LEVEL_ALL     : 0,
 

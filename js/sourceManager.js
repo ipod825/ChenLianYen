@@ -184,6 +184,11 @@ loadMapObject: function(id, prop){
 	{
 		mapObj.setSpeedAndAnimation(0,0);
 	}
+	else if(utility.isMonster(prop.type))
+	{
+		mapObj.setSpeedAndAnimation(0,0);
+		mapObj.moving=true;
+	}
 	return mapObj;
 },
 

@@ -279,28 +279,41 @@ var CharacterProtoType = {
 		}
 	},
 
+	decideDir : function(){
+		if(this.target)
+			this.moveTowardTarget();
+		else
+			this.freeMove();
+	},
+
 	/* 
 	 * Function: move
 	 * The move function which trigger animation based on direction
 	 */
 	move : function(){
-		if(this.target)
-			this.moveTowardTarget();
-		else
-			this.freeMove();
+		this.decideDir();
 
 		// Test if the new position can be passed
 		var newP = new Point(this.x + this.vX, this.y + this.vY);
 		obj=this.parent.isPassable(this, newP);
 		if(obj == BLOCK)
+		{
 			return;
-		else if(utility.isItem(obj.type)){
-			this.pickItem(obj);
-			//this.resetImage(obj.name);
-			this.parent.removeChild(obj);
 		}
-		else if(utility.isMonster(obj.type)){
-			this.logger.verbose("monster encountered");
+		else if(utility.isItem(obj.type) && utility.isPlayer(this.type))
+		{
+			// If player encounters item, it picks item
+			this.pickItem(obj);
+		}
+		else if(utility.isPlayer(obj.type))
+		{
+			// If monster encoounters player, it does not move
+			//this.attack(obj);
+			return;
+		}
+		else if(utility.isMonster(obj.type))
+		{
+			// If player encounter monsters, it attack
 			this.attack(obj);
 			return;
 		}
