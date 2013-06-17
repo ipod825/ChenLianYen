@@ -43,7 +43,7 @@ AttackableCharacterPrototype =
 	{
 		if(_status.exp < 0)
 		{
-			this.logger.error(this.tag, "updateState: this.status.exp < 0");
+			this.logger.error(this.tag, "expCheck: this.status.exp < 0");
 		}
 		else if(_status.exp >= this.status.expMax)
 		{
@@ -113,6 +113,7 @@ AttackableCharacterPrototype =
 
 	updateHUD : function(_attrName)
 	{
+		this.logger.debug(this.tag, "updateHUD: +++START+++ _attrName = " + _attrName);
 		var uiController = this.rpg.getUIController();
 		if(uiController)
 			{

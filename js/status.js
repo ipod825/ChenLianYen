@@ -48,14 +48,16 @@ Status.prototype = {
 	// Check if the updating attribute name is valid
 	checkValidAttribute : function(attrName)
 	{
-		if(this[attrName])
+		this.logger.debug(this.tag, "checkValidAttribute: +++START+++ attrName = " +
+		                  attrName);
+		if(this[attrName] != undefined && this[attrName] != null)
 		{
 			return true;
 		}
 		else
 		{
-			//this.logger.error(this.tag, "checkValidAttribute: attribute "
-			//                  + attrName + " not found");
+			this.logger.error(this.tag, "checkValidAttribute: attribute "
+			                  + attrName + " not found");
 			return false;
 		}
 		return false;
@@ -90,4 +92,4 @@ Status.prototype = {
 };
 
 // Initialize prototype members
-Status.prototype.logger.setLogLevel("all");
+Status.prototype.logger.setLogLevel("info");
