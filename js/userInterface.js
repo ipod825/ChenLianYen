@@ -160,9 +160,16 @@ function Inventory(dom, _rpg){
 Inventory.prototype = Object.create(UIComponent.prototype);
 Inventory.prototype.constructor = Inventory;
 jQuery.extend(Inventory.prototype, {
+	domItemOptions: null, 
 	show : function(){
 		this.inventoryUpdate();
 		this.dom.show();
+	},
+	
+	hide : function(){
+		var itemOptions = $(this.dom.find("#itemOptions").get(0));
+		this.dom.append(itemOptions);
+		this.dom.hide();
 	},
 	
 	initialize : function(_obj, _rpg){
@@ -170,7 +177,7 @@ jQuery.extend(Inventory.prototype, {
 		this.rpg = _rpg;
 		this.dom = _obj;
 		
-		var itemOptions = this.dom.find("#itemOptions");
+		var itemOptions = $(self.dom.find("#itemOptions").get(0));
 		this.dom.find("#btUseItem").click(function(){
 			var itemid = $(this).siblings("itemid").attr("id");
 			self.rpg.getPlayer().useItem(itemid);
@@ -180,27 +187,44 @@ jQuery.extend(Inventory.prototype, {
 		});
 		
 		this.dom.find("#btDropItem").click(function(){
-			var id = $(this).siblings("itemid").attr("id");
+			var itemid = $(this).siblings("itemid").attr("id");
 			self.rpg.getPlayer().dropItem(itemid);
 			
 			itemOptions.hide();
 			self.inventoryUpdate();
 		});
+		
+		this.dom.find("#btCancel").click(function(){
+			itemOptions.hide();
+		});
+		
+		// this.dom.click(function(){ 
+			// if(itemOptions.is(':visible'))
+				// itemOptions.hide(); 
+		// });
 	},
 	
 	inventoryUpdate : function(){
+		var self = this;
 		var bag = this.rpg.getPlayer().getBag();
+		bag.push({type: "potion", number: 3, images:{"potion": "./Images/healthPotion.png"}});
+		bag.push({type: "potion", number: 2, images:{"potion": "./Images/healthPotion.png"}});
 		
+		var grid = this.dom.find("#Grid");
+		grid.html('');
 		for(var i in bag){
 			var item = bag[i];
 			
-			var str = '<div id="'+item.type+'" class="item"><img class="itemImg" src="'+item.images[item.type]+'" /><span class="itemCount">'+item.number+'</span></div>';
-			var newItem = $(str).click(function(){
-				var options = dom.find("#itemOptions").get(0);
+			var str = '<div id="'+item.type+'" class="item">';
+				str +='<img class="itemImg" src="'+item.images[item.type]+'" />';
+				str +='<span class="itemCount">'+item.number+'</span></div>';
+			var newItem = $(str).click(function(e){
+				var options = $(self.dom.find("#itemOptions").get(0));
 				options.hide();
-				options.css("top", this.offsetTop);
-				options.css("left", this.offsetLeft+40);
-				options.find("itemid").attr("id", item.id);
+				$(this).parent().append(options);
+				options.css("top", this.offsetTop+24);
+				options.css("left", this.offsetLeft-22);
+				options.find("itemid").attr("id", item.type);
 				options.show();
 			});
 			grid.append(newItem);
@@ -222,16 +246,16 @@ jQuery.extend(HeadUpDisplay.prototype, {
 		this.dom = _obj;
 	},
 	
-	HPUpdate : function(_HP){
+	HPUpdate : function(_value){
       /* args = {HP : value}*/
 		
-      dom.find("#HealthBar > span").css("width", _HP + "%");	
+      dom.find("#HealthBar").children("span.bar").width( _value.toString() + '%');
 	},
 
-    EXPUpdate : function(_EXP){
+    EXPUpdate : function(_value){
 		/* args = {EXP : value}*/
-
-		this.dom.find("#EXPBar > span").css("width", _EXP + "%");
+		// this.dom.find("#EXPBar > span").css("width", _EXP + "%");
+		this.dom.find("#ExpBar").children("span.bar").width( _value.toString() + '%');
     },
 
 });
