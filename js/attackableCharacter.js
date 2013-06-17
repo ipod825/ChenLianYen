@@ -1,3 +1,5 @@
+CHARACTER_STATE_ALIVE = 1;
+CHARACTER_STATE_DEAD  = 2;
 
 /* 
  * Class: AttackableCharacter
@@ -22,11 +24,13 @@ function AttackableCharacter(_rpg, _status)
 	Character.call(this, _rpg); 
 
 	// Initialize status and battleManager
-	var status = null;
+	this.status = null;
 	if(_status)
-	{ status = new Status(status); }  // New status with given status
+	{ this.status = new Status(status); }  // New status with given status
 	else
-	{ status = new Status(); }		// New a status with default value
+	{ this.status = new Status(); }		// New a status with default value
+
+	this.state = CHARACTER_STATE_ALIVE;
 };
 
 // Predefined attackable character prototype
@@ -54,6 +58,7 @@ AttackableCharacterPrototype =
 		this.logger.verbose(this.tag, "setStatus: +++START+++ attrName = " +
 							attrName + " , value = " + value);
 		this.status.setAttribute(attrName, value);
+		this.updateState();
 	},
 
 	updateStatus : function(attrName, offset)
@@ -61,6 +66,7 @@ AttackableCharacterPrototype =
 		this.logger.verbose(this.tag, "updateStatus: +++START+++ attrName = " +
 							attrName + " , offset = " + offset);
 		this.status.updateAttribute(attrName, offset);
+		this.updateState();
 	},
 
 	// ITEM RELATED FUNCTIONS
@@ -103,7 +109,7 @@ AttackableCharacterPrototype =
 	attack : function(attackee)
 	{
 		// For debugging
-		this.logger.verbose(this.tag, "attack: +++START+++ attackee = " + attackee);
+		this.logger.debug(this.tag, "attack: +++START+++ attackee = " + attackee);
 
 		// Play attack animation
 		this.playAnimation(this.suffix);
@@ -111,19 +117,35 @@ AttackableCharacterPrototype =
 		// If attackee is undefined, find attackee in front of caller
 		if(!attackee)
 		{
-			this.logger.verbose(this.tag, "attack: attackee not defined, try to find attackee");
-			var pixelInFront = new Point(this.x + this.vX, this.y + this.vY);
+			var pixelInFront;
+
+			switch(this.dir)
+			{
+				case DIR_RIGHT:
+					pixelInFront = new Point(this.x + 32, this.y);
+					break;
+				case DIR_LEFT:
+					pixelInFront = new Point(this.x - 32, this.y);
+					break;
+				case DIR_UP:
+					pixelInFront = new Point(this.x, this.y - 32);
+					break;
+				case DIR_DOWN:
+					pixelInFront = new Point(this.x, this.y + 32);
+					break;
+				default:
+					this.logger.error(this.tag, "attack: this.dir uncaptured type = " + this.dir);
+			}
 			var objectInFront = this.parent.isPassable(this, pixelInFront);
 
 			this.logger.verbose(this.tag, "attack: objectInFront.type = " + objectInFront.type);
-			if(!(utility.isMonster(objectInFront.type)))
+			if(utility.isMonster(objectInFront.type))
 			{
-				this.logger.verbose(this.tag, "attack: attackee not found");
-				return;
+				attackee = objectInFront;
 			}
 			else
 			{
-				attackee = objectInFront;
+				return;
 			}
 		}
 
@@ -137,7 +159,42 @@ AttackableCharacterPrototype =
 
 		// Call battle manager to handle damage computation
 		battleManager.performAttack(this, attackee);
+	},
+
+	updateState : function()
+	{
+		// Exp status check
+		if(this.status.exp <= 0)
+		{
+			this.logger.error(this.tag, "updateState: this.status.exp <= 0");
+		}
+		else if(this.status.exp >= this.status.expMax)
+		{
+			this.exp -= this.expMax;
+			++this.status.level;
+		}
+
+		// Hp status check
+		if(this.status.hp <= 0)
+		{
+			this.state = CHARACTER_STATE_DEAD;
+		}
+		else if(this.status.hp >= this.status.hpMax)
+		{
+			this.status.hp = this.status.hpMax;
+			this.state = CHARACTER_STATE_ALIVE;
+		}
+		else 
+		{
+			this.state = CHARACTER_STATE_ALIVE;
+		}
+	},
+
+	getState : function()
+	{
+		return this.state;
 	}
+
 };
 
 

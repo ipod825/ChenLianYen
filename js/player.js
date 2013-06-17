@@ -12,7 +12,7 @@
 function Player(_rpg, _status)
 {
 	// For debugging
-	this.logger.verbose(this.tag, "Player: +++START+++ _rpg = " + 
+	this.logger.debug(this.tag, "Player: +++START+++ _rpg = " + 
 	                    _rpg + " , _status = " + _status );
 
 	// Calling parent constructor
@@ -72,6 +72,11 @@ var PlayerPrototype =
 			this.logger.error(this.tag, "pickItem: _item undefined");
 			return;
 		}
+	},
+
+	die: function()
+	{
+		this.parent.removeChild(this);
 	}
 };
 

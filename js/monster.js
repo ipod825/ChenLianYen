@@ -51,6 +51,16 @@ var MonsterPrototype =
 		if(Math.random()>0.8)
 			this.setDirection(DIR_LEFT+Math.floor(Math.random()*4));
 	},
+
+	giveTrophy : function(killer)
+	{
+		killer.updateStatus("exp", 30);
+	},
+
+	die : function()
+	{
+		this.parent.removeChild(this);
+	}
 };
 
 // Monster inherits AttackableCharacter
