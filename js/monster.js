@@ -48,8 +48,8 @@ var MonsterPrototype =
 	},
 
 	freeMove : function(){
-		if(Math.random()>0.8)
-			this.setDirection(DIR_LEFT+Math.floor(Math.random()*4));
+	//	if(Math.random()>0.8)
+	//		this.setDirection(DIR_LEFT+Math.floor(Math.random()*4));
 	},
 };
 

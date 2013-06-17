@@ -21,12 +21,7 @@ function AttackableCharacter(_rpg, _status)
 	// Call parent Consturctor
 	Character.call(this, _rpg); 
 
-	// Initialize status and battleManager
-	var status = null;
-	if(_status)
-	{ status = new Status(status); }  // New status with given status
-	else
-	{ status = new Status(); }		// New a status with default value
+	this.status = new Status(_status);  
 };
 
 // Predefined attackable character prototype
@@ -56,11 +51,14 @@ AttackableCharacterPrototype =
 		this.status.setAttribute(attrName, value);
 	},
 
-	updateStatus : function(attrName, offset)
-	{
+	updateStatus : function(attrName, offset) {
 		this.logger.verbose(this.tag, "updateStatus: +++START+++ attrName = " +
 							attrName + " , offset = " + offset);
 		this.status.updateAttribute(attrName, offset);
+	},
+
+	die : function(){
+		this.parent.removeChild(this);
 	},
 
 	// ITEM RELATED FUNCTIONS
@@ -137,7 +135,8 @@ AttackableCharacterPrototype =
 
 		// Call battle manager to handle damage computation
 		battleManager.performAttack(this, attackee);
-	}
+	},
+
 };
 
 

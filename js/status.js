@@ -17,7 +17,7 @@ var Status = function(status)
 	this.hpMax = 100;    // Default hp maximum is also 100
 
 	this.attack = 120;   // Default attack is 120
-	this.defence = 100;  // Default defence is 100
+	this.defense = 100;  // Default defence is 100
 
 	this.exp = 0;        // Default exp is 0
 	this.expMax = 100;   // Default expMax is 100

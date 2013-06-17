@@ -35,6 +35,11 @@ BattleManager.prototype =
         // Compute damage and give damage
         var damage = attackerStatus.attack - attackeeStatus.defense;
         attackee.updateStatus("hp", -damage);
+
+		if(attackee.status.hp<=0){
+			attackee.die();
+			attacker.updateStatus("exp", attackeeStatus.exp);
+		}
     }
 };
 
