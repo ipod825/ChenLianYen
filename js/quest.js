@@ -107,7 +107,7 @@ Quest.prototype = {
 		
 		if(check == 1)
 		{
-		
+            this.rpg.getPlayer().updateStatus("exp", 30);
 		}	
 	},
 };
@@ -136,23 +136,34 @@ var Quest2 = new Quest('2','talktonpc','npc',[
                                                  },
                                           
                                               ]);
-											  
+
+
+
+
+function questObject(_rpg){
+	this.rpg = _rpg;
+}
+
+
+
+
+
 // You dont need these anymore motherfucker											  
 // Quest1.Initialize();
 // Quest2.Initialize();
 
-function update(object)
-{
-  if(utility.isMonster(object.type) == true)
-  {
-      Quest1.update(object);
-      
-  }
-  else if(utility.isNpc(object.type) == true)
-  {
-      Quest2.update(object);
-  }
-}
+//function update(object)
+//{
+//  if(utility.isMonster(object.type) == true)
+//  {
+//      Quest1.update(object);
+//      
+//  }
+//  else if(utility.isNpc(object.type) == true)
+//  {
+//      Quest2.update(object);
+//  }
+//}
 
 function Questcondition(_targetName,_max)
 {
