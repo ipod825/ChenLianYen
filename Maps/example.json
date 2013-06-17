@@ -23,7 +23,7 @@
                     {
                      "dir":"left"
                     },
-                 "type":"monsterWolf",
+                 "type":"MonsterWolf",
                  "visible":true,
                  "width":0,
                  "x":416,
@@ -38,11 +38,39 @@
                      "dir":"right",
                      "suffix":"SWD_01"
                     },
-                 "type":"playerPeter",
+                 "type":"PlayerPeter",
                  "visible":true,
                  "width":0,
                  "x":224,
                  "y":288
+                }, 
+                {
+                 "gid":1107,
+                 "height":0,
+                 "name":"ghost",
+                 "properties":
+                    {
+                     "dir":"down"
+                    },
+                 "type":"MonsterGhost",
+                 "visible":true,
+                 "width":0,
+                 "x":416,
+                 "y":512
+                }, 
+                {
+                 "gid":1151,
+                 "height":0,
+                 "name":"mushroom",
+                 "properties":
+                    {
+                     "dir":"up"
+                    },
+                 "type":"MonsterMushroom",
+                 "visible":true,
+                 "width":0,
+                 "x":256,
+                 "y":512
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -64,7 +92,7 @@
                      "description":"test",
                      "number":"1"
                     },
-                 "type":"itemHealthPotion",
+                 "type":"ItemSword",
                  "visible":true,
                  "width":0,
                  "x":320,
@@ -337,6 +365,36 @@
          "imagewidth":128,
          "margin":0,
          "name":"ghost",
+         "properties":
+            {
+
+            },
+         "spacing":0,
+         "tileheight":32,
+         "tilewidth":32
+        }, 
+        {
+         "firstgid":1107,
+         "image":"..\/Images\/ghost.png",
+         "imageheight":192,
+         "imagewidth":128,
+         "margin":0,
+         "name":"ghost",
+         "properties":
+            {
+
+            },
+         "spacing":0,
+         "tileheight":32,
+         "tilewidth":32
+        }, 
+        {
+         "firstgid":1131,
+         "image":"..\/Images\/mushroom.png",
+         "imageheight":192,
+         "imagewidth":128,
+         "margin":0,
+         "name":"mushroom",
          "properties":
             {
 

@@ -13,8 +13,8 @@ var Status = function(status)
 {
 	this.level = 1;      // Default level is level 1
 
-	this.hp = 80;        // Default hp is 100 
-	this.hpMax = 100;    // Default hp maximum is also 100
+	this.hp = 200;        // Default hp is 100 
+	this.hpMax = 200;    // Default hp maximum is also 100
 
 	this.attack = 120;   // Default attack is 120
 	this.defense = 100;  // Default defense is 100

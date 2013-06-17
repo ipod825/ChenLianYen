@@ -89,6 +89,14 @@ MapPrototype = {
 		return obj;
 	},
 
+	objInFront: function(obj){
+		dirUnit = obj.getDirUnit();
+		oriPos = obj.posOnMap;
+		newPos = oriPos.plus(dirUnit);
+		o = this.tiles.get(newPos.x, newPos.y);
+		return o;
+	},
+
 
 	/*
 	 * Add child to the stage and record the information on the tiles
@@ -103,7 +111,7 @@ MapPrototype = {
 
 	removeChild : function(child){
 		if(child.posOnMap)
-			this.tiles.set(obj.posOnMap.x, obj.posOnMap.y, FREE);
+			this.tiles.set(child.posOnMap.x, child.posOnMap.y, FREE);
 		Container.prototype.removeChild.call(this,child);
 		Ticker.removeListener(child);
 	},

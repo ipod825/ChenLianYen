@@ -12,29 +12,10 @@
  <tileset firstgid="73" name="player" tilewidth="32" tileheight="32">
   <image source="../Images/player.png" width="128" height="192"/>
  </tileset>
- <tileset firstgid="97" name="sword" tilewidth="32" tileheight="32">
-  <image source="../Images/sword.png" width="32" height="32"/>
+ <tileset firstgid="97" name="SWD_01" tilewidth="32" tileheight="32">
+  <image source="../Images/SWD_01.png" width="32" height="32"/>
  </tileset>
  <objectgroup name="Object Layer 1" width="20" height="20">
-  <object name="bear" type="Monster" gid="1" x="-224" y="32">
-   <properties>
-    <property name="dir" value="down"/>
-   </properties>
-  </object>
-  <object name="ghost" type="Monster" gid="25" x="-224" y="64">
-   <properties>
-    <property name="dir" value="down"/>
-   </properties>
-  </object>
-  <object gid="49" x="-224" y="96"/>
-  <object name="player" type="Player" gid="73" x="-224" y="128">
-   <properties>
-    <property name="dir" value="down"/>
-   </properties>
-  </object>
-  <object x="-224" y="32"/>
-  <object x="-224" y="64"/>
-  <object x="-192" y="96"/>
   <object name="bear" type="Monster" gid="1" x="-160" y="64">
    <properties>
     <property name="dir" value="down"/>
@@ -115,6 +96,6 @@
     <property name="dir" value="up"/>
    </properties>
   </object>
-  <object name="sword_01" type="Item" gid="97" x="0" y="-32"/>
+  <object name="SWD_01" type="Item" gid="97" x="0" y="-32"/>
  </objectgroup>
 </map>

@@ -32,13 +32,12 @@ var MonsterPrototype =
 	logger : new ConsoleLogger(),
 
 	searchTarget : function(){
-		dirIndex = this.dir - DIR_LEFT;
+		dirUnit= this.getDirUnit();
 		p = new Point(0,0);
 		searchPath = [];
 		for(var i =0; i<2; ++i){
-			p.x+=DIRUNIT[dirIndex].x;
-			p.y+=DIRUNIT[dirIndex].y;
-			searchPath.push(new Point(p.x, p.y));
+			p1 = p.plus(dirUnit);
+			searchPath.push(p1);
 		}
 		target = this.parent.detetObj(this.rpg.getPlayer().type, this.posOnMap, searchPath);
 		if(target)

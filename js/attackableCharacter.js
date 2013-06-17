@@ -147,6 +147,16 @@ AttackableCharacterPrototype =
 		this.updateState();
 	},
 
+	damage :function(damage){
+		this.updateStatus("hp", -damage);
+		this.blink();
+	},
+
+	blink : function(){
+		this.visible = false;
+		this.visibleCount = 0;
+	},
+
 	die : function(){
 		this.parent.removeChild(this);
 	},
@@ -199,34 +209,12 @@ AttackableCharacterPrototype =
 		// If attackee is undefined, find attackee in front of caller
 		if(!attackee)
 		{
-			var pixelInFront;
+			var objectInFront = this.parent.objInFront(this);
 
-			switch(this.dir)
-			{
-				case DIR_RIGHT:
-					pixelInFront = new Point(this.x + 32, this.y);
-					break;
-				case DIR_LEFT:
-					pixelInFront = new Point(this.x - 32, this.y);
-					break;
-				case DIR_UP:
-					pixelInFront = new Point(this.x, this.y - 32);
-					break;
-				case DIR_DOWN:
-					pixelInFront = new Point(this.x, this.y + 32);
-					break;
-				default:
-					this.logger.error(this.tag, "attack: this.dir uncaptured type = " + this.dir);
-			}
-			var objectInFront = this.parent.isPassable(this, pixelInFront);
-
-			this.logger.verbose(this.tag, "attack: objectInFront.type = " + objectInFront.type);
-			if(utility.isMonster(objectInFront.type))
-			{
+			if(utility.isMonster(objectInFront.type)) {
 				attackee = objectInFront;
 			}
-			else
-			{
+			else {
 				return;
 			}
 		}

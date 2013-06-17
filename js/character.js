@@ -1,6 +1,5 @@
 //TYPE definition
 //PLAYER = 1;
-//PLAYER = "Player";
 
 DIR_LEFT	= KEYCODE_LEFT;
 DIR_UP 		= KEYCODE_UP;
@@ -35,6 +34,7 @@ var Character = function(_rpg){
 	this.step = 3;          // Velocity of moving for every frame
 	this.numFrameX = 4;
 	this.numFrameY = 4;
+	this.visibleCount = 5;
 
 	// Memeber objects and reference
 	this.bag = {};                 // Items hold by character
@@ -207,6 +207,11 @@ var CharacterProtoType = {
 		}
 	},
 
+	getDirUnit : function(){
+		dirIndex = this.dir - DIR_LEFT;
+		return new Point(DIRUNIT[dirIndex].x, DIRUNIT[dirIndex].y);
+	},
+
 	moveTowardTarget: function(){
 		if(this.target.posChanged()){
 			this.target.updatePos();
@@ -277,6 +282,11 @@ var CharacterProtoType = {
 		else {
 			this.move();
 		}
+		if(this.visibleCount<5){
+			++this.visibleCount;
+			if(this.visibleCount==5)
+				this.visible=true;
+		}
 	},
 
 	decideDir : function(){
@@ -295,7 +305,8 @@ var CharacterProtoType = {
 
 		// Test if the new position can be passed
 		var newP = new Point(this.x + this.vX, this.y + this.vY);
-		obj=this.parent.isPassable(this, newP);
+		//obj=this.parent.isPassable(this, newP);
+		obj = this.parent.objInFront(this);
 		if(obj == BLOCK)
 		{
 			return;
@@ -314,7 +325,6 @@ var CharacterProtoType = {
 		else if(utility.isMonster(obj.type))
 		{
 			// If player encounter monsters, it attack
-			this.attack(obj);
 			return;
 		}
 

@@ -1,7 +1,7 @@
-//PLAYER = "Player";
-//MONSTER = "Monster";
-//NPC = "Npc";
-//ITEM = "Item";
+PLAYER = "Player";
+MONSTER = "Monster";
+ITEM= "Item";
+NPC = "Npc";
 
 function MapObject(_rpg){
 	this.rpg = _rpg;

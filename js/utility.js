@@ -33,7 +33,7 @@ Utility.prototype =
 	isPlayer : function(type)
 	{
 		this.logger.verbose(this.tag, "isPlayer: +++START+++ type = " + type);
-		if(type && type.substr(0, 6) === "player")
+		if(type && type.substr(0, 6) === PLAYER)
 		{
 			return true;
 		}
@@ -50,7 +50,7 @@ Utility.prototype =
 	isMonster : function(type)
 	{
 		this.logger.verbose(this.tag, "isMonster: +++START+++ type = " + type);
-		if(type && type.substr(0, 7) === "monster")
+		if(type && type.substr(0, 7) === MONSTER)
 		{
 			return true;
 		}
@@ -67,7 +67,7 @@ Utility.prototype =
 	isNpc : function(type)
 	{
 		this.logger.verbose(this.tag, "isNpc: +++START+++ type = " + type);
-		if(type && type.substr(0, 3) === "npc")
+		if(type && type.substr(0, 3) === NPC)
 		{
 			return true;
 		}
@@ -77,7 +77,7 @@ Utility.prototype =
 	isItem : function(type)
 	{
 		this.logger.verbose(this.tag, "isItem: +++START+++ type = " + type);
-		if(type && type.substr(0, 4) === "item")
+		if(type && type.substr(0, 4) === ITEM)
 		{
 			return true;
 		}

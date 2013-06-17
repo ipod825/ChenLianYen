@@ -34,7 +34,7 @@ BattleManager.prototype =
 
 		// Compute damage and give damage
 		var damage = attackerStatus.attack - attackeeStatus.defense;
-		attackee.updateStatus("hp", -damage);
+		attackee.damage(damage);
 
 		// If the attackee don't have the health point
 		var attakeeState = attackee.getState();
