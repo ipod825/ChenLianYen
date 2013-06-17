@@ -331,7 +331,7 @@ jQuery.extend(QuestWindow.prototype, {
 	},
 	
 	show : function(){
-		var questList = this.rpg.getQuestManager().getQuestData();
+		var questList = this.rpg.getQeustManager().getQuestData();
 		
 		for(var i in questList){
 			var quest = questList[i];
