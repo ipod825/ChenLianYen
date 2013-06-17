@@ -74,6 +74,10 @@ var PlayerPrototype =
 			return;
 		}
 	},
+
+	giveTrophy: function(killer)
+	{
+	}
 };
 
 // Player inherits AttackableCharacter

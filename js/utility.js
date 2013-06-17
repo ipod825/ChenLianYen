@@ -32,7 +32,7 @@ Utility.prototype =
 	 */
 	isPlayer : function(type)
 	{
-		this.logger.verbose(this.tag, "isPlayer: +++START+++ type = " + type);
+		this.logger.debug(this.tag, "isPlayer: +++START+++ type = " + type);
 		if(type && type.substr(0, 6) === PLAYER)
 		{
 			return true;
@@ -49,7 +49,7 @@ Utility.prototype =
 	 */
 	isMonster : function(type)
 	{
-		this.logger.verbose(this.tag, "isMonster: +++START+++ type = " + type);
+		this.logger.debug(this.tag, "isMonster: +++START+++ type = " + type);
 		if(type && type.substr(0, 7) === MONSTER)
 		{
 			return true;
@@ -66,7 +66,7 @@ Utility.prototype =
 	 */
 	isNpc : function(type)
 	{
-		this.logger.verbose(this.tag, "isNpc: +++START+++ type = " + type);
+		this.logger.debug(this.tag, "isNpc: +++START+++ type = " + type);
 		if(type && type.substr(0, 3) === NPC)
 		{
 			return true;
@@ -76,7 +76,7 @@ Utility.prototype =
 
 	isItem : function(type)
 	{
-		this.logger.verbose(this.tag, "isItem: +++START+++ type = " + type);
+		this.logger.debug(this.tag, "isItem: +++START+++ type = " + type);
 		if(type && type.substr(0, 4) === ITEM)
 		{
 			return true;
@@ -90,4 +90,4 @@ Utility.prototype =
 // New a instance here, please don't new another instance in other places
 var utility = new Utility();
 // Initialize members in prototype
-Utility.prototype.logger.setLogLevel("none");
+Utility.prototype.logger.setLogLevel("info");

@@ -318,8 +318,11 @@ var CharacterProtoType = {
 		}
 		else if(utility.isPlayer(obj.type))
 		{
-			// If monster encoounters player, it does not move
-			//this.attack(obj);
+			// If monster enoounters player, it does not move
+			if(utility.isMonster(this.type))
+			{
+				//this.attack(obj);
+			}
 			return;
 		}
 		else if(utility.isMonster(obj.type))

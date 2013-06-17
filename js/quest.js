@@ -18,12 +18,12 @@ function QuestManager()
     
     this.updateQuest = function(object)
     {
-        if(utility.isMonster(object.type) == true)
+        if(utility.isMonster(object.type))
         {
             Quest1.update(object);
             
         }
-        else if(utility.isNpc(object.type) == true)
+        else if(utility.isNpc(object.type))
         {
             Quest2.update(object);
         }

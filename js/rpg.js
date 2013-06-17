@@ -10,7 +10,7 @@ function Rpg(canvasId) {
 
 	// Rpg holds main classes of other modules
 	this.questManager = new QuestManager();
-	this.battleManager = new BattleManager();
+	this.battleManager = new BattleManager(this);
 	this.UserInterface;
 
 	var self = this;

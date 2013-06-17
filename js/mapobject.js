@@ -68,8 +68,11 @@ MapObjectPrototype={
 		bitmap = this.animations[name+DIRSTR[dirIndex]];
 
 		pos = new Point(this.x, this.y);
-		this.parent.addChild(bitmap);
-		bitmap.play(pos, true);
+		if(bitmap)
+		{
+			this.parent.addChild(bitmap);
+			bitmap.play(pos, true);
+		}
 	},
 
 	resetImage: function(suffix){

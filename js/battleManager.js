@@ -1,6 +1,7 @@
 // BattleManager Class
-var BattleManager = function()
+var BattleManager = function(_rpg)
 {
+    this.rpg = _rpg;
 };
 
 // Prototype of battle
@@ -43,7 +44,13 @@ BattleManager.prototype =
 			this.logger.info(this.tag, attackee.type + " DIE!");
 			attackee.giveTrophy(attacker);
 			attackee.die();
+			// Update Quest Progress
+			//if(utility.isPlayer(attacker))
+			//{
+			//	this.rpg.getQuestManager().updateQuest(attackee);
+			//}
 		}
+
 	}
 };
 
