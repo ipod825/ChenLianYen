@@ -1,3 +1,5 @@
+CHARACTER_STATE_ALIVE = 1;
+CHARACTER_STATE_DEAD  = 2;
 
 /* 
  * Class: AttackableCharacter
@@ -6,27 +8,24 @@
  *     which means that NPC is not attackable
  *
  * Parameters:
- *     type - the identifier character
- *     name - the name of the character
- *     stage - (optional) the reference to stage
- *     battleManager - The reference of battle manager to manager battles
- *     statue - (optional) the status to the attackable character
  */
 function AttackableCharacter(_rpg, _status)
 {
 	// For debugging
-	this.logger.verbose(this.tag, "AttackableCharacter: +++START+++ _rpg = " + _rpg + 
-	                    " , _status = " + _status);
+	this.logger.debug(this.tag, "AttackableCharacter: +++START+++ _rpg = " + _rpg + 
+	                  " , _status = " + _status);
 
 	// Call parent Consturctor
 	Character.call(this, _rpg); 
 
 	// Initialize status and battleManager
-	var status = null;
+	this.status = null;
 	if(_status)
-	{ status = new Status(status); }  // New status with given status
+	{ this.status = new Status(status); }  // New status with given status
 	else
-	{ status = new Status(); }		// New a status with default value
+	{ this.status = new Status(); }		// New a status with default value
+
+	this.state = CHARACTER_STATE_ALIVE;
 };
 
 // Predefined attackable character prototype
@@ -34,6 +33,57 @@ AttackableCharacterPrototype =
 {
 	logger : new ConsoleLogger(),
 	tag : "[AttackableCharacter]: ",
+
+	// STATE RELATED FUNCTION
+	// STATE RELATED FUNCTION
+	// STATE RELATED FUNCTION
+	// STATE RELATED FUNCTION
+
+	expCheck: function(_status)
+	{
+		if(_status.exp < 0)
+		{
+			this.logger.error(this.tag, "updateState: this.status.exp < 0");
+		}
+		else if(_status.exp >= this.status.expMax)
+		{
+			this.exp -= this.expMax;
+			++this.status.level;
+		}
+	},
+
+	hpCheck: function(_status)
+	{
+		if(this.status.hp <= 0)
+		{
+			return CHARACTER_STATE_DEAD;
+		}
+		else if(this.status.hp >= this.status.hpMax)
+		{
+			this.status.hp = this.status.hpMax;
+			return CHARACTER_STATE_ALIVE;
+		}
+		else 
+		{
+			return CHARACTER_STATE_ALIVE;
+		}
+	},
+
+	updateState : function()
+	{
+		this.logger.debug(this.tag, "updateState: +++START+++");
+
+		// Exp status check
+		this.expCheck(this.status);
+
+		// Hp status check, this may result in status change
+		this.state = this.hpCheck(this.status);
+	},
+
+	getState : function()
+	{
+		return this.state;
+	},
 
 	// STATUS RELATED FUNCTIONS
 	// STATUS RELATED FUNCTIONS
@@ -49,18 +99,32 @@ AttackableCharacterPrototype =
 		return this.status;
 	},
 
-	setStatus : function(attrName, value)
+	setStatus : function(_attrName, _value)
 	{
-		this.logger.verbose(this.tag, "setStatus: +++START+++ attrName = " +
-							attrName + " , value = " + value);
-		this.status.setAttribute(attrName, value);
+		this.logger.debug(this.tag, "setStatus: +++START+++ _attrName = " +
+		                  _attrName + " , _value = " + _value);
+
+		// Delegate the update work to status
+		this.status.setAttribute(_attrName, _value);
+
+		// Status change may result to state change
+		this.updateState();
 	},
 
-	updateStatus : function(attrName, offset)
+	updateStatus : function(_attrName, _offset) 
 	{
-		this.logger.verbose(this.tag, "updateStatus: +++START+++ attrName = " +
-							attrName + " , offset = " + offset);
-		this.status.updateAttribute(attrName, offset);
+		this.logger.debug(this.tag, "updateStatus: +++START+++ _attrName = " +
+		                  _attrName + " , _offset = " + _offset);
+
+		// Delegate the update work to status
+		this.status.updateAttribute(_attrName, _offset);
+
+		// Status change may result to state change
+		this.updateState();
+	},
+
+	die : function(){
+		this.parent.removeChild(this);
 	},
 
 	// ITEM RELATED FUNCTIONS
@@ -69,8 +133,8 @@ AttackableCharacterPrototype =
 	{
 		// For debugging
 		this.logger.verbose(this.tag, "useItem: +++START+++ _item.type = " +
-	                        _item.type + " , _item.number = " + _item.number + 
-	                        " , _item.description = " + _item.description);
+		                    _item.type + " , _item.number = " + _item.number + 
+		                    " , _item.description = " + _item.description);
 
 		// Check if item exist
 		var itemToUse = this.bag[_item.type];
@@ -103,7 +167,7 @@ AttackableCharacterPrototype =
 	attack : function(attackee)
 	{
 		// For debugging
-		this.logger.verbose(this.tag, "attack: +++START+++ attackee = " + attackee);
+		this.logger.debug(this.tag, "attack: +++START+++ attackee = " + attackee);
 
 		// Play attack animation
 		this.playAnimation(this.suffix);
@@ -111,19 +175,35 @@ AttackableCharacterPrototype =
 		// If attackee is undefined, find attackee in front of caller
 		if(!attackee)
 		{
-			this.logger.verbose(this.tag, "attack: attackee not defined, try to find attackee");
-			var pixelInFront = new Point(this.x + this.vX, this.y + this.vY);
+			var pixelInFront;
+
+			switch(this.dir)
+			{
+				case DIR_RIGHT:
+					pixelInFront = new Point(this.x + 32, this.y);
+					break;
+				case DIR_LEFT:
+					pixelInFront = new Point(this.x - 32, this.y);
+					break;
+				case DIR_UP:
+					pixelInFront = new Point(this.x, this.y - 32);
+					break;
+				case DIR_DOWN:
+					pixelInFront = new Point(this.x, this.y + 32);
+					break;
+				default:
+					this.logger.error(this.tag, "attack: this.dir uncaptured type = " + this.dir);
+			}
 			var objectInFront = this.parent.isPassable(this, pixelInFront);
 
 			this.logger.verbose(this.tag, "attack: objectInFront.type = " + objectInFront.type);
-			if(!(utility.isMonster(objectInFront.type)))
+			if(utility.isMonster(objectInFront.type))
 			{
-				this.logger.verbose(this.tag, "attack: attackee not found");
-				return;
+				attackee = objectInFront;
 			}
 			else
 			{
-				attackee = objectInFront;
+				return;
 			}
 		}
 
@@ -138,6 +218,7 @@ AttackableCharacterPrototype =
 		// Call battle manager to handle damage computation
 		battleManager.performAttack(this, attackee);
 	}
+
 };
 
 
@@ -149,4 +230,4 @@ for(var obj in AttackableCharacterPrototype)
 	AttackableCharacter.prototype[obj] = AttackableCharacterPrototype[obj];
 }
 // Initializeation of members in prototype
-AttackableCharacter.prototype.logger.setLogLevel("debug");
+AttackableCharacter.prototype.logger.setLogLevel("info");

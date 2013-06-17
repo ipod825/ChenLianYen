@@ -297,12 +297,23 @@ var CharacterProtoType = {
 		var newP = new Point(this.x + this.vX, this.y + this.vY);
 		obj=this.parent.isPassable(this, newP);
 		if(obj == BLOCK)
+		{
 			return;
-		else if(utility.isItem(obj.type)){
+		}
+		else if(utility.isItem(obj.type) && utility.isPlayer(this.type))
+		{
+			// If player encounters item, it picks item
 			this.pickItem(obj);
 		}
-		else if(utility.isMonster(obj.type)){
-			this.logger.verbose("monster encountered");
+		else if(utility.isPlayer(obj.type))
+		{
+			// If monster encoounters player, it does not move
+			//this.attack(obj);
+			return;
+		}
+		else if(utility.isMonster(obj.type))
+		{
+			// If player encounter monsters, it attack
 			this.attack(obj);
 			return;
 		}
@@ -328,4 +339,4 @@ for (var obj in CharacterProtoType) {
 } 
 // Initialize prototype members
 // For debuggging
-Character.prototype.logger.setLogLevel("debug");
+Character.prototype.logger.setLogLevel("info");

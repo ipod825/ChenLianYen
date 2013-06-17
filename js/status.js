@@ -17,7 +17,7 @@ var Status = function(status)
 	this.hpMax = 100;    // Default hp maximum is also 100
 
 	this.attack = 120;   // Default attack is 120
-	this.defence = 100;  // Default defence is 100
+	this.defense = 100;  // Default defense is 100
 
 	this.exp = 0;        // Default exp is 0
 	this.expMax = 100;   // Default expMax is 100
@@ -54,8 +54,8 @@ Status.prototype = {
 		}
 		else
 		{
-			this.logger.error(this.tag, "checkValidAttribute: attribute "
-			                  + attrName + " not found");
+			//this.logger.error(this.tag, "checkValidAttribute: attribute "
+			//                  + attrName + " not found");
 			return false;
 		}
 		return false;
@@ -67,6 +67,8 @@ Status.prototype = {
 	// -4 means minus four to current value
 	updateAttribute : function(attrName, offset)
 	{
+		this.logger.debug(this.tag, "updateAttribute: attrName = " + attrName + 
+		                  " , offset = " + offset);
 		if(this.checkValidAttribute(attrName))
 		{
 			this[attrName] += offset;
@@ -88,4 +90,4 @@ Status.prototype = {
 };
 
 // Initialize prototype members
-Status.prototype.logger.setLogLevel("none");
+Status.prototype.logger.setLogLevel("all");

@@ -12,7 +12,7 @@
 function Monster(_rpg, _status)
 {
 	// For debugging
-	this.logger.verbose(this.tag, "Monster: +++START+++ _rpg = " +
+	this.logger.debug(this.tag, "Monster: +++START+++ _rpg = " +
 	                    _rpg + " , _status = " + _status);
 
 	// Calling parent constructor
@@ -51,6 +51,13 @@ var MonsterPrototype =
 		if(Math.random()>0.8)
 			this.setDirection(DIR_LEFT+Math.floor(Math.random()*4));
 	},
+
+	giveTrophy : function(killer)
+	{
+		// For debugging
+		this.logger.debug(this.tag, "giveTrophy: +++START+++ killer = " + killer);
+		killer.updateStatus("exp", 30);
+	},
 };
 
 // Monster inherits AttackableCharacter
@@ -61,4 +68,4 @@ for(var obj in MonsterPrototype)
 	Monster.prototype[obj] = MonsterPrototype[obj];
 }
 // Initialize the member in prototype
-Monster.prototype.logger.setLogLevel("debug");
+Monster.prototype.logger.setLogLevel("info");
