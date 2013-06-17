@@ -40,7 +40,7 @@ BattleManager.prototype =
 		var attakeeState = attackee.getState();
 		if(attakeeState === CHARACTER_STATE_DEAD)
 		{
-            this.logger.info(this.tag, attackee.type + " DIE!");
+			this.logger.info(this.tag, attackee.type + " DIE!");
 			attackee.giveTrophy(attacker);
 			attackee.die();
 		}
@@ -48,4 +48,4 @@ BattleManager.prototype =
 };
 
 // Initialize the member in prototype
-BattleManager.prototype.logger.setLogLevel("debug");
+BattleManager.prototype.logger.setLogLevel("info");
