@@ -71,25 +71,28 @@ Quest.prototype = {
     QuestId : null,
     name : null,
     goal : null,
-    questConditions : [],
-
+   // questConditions : [],
+    
 	initialize : function(ID, _name, _goal,_questConditions){
 		this.QuestId = ID;
 		this.name = _name;
 		this.goal = _goal;
-		
+		this.questConditions = new Array();
 		for(var c in _questConditions){
-			console.log(c + " : " + _questConditions[c]);
+			//console.log(c + " : " + _questConditions[c]);
 			var cond = _questConditions[c];
 			var qq = new Questcondition(cond.targetName, cond.max);
 			
 			this.questConditions.push(qq);
 		}
+        
 	},
 	
-	update : function(){
+	update : function(object){
+        var check = 1;
 		for(var cond in this.questConditions)
 		{
+            //alert(check);
 			if (this.questConditions[cond].targetName == object.type)
 			{
 				
@@ -99,15 +102,17 @@ Quest.prototype = {
 			}
 			if (this.questConditions[cond].max != this.questConditions[cond].count)
 			{
-				
+				//alert(this.questConditions[cond].targetName)
 				check = 0;
 			
 			}
 		}
-		
+		;
 		if(check == 1)
 		{
+            //alert('1');
             this.rpg.getPlayer().updateStatus("exp", 30);
+            
 		}	
 	},
 };
