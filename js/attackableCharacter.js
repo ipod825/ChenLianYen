@@ -8,17 +8,12 @@ CHARACTER_STATE_DEAD  = 2;
  *     which means that NPC is not attackable
  *
  * Parameters:
- *     type - the identifier character
- *     name - the name of the character
- *     stage - (optional) the reference to stage
- *     battleManager - The reference of battle manager to manager battles
- *     statue - (optional) the status to the attackable character
  */
 function AttackableCharacter(_rpg, _status)
 {
 	// For debugging
-	this.logger.verbose(this.tag, "AttackableCharacter: +++START+++ _rpg = " + _rpg + 
-	                    " , _status = " + _status);
+	this.logger.debug(this.tag, "AttackableCharacter: +++START+++ _rpg = " + _rpg + 
+	                  " , _status = " + _status);
 
 	// Call parent Consturctor
 	Character.call(this, _rpg); 
@@ -39,6 +34,57 @@ AttackableCharacterPrototype =
 	logger : new ConsoleLogger(),
 	tag : "[AttackableCharacter]: ",
 
+	// STATE RELATED FUNCTION
+	// STATE RELATED FUNCTION
+	// STATE RELATED FUNCTION
+	// STATE RELATED FUNCTION
+
+	expCheck: function(_status)
+	{
+		if(_status.exp < 0)
+		{
+			this.logger.error(this.tag, "updateState: this.status.exp < 0");
+		}
+		else if(_status.exp >= this.status.expMax)
+		{
+			this.exp -= this.expMax;
+			++this.status.level;
+		}
+	},
+
+	hpCheck: function(_status)
+	{
+		if(this.status.hp <= 0)
+		{
+			return CHARACTER_STATE_DEAD;
+		}
+		else if(this.status.hp >= this.status.hpMax)
+		{
+			this.status.hp = this.status.hpMax;
+			return CHARACTER_STATE_ALIVE;
+		}
+		else 
+		{
+			return CHARACTER_STATE_ALIVE;
+		}
+	},
+
+	updateState : function()
+	{
+		this.logger.debug(this.tag, "updateState: +++START+++");
+
+		// Exp status check
+		this.expCheck(this.status);
+
+		// Hp status check, this may result in status change
+		this.state = this.hpCheck(this.status);
+	},
+
+	getState : function()
+	{
+		return this.state;
+	},
+
 	// STATUS RELATED FUNCTIONS
 	// STATUS RELATED FUNCTIONS
 	// STATUS RELATED FUNCTIONS
@@ -53,18 +99,27 @@ AttackableCharacterPrototype =
 		return this.status;
 	},
 
-	setStatus : function(attrName, value)
+	setStatus : function(_attrName, _value)
 	{
-		this.logger.verbose(this.tag, "setStatus: +++START+++ attrName = " +
-							attrName + " , value = " + value);
-		this.status.setAttribute(attrName, value);
+		this.logger.debug(this.tag, "setStatus: +++START+++ _attrName = " +
+		                  _attrName + " , _value = " + _value);
+
+		// Delegate the update work to status
+		this.status.setAttribute(_attrName, _value);
+
+		// Status change may result to state change
 		this.updateState();
 	},
 
-	updateStatus : function(attrName, offset) {
-		this.logger.verbose(this.tag, "updateStatus: +++START+++ attrName = " +
-							attrName + " , offset = " + offset);
-		this.status.updateAttribute(attrName, offset);
+	updateStatus : function(_attrName, _offset) 
+	{
+		this.logger.debug(this.tag, "updateStatus: +++START+++ _attrName = " +
+		                  _attrName + " , _offset = " + _offset);
+
+		// Delegate the update work to status
+		this.status.updateAttribute(_attrName, _offset);
+
+		// Status change may result to state change
 		this.updateState();
 	},
 
@@ -78,8 +133,8 @@ AttackableCharacterPrototype =
 	{
 		// For debugging
 		this.logger.verbose(this.tag, "useItem: +++START+++ _item.type = " +
-	                        _item.type + " , _item.number = " + _item.number + 
-	                        " , _item.description = " + _item.description);
+		                    _item.type + " , _item.number = " + _item.number + 
+		                    " , _item.description = " + _item.description);
 
 		// Check if item exist
 		var itemToUse = this.bag[_item.type];
@@ -162,41 +217,8 @@ AttackableCharacterPrototype =
 
 		// Call battle manager to handle damage computation
 		battleManager.performAttack(this, attackee);
-	},
-
-	updateState : function()
-	{
-		// Exp status check
-		if(this.status.exp < 0)
-		{
-			this.logger.error(this.tag, "updateState: this.status.exp < 0");
-		}
-		else if(this.status.exp >= this.status.expMax)
-		{
-			this.exp -= this.expMax;
-			++this.status.level;
-		}
-
-		// Hp status check
-		if(this.status.hp <= 0)
-		{
-			this.state = CHARACTER_STATE_DEAD;
-		}
-		else if(this.status.hp >= this.status.hpMax)
-		{
-			this.status.hp = this.status.hpMax;
-			this.state = CHARACTER_STATE_ALIVE;
-		}
-		else 
-		{
-			this.state = CHARACTER_STATE_ALIVE;
-		}
-	},
-
-	getState : function()
-	{
-		return this.state;
 	}
+
 };
 
 
@@ -208,4 +230,4 @@ for(var obj in AttackableCharacterPrototype)
 	AttackableCharacter.prototype[obj] = AttackableCharacterPrototype[obj];
 }
 // Initializeation of members in prototype
-AttackableCharacter.prototype.logger.setLogLevel("debug");
+AttackableCharacter.prototype.logger.setLogLevel("info");

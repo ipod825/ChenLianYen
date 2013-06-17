@@ -339,4 +339,4 @@ for (var obj in CharacterProtoType) {
 } 
 // Initialize prototype members
 // For debuggging
-Character.prototype.logger.setLogLevel("debug");
+Character.prototype.logger.setLogLevel("info");

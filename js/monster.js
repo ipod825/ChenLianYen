@@ -68,4 +68,4 @@ for(var obj in MonsterPrototype)
 	Monster.prototype[obj] = MonsterPrototype[obj];
 }
 // Initialize the member in prototype
-Monster.prototype.logger.setLogLevel("debug");
+Monster.prototype.logger.setLogLevel("info");
