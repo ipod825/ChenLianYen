@@ -71,20 +71,6 @@
                  "width":0,
                  "x":256,
                  "y":512
-                }, 
-                {
-                 "gid":1155,
-                 "height":0,
-                 "name":"healthPotion",
-                 "properties":
-                    {
-
-                    },
-                 "type":"ItemhealthPotion",
-                 "visible":true,
-                 "width":0,
-                 "x":160,
-                 "y":288
                 }],
          "opacity":1,
          "type":"objectgroup",
