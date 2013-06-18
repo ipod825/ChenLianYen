@@ -15,6 +15,9 @@
  <tileset firstgid="97" name="SWD_01" tilewidth="32" tileheight="32">
   <image source="../Images/SWD_01.png" width="32" height="32"/>
  </tileset>
+ <tileset firstgid="98" name="healthPotion" tilewidth="32" tileheight="32">
+  <image source="../Images/healthPotion.png" width="32" height="32"/>
+ </tileset>
  <objectgroup name="Object Layer 1" width="20" height="20">
   <object name="bear" type="Monster" gid="1" x="-160" y="64">
    <properties>
@@ -97,5 +100,6 @@
    </properties>
   </object>
   <object name="SWD_01" type="Item" gid="97" x="0" y="-32"/>
+  <object name="healthPotion" type="ItemhealthPotion" gid="98" x="0" y="0"/>
  </objectgroup>
 </map>

@@ -71,6 +71,20 @@
                  "width":0,
                  "x":256,
                  "y":512
+                }, 
+                {
+                 "gid":1155,
+                 "height":0,
+                 "name":"healthPotion",
+                 "properties":
+                    {
+
+                    },
+                 "type":"ItemhealthPotion",
+                 "visible":true,
+                 "width":0,
+                 "x":160,
+                 "y":288
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -395,6 +409,21 @@
          "imagewidth":128,
          "margin":0,
          "name":"mushroom",
+         "properties":
+            {
+
+            },
+         "spacing":0,
+         "tileheight":32,
+         "tilewidth":32
+        }, 
+        {
+         "firstgid":1155,
+         "image":"..\/Images\/healthPotion.png",
+         "imageheight":32,
+         "imagewidth":32,
+         "margin":0,
+         "name":"healthPotion",
          "properties":
             {
 
